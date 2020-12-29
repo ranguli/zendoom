@@ -22,7 +22,7 @@ AC_CHECK_PROG(HAVE_PYTHON, python3, true, false)
 
 OPT_LEVEL=2
 
-# If this is gcc, we have some options we'd like to turn on.  Turn on 
+# If this is gcc, we have some options we'd like to turn on.  Turn on
 # optimisation and debugging symbols.
 
 if test "$GCC" = "yes"
@@ -198,12 +198,6 @@ AC_DEFUN([AC_DATAROOTDIR_CHECKED])
 
 AC_OUTPUT([
 Makefile
-man/Makefile
-man/bash-completion/Makefile
-man/bash-completion/doom.template
-man/bash-completion/heretic.template
-man/bash-completion/hexen.template
-man/bash-completion/strife.template
 midiproc/Makefile
 opl/Makefile
 opl/examples/Makefile
@@ -218,20 +212,11 @@ src/Doom.metainfo.xml
 src/Doom.desktop
 src/Doom_Screensaver.desktop
 src/doom/Makefile
-src/Heretic.metainfo.xml
-src/Heretic.desktop
-src/heretic/Makefile
-src/Hexen.metainfo.xml
-src/Hexen.desktop
-src/hexen/Makefile
 src/resource.rc
 src/setup-res.rc
 src/setup/Makefile
 src/setup/Setup.desktop
 src/setup/setup-manifest.xml
-src/Strife.metainfo.xml
-src/Strife.desktop
-src/strife/Makefile
 textscreen/Makefile
 textscreen/examples/Makefile
 textscreen/fonts/Makefile
