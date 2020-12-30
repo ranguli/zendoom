@@ -1,1 +1,1 @@
-SUBDIRS=textscreen midiproc opl src
+SUBDIRS=textscreen opl src

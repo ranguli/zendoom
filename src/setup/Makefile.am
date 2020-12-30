@@ -21,8 +21,6 @@ libsetup_a_SOURCES =                            \
     txt_keyinput.c    txt_keyinput.h            \
     txt_mouseinput.c  txt_mouseinput.h
 
-EXTRA_DIST=                                     \
-    CMakeLists.txt                              \
-    setup_icon.c
+EXTRA_DIST = setup_icon.c
 
 CLEANFILES = $(app_DATA)

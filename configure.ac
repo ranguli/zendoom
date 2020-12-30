@@ -151,7 +151,6 @@ AC_DEFUN([AC_DATAROOTDIR_CHECKED])
 
 AC_OUTPUT([
 Makefile
-midiproc/Makefile
 opl/Makefile
 opl/examples/Makefile
 src/Makefile

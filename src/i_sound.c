@@ -23,7 +23,6 @@
 #include "config.h"
 #include "doomtype.h"
 
-#include "gusconf.h"
 #include "i_sound.h"
 #include "i_video.h"
 #include "m_argv.h"
@@ -498,8 +497,6 @@ void I_BindSoundVariables(void)
 
     M_BindStringVariable("music_pack_path",      &music_pack_path);
     M_BindStringVariable("timidity_cfg_path",    &timidity_cfg_path);
-    M_BindStringVariable("gus_patch_path",       &gus_patch_path);
-    M_BindIntVariable("gus_ram_kb",              &gus_ram_kb);
 
     M_BindIntVariable("use_libsamplerate",       &use_libsamplerate);
     M_BindFloatVariable("libsamplerate_scale",   &libsamplerate_scale);

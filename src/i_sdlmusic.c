@@ -33,7 +33,6 @@
 #include "mus2mid.h"
 
 #include "deh_str.h"
-#include "gusconf.h"
 #include "i_sound.h"
 #include "i_system.h"
 #include "i_swap.h"
@@ -48,7 +47,7 @@
 
 static boolean music_initialized = false;
 
-// If this is true, this module initialized SDL sound and has the 
+// If this is true, this module initialized SDL sound and has the
 // responsibility to shut it down
 
 static boolean sdl_was_initialized = false;
@@ -99,14 +98,7 @@ void I_InitTimidityConfig(void)
 
     temp_timidity_cfg = M_TempFile("timidity.cfg");
 
-    if (snd_musicdevice == SNDDEVICE_GUS)
-    {
-        success = GUS_WriteConfig(temp_timidity_cfg);
-    }
-    else
-    {
-        success = WriteWrapperTimidityConfig(temp_timidity_cfg);
-    }
+    success = WriteWrapperTimidityConfig(temp_timidity_cfg);
 
     // Set the TIMIDITY_CFG environment variable to point to the temporary
     // config file.
@@ -366,7 +358,7 @@ static void I_SDL_UnRegisterSong(void *handle)
     }
 }
 
-// Determine whether memory block is a .mid file 
+// Determine whether memory block is a .mid file
 
 static boolean IsMid(byte *mem, int len)
 {

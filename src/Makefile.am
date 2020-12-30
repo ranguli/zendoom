@@ -59,7 +59,6 @@ d_loop.c             d_loop.h              \
 d_mode.c             d_mode.h              \
                      d_ticcmd.h            \
 deh_str.c            deh_str.h             \
-gusconf.c            gusconf.h             \
 i_cdmus.c            i_cdmus.h             \
 i_endoom.c           i_endoom.h            \
 i_glob.c             i_glob.h              \
@@ -107,7 +106,6 @@ w_wad.c              w_wad.h               \
 w_file.c             w_file.h              \
 w_file_stdc.c                              \
 w_file_posix.c                             \
-w_file_win32.c                             \
 w_merge.c            w_merge.h             \
 z_zone.c             z_zone.h
 
