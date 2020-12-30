@@ -1352,8 +1352,7 @@ void D_DoomMain (void)
     //!
     // @vanilla
     //
-    // Developer mode. F1 saves a screenshot in the current working
-    // directory.
+    // Developer mode.
     //
 
     devparm = M_CheckParm ("-devparm");

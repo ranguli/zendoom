@@ -822,13 +822,6 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(show_diskicon),
 
     //!
-    // If non-zero, save screenshots in PNG format. If zero, screenshots are
-    // saved in PCX format, as Vanilla Doom does.
-    //
-
-    CONFIG_VARIABLE_INT(png_screenshots),
-
-    //!
     // Sound output sample rate, in Hz.  Typical values to use are
     // 11025, 22050, 44100 and 48000.
     //
@@ -883,33 +876,6 @@ static default_t extra_defaults_list[] =
     //
 
     CONFIG_VARIABLE_INT_HEX(opl_io_port),
-
-    //!
-    // Controls whether libsamplerate support is used for performing
-    // sample rate conversions of sound effects.  Support for this
-    // must be compiled into the program.
-    //
-    // If zero, libsamplerate support is disabled.  If non-zero,
-    // libsamplerate is enabled. Increasing values roughly correspond
-    // to higher quality conversion; the higher the quality, the
-    // slower the conversion process.  Linear conversion = 1;
-    // Zero order hold = 2; Fast Sinc filter = 3; Medium quality
-    // Sinc filter = 4; High quality Sinc filter = 5.
-    //
-
-    CONFIG_VARIABLE_INT(use_libsamplerate),
-
-    //!
-    // Scaling factor used by libsamplerate. This is used when converting
-    // sounds internally back into integer form; normally it should not
-    // be necessary to change it from the default value. The only time
-    // it might be needed is if a PWAD file is loaded that contains very
-    // loud sounds, in which case the conversion may cause sound clipping
-    // and the scale factor should be reduced. The lower the value, the
-    // quieter the sound effects become, so it should be set as high as is
-    // possible without clipping occurring.
-
-    CONFIG_VARIABLE_FLOAT(libsamplerate_scale),
 
     //!
     // Full path to a directory in which WAD files and dehacked patches
@@ -1402,12 +1368,6 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_KEY(key_menu_decscreen),
 
     //!
-    // Keyboard shortcut to save a screenshot.
-    //
-
-    CONFIG_VARIABLE_KEY(key_menu_screenshot),
-
-    //!
     // Key to toggle the map view.
     //
 
@@ -1788,11 +1748,7 @@ static default_t *SearchCollection(default_collection_t *collection, const char 
 //  * KEY_PAUSE is wrong - it's in the KEY_NUMLOCK spot. This shouldn't
 //    matter in terms of Vanilla compatibility because neither of
 //    those were valid for key bindings.
-//  * There is no proper scan code for PrintScreen (on DOS machines it
-//    sends an interrupt). So I added a fake scan code of 126 for it.
-//    The presence of this is important so we can bind PrintScreen as
-//    a screenshot key.
-static const int scantokey[128] =
+static const int scantokey[127] =
 {
     0  ,    27,     '1',    '2',    '3',    '4',    '5',    '6',
     '7',    '8',    '9',    '0',    '-',    '=',    KEY_BACKSPACE, 9,
@@ -1809,7 +1765,7 @@ static const int scantokey[128] =
     0,      0,      0,      0,      0,      0,      0,      0,
     0,      0,      0,      0,      0,      0,      0,      0,
     0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      KEY_PRTSCR, 0
+    0,      0,      0,      0,      0,      0,      0
 };
 
 

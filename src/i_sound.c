@@ -478,8 +478,6 @@ boolean I_MusicIsPlaying(void)
 void I_BindSoundVariables(void)
 {
     extern char *snd_dmxoption;
-    extern int use_libsamplerate;
-    extern float libsamplerate_scale;
 
     M_BindIntVariable("snd_musicdevice",         &snd_musicdevice);
     M_BindIntVariable("snd_sfxdevice",           &snd_sfxdevice);
@@ -497,8 +495,5 @@ void I_BindSoundVariables(void)
 
     M_BindStringVariable("music_pack_path",      &music_pack_path);
     M_BindStringVariable("timidity_cfg_path",    &timidity_cfg_path);
-
-    M_BindIntVariable("use_libsamplerate",       &use_libsamplerate);
-    M_BindFloatVariable("libsamplerate_scale",   &libsamplerate_scale);
 }
 

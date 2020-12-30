@@ -39,9 +39,6 @@
 #include "z_zone.h"
 
 #include "config.h"
-#ifdef HAVE_LIBPNG
-#include <png.h>
-#endif
 
 // TODO: There are separate RANGECHECK defines for different games, but this
 // is common code. Fix this.
@@ -59,43 +56,43 @@ byte *xlatab = NULL;
 
 static pixel_t *dest_screen = NULL;
 
-int dirtybox[4]; 
+int dirtybox[4];
 
 // haleyjd 08/28/10: clipping callback function for patches.
 // This is needed for Chocolate Strife, which clips patches to the screen.
 static vpatchclipfunc_t patchclip_callback = NULL;
 
 //
-// V_MarkRect 
-// 
-void V_MarkRect(int x, int y, int width, int height) 
-{ 
-    // If we are temporarily using an alternate screen, do not 
+// V_MarkRect
+//
+void V_MarkRect(int x, int y, int width, int height)
+{
+    // If we are temporarily using an alternate screen, do not
     // affect the update box.
 
     if (dest_screen == I_VideoBuffer)
     {
-        M_AddToBox (dirtybox, x, y); 
-        M_AddToBox (dirtybox, x + width-1, y + height-1); 
+        M_AddToBox (dirtybox, x, y);
+        M_AddToBox (dirtybox, x + width-1, y + height-1);
     }
-} 
- 
+}
+
 
 //
-// V_CopyRect 
-// 
+// V_CopyRect
+//
 void V_CopyRect(int srcx, int srcy, pixel_t *source,
                 int width, int height,
                 int destx, int desty)
-{ 
+{
     pixel_t *src;
     pixel_t *dest;
- 
-#ifdef RANGECHECK 
+
+#ifdef RANGECHECK
     if (srcx < 0
      || srcx + width > SCREENWIDTH
      || srcy < 0
-     || srcy + height > SCREENHEIGHT 
+     || srcy + height > SCREENHEIGHT
      || destx < 0
      || destx + width > SCREENWIDTH
      || desty < 0
@@ -103,26 +100,26 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source,
     {
         I_Error ("Bad V_CopyRect");
     }
-#endif 
+#endif
 
-    V_MarkRect(destx, desty, width, height); 
- 
-    src = source + SCREENWIDTH * srcy + srcx; 
-    dest = dest_screen + SCREENWIDTH * desty + destx; 
+    V_MarkRect(destx, desty, width, height);
 
-    for ( ; height>0 ; height--) 
-    { 
+    src = source + SCREENWIDTH * srcy + srcx;
+    dest = dest_screen + SCREENWIDTH * desty + destx;
+
+    for ( ; height>0 ; height--)
+    {
         memcpy(dest, src, width * sizeof(*dest));
-        src += SCREENWIDTH; 
-        dest += SCREENWIDTH; 
-    } 
-} 
- 
+        src += SCREENWIDTH;
+        dest += SCREENWIDTH;
+    }
+}
+
 //
 // V_SetPatchClipCallback
 //
 // haleyjd 08/28/10: Added for Strife support.
-// By calling this function, you can setup runtime error checking for patch 
+// By calling this function, you can setup runtime error checking for patch
 // clipping. Strife never caused errors by drawing patches partway off-screen.
 // Some versions of vanilla DOOM also behaved differently than the default
 // implementation, so this could possibly be extended to those as well for
@@ -135,11 +132,11 @@ void V_SetPatchClipCallback(vpatchclipfunc_t func)
 
 //
 // V_DrawPatch
-// Masks a column based masked pic to the screen. 
+// Masks a column based masked pic to the screen.
 //
 
 void V_DrawPatch(int x, int y, patch_t *patch)
-{ 
+{
     int count;
     int col;
     column_t *column;
@@ -205,15 +202,15 @@ void V_DrawPatch(int x, int y, patch_t *patch)
 void V_DrawPatchFlipped(int x, int y, patch_t *patch)
 {
     int count;
-    int col; 
-    column_t *column; 
+    int col;
+    column_t *column;
     pixel_t *desttop;
     pixel_t *dest;
-    byte *source; 
-    int w; 
- 
-    y -= SHORT(patch->topoffset); 
-    x -= SHORT(patch->leftoffset); 
+    byte *source;
+    int w;
+
+    y -= SHORT(patch->topoffset);
+    x -= SHORT(patch->leftoffset);
 
     // haleyjd 08/28/10: Strife needs silent error checking here.
     if(patchclip_callback)
@@ -222,7 +219,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch)
             return;
     }
 
-#ifdef RANGECHECK 
+#ifdef RANGECHECK
     if (x < 0
      || x + SHORT(patch->width) > SCREENWIDTH
      || y < 0
@@ -264,13 +261,13 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch)
 
 //
 // V_DrawPatchDirect
-// Draws directly to the screen on the pc. 
+// Draws directly to the screen on the pc.
 //
 
 void V_DrawPatchDirect(int x, int y, patch_t *patch)
 {
-    V_DrawPatch(x, y, patch); 
-} 
+    V_DrawPatch(x, y, patch);
+}
 
 //
 // V_DrawTLPatch
@@ -290,7 +287,7 @@ void V_DrawTLPatch(int x, int y, patch_t * patch)
     x -= SHORT(patch->leftoffset);
 
     if (x < 0
-     || x + SHORT(patch->width) > SCREENWIDTH 
+     || x + SHORT(patch->width) > SCREENWIDTH
      || y < 0
      || y + SHORT(patch->height) > SCREENHEIGHT)
     {
@@ -507,10 +504,10 @@ void V_LoadXlaTable(void)
 //
 
 void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
-{ 
+{
     pixel_t *dest;
- 
-#ifdef RANGECHECK 
+
+#ifdef RANGECHECK
     if (x < 0
      || x + width >SCREENWIDTH
      || y < 0
@@ -518,19 +515,19 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
     {
 	I_Error ("Bad V_DrawBlock");
     }
-#endif 
- 
-    V_MarkRect (x, y, width, height); 
- 
-    dest = dest_screen + y * SCREENWIDTH + x; 
+#endif
 
-    while (height--) 
-    { 
+    V_MarkRect (x, y, width, height);
+
+    dest = dest_screen + y * SCREENWIDTH + x;
+
+    while (height--)
+    {
 	memcpy (dest, src, width * sizeof(*dest));
-	src += width; 
-	dest += SCREENWIDTH; 
-    } 
-} 
+	src += width;
+	dest += SCREENWIDTH;
+    }
+}
 
 void V_DrawFilledBox(int x, int y, int w, int h, int c)
 {
@@ -591,7 +588,7 @@ void V_DrawBox(int x, int y, int w, int h, int c)
 // Draw a "raw" screen (lump containing raw data to blit directly
 // to the screen)
 //
- 
+
 void V_DrawRawScreen(pixel_t *raw)
 {
     memcpy(dest_screen, raw, SCREENWIDTH * SCREENHEIGHT * sizeof(*dest_screen));
@@ -599,9 +596,9 @@ void V_DrawRawScreen(pixel_t *raw)
 
 //
 // V_Init
-// 
-void V_Init (void) 
-{ 
+//
+void V_Init (void)
+{
     // no-op!
     // There used to be separate screens that could be drawn to; these are
     // now handled in the upper layers.
@@ -636,17 +633,17 @@ typedef PACKED_STRUCT (
     unsigned short	ymin;
     unsigned short	xmax;
     unsigned short	ymax;
-    
+
     unsigned short	hres;
     unsigned short	vres;
 
     unsigned char	palette[48];
-    
+
     char		reserved;
     char		color_planes;
     unsigned short	bytes_per_line;
     unsigned short	palette_type;
-    
+
     char		filler[58];
     unsigned char	data;		// unbounded
 }) pcx_t;
@@ -664,7 +661,7 @@ void WritePCXfile(char *filename, pixel_t *data,
     int		length;
     pcx_t*	pcx;
     byte*	pack;
-	
+
     pcx = Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
 
     pcx->manufacturer = 0x0a;		// PCX id
@@ -686,7 +683,7 @@ void WritePCXfile(char *filename, pixel_t *data,
 
     // pack the image
     pack = &pcx->data;
-	
+
     for (i=0 ; i<width*height ; i++)
     {
 	if ( (*data & 0xc0) != 0xc0)
@@ -697,200 +694,17 @@ void WritePCXfile(char *filename, pixel_t *data,
 	    *pack++ = *data++;
 	}
     }
-    
+
     // write the palette
     *pack++ = 0x0c;	// palette ID byte
     for (i=0 ; i<768 ; i++)
 	*pack++ = *palette++;
-    
+
     // write output file
     length = pack - (byte *)pcx;
     M_WriteFile (filename, pcx, length);
 
     Z_Free (pcx);
-}
-
-#ifdef HAVE_LIBPNG
-//
-// WritePNGfile
-//
-
-static void error_fn(png_structp p, png_const_charp s)
-{
-    printf("libpng error: %s\n", s);
-}
-
-static void warning_fn(png_structp p, png_const_charp s)
-{
-    printf("libpng warning: %s\n", s);
-}
-
-void WritePNGfile(char *filename, pixel_t *data,
-                  int width, int height,
-                  byte *palette)
-{
-    png_structp ppng;
-    png_infop pinfo;
-    png_colorp pcolor;
-    FILE *handle;
-    int i, j;
-    int w_factor, h_factor;
-    byte *rowbuf;
-
-    if (aspect_ratio_correct == 1)
-    {
-        // scale up to accommodate aspect ratio correction
-        w_factor = 5;
-        h_factor = 6;
-
-        width *= w_factor;
-        height *= h_factor;
-    }
-    else
-    {
-        w_factor = 1;
-        h_factor = 1;
-    }
-
-    handle = fopen(filename, "wb");
-    if (!handle)
-    {
-        return;
-    }
-
-    ppng = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL,
-                                   error_fn, warning_fn);
-    if (!ppng)
-    {
-        fclose(handle);
-        return;
-    }
-
-    pinfo = png_create_info_struct(ppng);
-    if (!pinfo)
-    {
-        fclose(handle);
-        png_destroy_write_struct(&ppng, NULL);
-        return;
-    }
-
-    png_init_io(ppng, handle);
-
-    png_set_IHDR(ppng, pinfo, width, height,
-                 8, PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE,
-                 PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-
-    pcolor = malloc(sizeof(*pcolor) * 256);
-    if (!pcolor)
-    {
-        fclose(handle);
-        png_destroy_write_struct(&ppng, &pinfo);
-        return;
-    }
-
-    for (i = 0; i < 256; i++)
-    {
-        pcolor[i].red   = *(palette + 3 * i);
-        pcolor[i].green = *(palette + 3 * i + 1);
-        pcolor[i].blue  = *(palette + 3 * i + 2);
-    }
-
-    png_set_PLTE(ppng, pinfo, pcolor, 256);
-    free(pcolor);
-
-    png_write_info(ppng, pinfo);
-
-    rowbuf = malloc(width);
-
-    if (rowbuf)
-    {
-        for (i = 0; i < SCREENHEIGHT; i++)
-        {
-            // expand the row 5x
-            for (j = 0; j < SCREENWIDTH; j++)
-            {
-                memset(rowbuf + j * w_factor, *(data + i*SCREENWIDTH + j), w_factor);
-            }
-
-            // write the row 6 times
-            for (j = 0; j < h_factor; j++)
-            {
-                png_write_row(ppng, rowbuf);
-            }
-        }
-
-        free(rowbuf);
-    }
-
-    png_write_end(ppng, pinfo);
-    png_destroy_write_struct(&ppng, &pinfo);
-    fclose(handle);
-}
-#endif
-
-//
-// V_ScreenShot
-//
-
-void V_ScreenShot(const char *format)
-{
-    int i;
-    char lbmname[16]; // haleyjd 20110213: BUG FIX - 12 is too small!
-    const char *ext;
-    
-    // find a file name to save it to
-
-#ifdef HAVE_LIBPNG
-    extern int png_screenshots;
-    if (png_screenshots)
-    {
-        ext = "png";
-    }
-    else
-#endif
-    {
-        ext = "pcx";
-    }
-
-    for (i=0; i<=99; i++)
-    {
-        M_snprintf(lbmname, sizeof(lbmname), format, i, ext);
-
-        if (!M_FileExists(lbmname))
-        {
-            break;      // file doesn't exist
-        }
-    }
-
-    if (i == 100)
-    {
-#ifdef HAVE_LIBPNG
-        if (png_screenshots)
-        {
-            I_Error ("V_ScreenShot: Couldn't create a PNG");
-        }
-        else
-#endif
-        {
-            I_Error ("V_ScreenShot: Couldn't create a PCX");
-        }
-    }
-
-#ifdef HAVE_LIBPNG
-    if (png_screenshots)
-    {
-    WritePNGfile(lbmname, I_VideoBuffer,
-                 SCREENWIDTH, SCREENHEIGHT,
-                 W_CacheLumpName (DEH_String("PLAYPAL"), PU_CACHE));
-    }
-    else
-#endif
-    {
-    // save the pcx file
-    WritePCXfile(lbmname, I_VideoBuffer,
-                 SCREENWIDTH, SCREENHEIGHT,
-                 W_CacheLumpName (DEH_String("PLAYPAL"), PU_CACHE));
-    }
 }
 
 #define MOUSE_SPEED_BOX_WIDTH  120

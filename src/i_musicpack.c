@@ -30,7 +30,6 @@
 #include "config.h"
 #include "doomtype.h"
 #include "memio.h"
-#include "mus2mid.h"
 
 #include "deh_str.h"
 #include "i_sound.h"
