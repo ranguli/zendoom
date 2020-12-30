@@ -1,16 +1,10 @@
 
-SUBDIRS = doom setup
+SUBDIRS = doom
 
 execgamesdir = ${bindir}
 
 execgames_PROGRAMS = @PROGRAM_PREFIX@doom     \
                      @PROGRAM_PREFIX@server
-
-noinst_PROGRAMS = @PROGRAM_PREFIX@setup
-
-SETUP_BINARIES = @PROGRAM_PREFIX@doom-setup$(EXEEXT)
-
-execgames_SCRIPTS = $(SETUP_BINARIES)
 
 AM_CFLAGS = -I$(top_srcdir)/textscreen            \
             -I$(top_srcdir)/opl                   \
@@ -137,39 +131,10 @@ endif
 
 @PROGRAM_PREFIX@doom_LDADD = doom/libdoom.a $(EXTRA_LIBS)
 
-$(SETUP_BINARIES): @PROGRAM_PREFIX@setup$(EXEEXT)
-	cp @PROGRAM_PREFIX@setup$(EXEEXT) $@
-
 # Make "make" aware of convenience libraries in subdirectories
 
 doom/libdoom.a:
 	$(MAKE) -C doom
-
-# Source files needed for chocolate-setup:
-
-SETUP_FILES=                               \
-deh_str.c            deh_str.h             \
-d_mode.c             d_mode.h              \
-d_iwad.c             d_iwad.h              \
-i_timer.c            i_timer.h             \
-m_config.c           m_config.h            \
-m_controls.c         m_controls.h          \
-net_io.c             net_io.h              \
-net_packet.c         net_packet.h          \
-net_petname.c        net_petname.h         \
-net_sdl.c            net_sdl.h             \
-net_query.c          net_query.h           \
-net_structrw.c       net_structrw.h        \
-z_native.c           z_zone.h
-
-if HAVE_WINDRES
-@PROGRAM_PREFIX@setup_SOURCES=$(SETUP_FILES) $(COMMON_SOURCE_FILES) setup-res.rc
-else
-@PROGRAM_PREFIX@setup_SOURCES=$(SETUP_FILES) $(COMMON_SOURCE_FILES)
-endif
-@PROGRAM_PREFIX@setup_LDADD = setup/libsetup.a                             \
-                        $(top_builddir)/textscreen/libtextscreen.a   \
-                        @LDFLAGS@ @SDL_LIBS@ @SDLMIXER_LIBS@ @SDLNET_LIBS@
 
 CLEANFILES = $(execgames_SCRIPTS) $(app_DATA)
 

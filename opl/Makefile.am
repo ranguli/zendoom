@@ -1,8 +1,6 @@
 
 AM_CFLAGS=@SDLMIXER_CFLAGS@
 
-EXTRA_DIST=CMakeLists.txt
-
 SUBDIRS = . examples
 
 noinst_LIBRARIES=libopl.a
@@ -15,7 +13,6 @@ libopl_a_SOURCES =                                \
         opl_queue.c         opl_queue.h           \
         opl_sdl.c                                 \
         opl_timer.c         opl_timer.h           \
-        opl_win32.c                               \
         ioperm_sys.c        ioperm_sys.h          \
         opl3.c              opl3.h
 

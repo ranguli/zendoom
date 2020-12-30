@@ -18,7 +18,7 @@ orig_CFLAGS="$CFLAGS"
 AM_PROG_AR
 AC_PROG_CC
 AC_PROG_RANLIB
-AC_CHECK_PROG(HAVE_PYTHON, python3, true, false)
+#AC_CHECK_PROG(HAVE_PYTHON, python3, true, false)
 
 OPT_LEVEL=2
 
@@ -155,9 +155,6 @@ opl/Makefile
 opl/examples/Makefile
 src/Makefile
 src/doom/Makefile
-src/resource.rc
-src/setup-res.rc
-src/setup/Makefile
 textscreen/Makefile
 textscreen/examples/Makefile
 textscreen/fonts/Makefile
