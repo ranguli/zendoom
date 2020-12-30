@@ -84,379 +84,6 @@ static void AddIWADDir(char *dir)
     }
 }
 
-// This is Windows-specific code that automatically finds the location
-// of installed IWAD files.  The registry is inspected to find special
-// keys installed by the Windows installers for various CD versions
-// of Doom.  From these keys we can deduce where to find an IWAD.
-
-#if defined(_WIN32) && !defined(_WIN32_WCE)
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-typedef struct 
-{
-    HKEY root;
-    char *path;
-    char *value;
-} registry_value_t;
-
-#define UNINSTALLER_STRING "\\uninstl.exe /S "
-
-// Keys installed by the various CD editions.  These are actually the 
-// commands to invoke the uninstaller and look like this:
-//
-// C:\Program Files\Path\uninstl.exe /S C:\Program Files\Path
-//
-// With some munging we can find where Doom was installed.
-
-// [AlexMax] From the persepctive of a 64-bit executable, 32-bit registry
-// keys are located in a different spot.
-#if _WIN64
-#define SOFTWARE_KEY "Software\\Wow6432Node"
-#else
-#define SOFTWARE_KEY "Software"
-#endif
-
-static registry_value_t uninstall_values[] =
-{
-    // Ultimate Doom, CD version (Depths of Doom trilogy)
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-            "Uninstall\\Ultimate Doom for Windows 95",
-        "UninstallString",
-    },
-
-    // Doom II, CD version (Depths of Doom trilogy)
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-            "Uninstall\\Doom II for Windows 95",
-        "UninstallString",
-    },
-
-    // Final Doom
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-            "Uninstall\\Final Doom for Windows 95",
-        "UninstallString",
-    },
-
-    // Shareware version
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-            "Uninstall\\Doom Shareware for Windows 95",
-        "UninstallString",
-    },
-};
-
-// Values installed by the GOG.com and Collector's Edition versions
-
-static registry_value_t root_path_keys[] =
-{
-    // Doom Collector's Edition
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Activision\\DOOM Collector's Edition\\v1.0",
-        "INSTALLPATH",
-    },
-
-    // Doom II
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1435848814",
-        "PATH",
-    },
-
-    // Doom 3: BFG Edition
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1135892318",
-        "PATH",
-    },
-
-    // Final Doom
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1435848742",
-        "PATH",
-    },
-
-    // Ultimate Doom
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1435827232",
-        "PATH",
-    },
-
-    // Strife: Veteran Edition
-
-    {
-        HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1432899949",
-        "PATH",
-    },
-};
-
-// Subdirectories of the above install path, where IWADs are installed.
-
-static char *root_path_subdirs[] =
-{
-    ".",
-    "Doom2",
-    "Final Doom",
-    "Ultimate Doom",
-    "Plutonia",
-    "TNT",
-    "base\\wads",
-};
-
-// Location where Steam is installed
-
-static registry_value_t steam_install_location =
-{
-    HKEY_LOCAL_MACHINE,
-    SOFTWARE_KEY "\\Valve\\Steam",
-    "InstallPath",
-};
-
-// Subdirs of the steam install directory where IWADs are found
-
-static char *steam_install_subdirs[] =
-{
-    "steamapps\\common\\doom 2\\base",
-    "steamapps\\common\\final doom\\base",
-    "steamapps\\common\\ultimate doom\\base",
-    "steamapps\\common\\heretic shadow of the serpent riders\\base",
-    "steamapps\\common\\hexen\\base",
-    "steamapps\\common\\hexen deathkings of the dark citadel\\base",
-
-    // From Doom 3: BFG Edition:
-
-    "steamapps\\common\\DOOM 3 BFG Edition\\base\\wads",
-
-    // From Strife: Veteran Edition:
-
-    "steamapps\\common\\Strife",
-};
-
-#define STEAM_BFG_GUS_PATCHES \
-    "steamapps\\common\\DOOM 3 BFG Edition\\base\\classicmusic\\instruments"
-
-static char *GetRegistryString(registry_value_t *reg_val)
-{
-    HKEY key;
-    DWORD len;
-    DWORD valtype;
-    char *result;
-
-    // Open the key (directory where the value is stored)
-
-    if (RegOpenKeyEx(reg_val->root, reg_val->path,
-                     0, KEY_READ, &key) != ERROR_SUCCESS)
-    {
-        return NULL;
-    }
-
-    result = NULL;
-
-    // Find the type and length of the string, and only accept strings.
-
-    if (RegQueryValueEx(key, reg_val->value,
-                        NULL, &valtype, NULL, &len) == ERROR_SUCCESS
-     && valtype == REG_SZ)
-    {
-        // Allocate a buffer for the value and read the value
-
-        result = malloc(len + 1);
-
-        if (RegQueryValueEx(key, reg_val->value, NULL, &valtype,
-                            (unsigned char *) result, &len) != ERROR_SUCCESS)
-        {
-            free(result);
-            result = NULL;
-        }
-        else
-        {
-            // Ensure the value is null-terminated
-            result[len] = '\0';
-        }
-    }
-
-    // Close the key
-
-    RegCloseKey(key);
-
-    return result;
-}
-
-// Check for the uninstall strings from the CD versions
-
-static void CheckUninstallStrings(void)
-{
-    unsigned int i;
-
-    for (i=0; i<arrlen(uninstall_values); ++i)
-    {
-        char *val;
-        char *path;
-        char *unstr;
-
-        val = GetRegistryString(&uninstall_values[i]);
-
-        if (val == NULL)
-        {
-            continue;
-        }
-
-        unstr = strstr(val, UNINSTALLER_STRING);
-
-        if (unstr == NULL)
-        {
-            free(val);
-        }
-        else
-        {
-            path = unstr + strlen(UNINSTALLER_STRING);
-
-            AddIWADDir(path);
-        }
-    }
-}
-
-// Check for GOG.com and Doom: Collector's Edition
-
-static void CheckInstallRootPaths(void)
-{
-    unsigned int i;
-
-    for (i=0; i<arrlen(root_path_keys); ++i)
-    {
-        char *install_path;
-        char *subpath;
-        unsigned int j;
-
-        install_path = GetRegistryString(&root_path_keys[i]);
-
-        if (install_path == NULL)
-        {
-            continue;
-        }
-
-        for (j=0; j<arrlen(root_path_subdirs); ++j)
-        {
-            subpath = M_StringJoin(install_path, DIR_SEPARATOR_S,
-                                   root_path_subdirs[j], NULL);
-            AddIWADDir(subpath);
-        }
-
-        free(install_path);
-    }
-}
-
-
-// Check for Doom downloaded via Steam
-
-static void CheckSteamEdition(void)
-{
-    char *install_path;
-    char *subpath;
-    size_t i;
-
-    install_path = GetRegistryString(&steam_install_location);
-
-    if (install_path == NULL)
-    {
-        return;
-    }
-
-    for (i=0; i<arrlen(steam_install_subdirs); ++i)
-    {
-        subpath = M_StringJoin(install_path, DIR_SEPARATOR_S,
-                               steam_install_subdirs[i], NULL);
-
-        AddIWADDir(subpath);
-    }
-
-    free(install_path);
-}
-
-// The BFG edition ships with a full set of GUS patches. If we find them,
-// we can autoconfigure to use them.
-
-static void CheckSteamGUSPatches(void)
-{
-    const char *current_path;
-    char *install_path;
-    char *test_patch_path, *patch_path;
-
-    // Already configured? Don't stomp on the user's choices.
-    current_path = M_GetStringVariable("gus_patch_path");
-    if (current_path != NULL && strlen(current_path) > 0)
-    {
-        return;
-    }
-
-    install_path = GetRegistryString(&steam_install_location);
-
-    if (install_path == NULL)
-    {
-        return;
-    }
-
-    patch_path = M_StringJoin(install_path, "\\", STEAM_BFG_GUS_PATCHES,
-                              NULL);
-    test_patch_path = M_StringJoin(patch_path, "\\ACBASS.PAT", NULL);
-
-    // Does acbass.pat exist? If so, then set gus_patch_path.
-    if (M_FileExists(test_patch_path))
-    {
-        M_SetVariable("gus_patch_path", patch_path);
-    }
-
-    free(test_patch_path);
-    free(patch_path);
-    free(install_path);
-}
-
-// Default install directories for DOS Doom
-
-static void CheckDOSDefaults(void)
-{
-    // These are the default install directories used by the deice
-    // installer program:
-
-    AddIWADDir("\\doom2");              // Doom II
-    AddIWADDir("\\plutonia");           // Final Doom
-    AddIWADDir("\\tnt");
-    AddIWADDir("\\doom_se");            // Ultimate Doom
-    AddIWADDir("\\doom");               // Shareware / Registered Doom
-    AddIWADDir("\\dooms");              // Shareware versions
-    AddIWADDir("\\doomsw");
-
-    AddIWADDir("\\heretic");            // Heretic
-    AddIWADDir("\\hrtic_se");           // Heretic Shareware from Quake disc
-
-    AddIWADDir("\\hexen");              // Hexen
-    AddIWADDir("\\hexendk");            // Hexen Deathkings of the Dark Citadel
-
-    AddIWADDir("\\strife");             // Strife
-}
-
-#endif
-
 // Returns true if the specified path is a path to a file
 // of the specified name.
 
@@ -472,7 +99,7 @@ static boolean DirIsFile(const char *path, const char *filename)
 
 static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname)
 {
-    char *filename; 
+    char *filename;
     char *probe;
 
     // As a special case, the "directory" may refer directly to an
@@ -515,7 +142,7 @@ static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mi
     char *filename;
     size_t i;
 
-    for (i=0; i<arrlen(iwads); ++i) 
+    for (i=0; i<arrlen(iwads); ++i)
     {
         if (((1 << iwads[i].mission) & mask) == 0)
         {
@@ -602,100 +229,6 @@ static void AddIWADPath(const char *path, const char *suffix)
     free(dup_path);
 }
 
-#ifndef _WIN32
-// Add standard directories where IWADs are located on Unix systems.
-// To respect the freedesktop.org specification we support overriding
-// using standard environment variables. See the XDG Base Directory
-// Specification:
-// <http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html>
-static void AddXdgDirs(void)
-{
-    char *env, *tmp_env;
-
-    // Quote:
-    // > $XDG_DATA_HOME defines the base directory relative to which
-    // > user specific data files should be stored. If $XDG_DATA_HOME
-    // > is either not set or empty, a default equal to
-    // > $HOME/.local/share should be used.
-    env = getenv("XDG_DATA_HOME");
-    tmp_env = NULL;
-
-    if (env == NULL)
-    {
-        const char *homedir = getenv("HOME");
-        if (homedir == NULL)
-        {
-            homedir = "/";
-        }
-
-        tmp_env = M_StringJoin(homedir, "/.local/share", NULL);
-        env = tmp_env;
-    }
-
-    // We support $XDG_DATA_HOME/games/doom (which will usually be
-    // ~/.local/share/games/doom) as a user-writeable extension to
-    // the usual /usr/share/games/doom location.
-    AddIWADDir(M_StringJoin(env, "/games/doom", NULL));
-    free(tmp_env);
-
-    // Quote:
-    // > $XDG_DATA_DIRS defines the preference-ordered set of base
-    // > directories to search for data files in addition to the
-    // > $XDG_DATA_HOME base directory. The directories in $XDG_DATA_DIRS
-    // > should be seperated with a colon ':'.
-    // >
-    // > If $XDG_DATA_DIRS is either not set or empty, a value equal to
-    // > /usr/local/share/:/usr/share/ should be used.
-    env = getenv("XDG_DATA_DIRS");
-    if (env == NULL)
-    {
-        // (Trailing / omitted from paths, as it is added below)
-        env = "/usr/local/share:/usr/share";
-    }
-
-    // The "standard" location for IWADs on Unix that is supported by most
-    // source ports is /usr/share/games/doom - we support this through the
-    // XDG_DATA_DIRS mechanism, through which it can be overridden.
-    AddIWADPath(env, "/games/doom");
-    AddIWADPath(env, "/doom");
-
-    // The convention set by RBDOOM-3-BFG is to install Doom 3: BFG
-    // Edition into this directory, under which includes the Doom
-    // Classic WADs.
-    AddIWADPath(env, "/games/doom3bfg/base/wads");
-}
-
-#ifndef __MACOSX__
-// Steam on Linux allows installing some select Windows games,
-// including the classic Doom series (running DOSBox via Wine).  We
-// could parse *.vdf files to more accurately detect installation
-// locations, but the defaults are likely to be good enough for just
-// about everyone.
-static void AddSteamDirs(void)
-{
-    char *homedir, *steampath;
-
-    homedir = getenv("HOME");
-    if (homedir == NULL)
-    {
-        homedir = "/";
-    }
-    steampath = M_StringJoin(homedir, "/.steam/root/steamapps/common", NULL);
-
-    AddIWADPath(steampath, "/Doom 2/base");
-    AddIWADPath(steampath, "/Master Levels of Doom/doom2");
-    AddIWADPath(steampath, "/Ultimate Doom/base");
-    AddIWADPath(steampath, "/Final Doom/base");
-    AddIWADPath(steampath, "/DOOM 3 BFG Edition/base/wads");
-    AddIWADPath(steampath, "/Heretic Shadow of the Serpent Riders/base");
-    AddIWADPath(steampath, "/Hexen/base");
-    AddIWADPath(steampath, "/Hexen Deathkings of the Dark Citadel/base");
-    AddIWADPath(steampath, "/Strife");
-    free(steampath);
-}
-#endif // __MACOSX__
-#endif // !_WIN32
-
 //
 // Build a list of IWAD files
 //
@@ -730,26 +263,6 @@ static void BuildIWADDirList(void)
         AddIWADPath(env, "");
     }
 
-#ifdef _WIN32
-
-    // Search the registry and find where IWADs have been installed.
-
-    CheckUninstallStrings();
-    CheckInstallRootPaths();
-    CheckSteamEdition();
-    CheckDOSDefaults();
-
-    // Check for GUS patches installed with the BFG edition!
-
-    CheckSteamGUSPatches();
-
-#else
-    AddXdgDirs();
-#ifndef __MACOSX__
-    AddSteamDirs();
-#endif
-#endif
-
     // Don't run this function again.
 
     iwad_dirs_built = true;
@@ -757,14 +270,14 @@ static void BuildIWADDirList(void)
 
 //
 // Searches WAD search paths for an WAD with a specific filename.
-// 
+//
 
 char *D_FindWADByName(const char *name)
 {
     char *path;
     char *probe;
     int i;
-    
+
     // Absolute path?
 
     probe = M_FileCaseExists(name);
@@ -867,7 +380,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
         {
             I_Error("IWAD file '%s' not found!", iwadfile);
         }
-        
+
         *mission = IdentifyIWADByName(result, mask);
     }
     else
@@ -877,7 +390,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
         result = NULL;
 
         BuildIWADDirList();
-    
+
         for (i=0; result == NULL && i<num_iwad_dirs; ++i)
         {
             result = SearchDirectoryForIWAD(iwad_dirs[i], mask, mission);

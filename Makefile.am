@@ -1,1 +1,0 @@
-SUBDIRS=textscreen opl src

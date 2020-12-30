@@ -24,17 +24,8 @@
 #include <ctype.h>
 #include <errno.h>
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <io.h>
-#ifdef _MSC_VER
-#include <direct.h>
-#endif
-#else
 #include <sys/stat.h>
 #include <sys/types.h>
-#endif
 
 #include "doomtype.h"
 
@@ -54,11 +45,7 @@
 
 void M_MakeDirectory(const char *path)
 {
-#ifdef _WIN32
-    mkdir(path);
-#else
     mkdir(path, 0755);
-#endif
 }
 
 // Check if a file exists
@@ -76,7 +63,7 @@ boolean M_FileExists(const char *filename)
     }
     else
     {
-        // If we can't open because the file is a directory, the 
+        // If we can't open because the file is a directory, the
         // "file" exists at least!
 
         return errno == EISDIR;
@@ -157,13 +144,13 @@ char *M_FileCaseExists(const char *path)
 //
 
 long M_FileLength(FILE *handle)
-{ 
+{
     long savedpos;
     long length;
 
     // save the current position in the file
     savedpos = ftell(handle);
-    
+
     // jump to the end and find the length
     fseek(handle, 0, SEEK_END);
     length = ftell(handle);
@@ -182,7 +169,7 @@ boolean M_WriteFile(const char *name, const void *source, int length)
 {
     FILE *handle;
     int	count;
-	
+
     handle = fopen(name, "wb");
 
     if (handle == NULL)
@@ -190,10 +177,10 @@ boolean M_WriteFile(const char *name, const void *source, int length)
 
     count = fwrite(source, 1, length, handle);
     fclose(handle);
-	
+
     if (count < length)
 	return false;
-		
+
     return true;
 }
 
@@ -207,7 +194,7 @@ int M_ReadFile(const char *name, byte **buffer)
     FILE *handle;
     int	count, length;
     byte *buf;
-	
+
     handle = fopen(name, "rb");
     if (handle == NULL)
 	I_Error ("Couldn't read file %s", name);
@@ -216,14 +203,14 @@ int M_ReadFile(const char *name, byte **buffer)
     // reading the current position
 
     length = M_FileLength(handle);
-    
+
     buf = Z_Malloc (length + 1, PU_STATIC, NULL);
     count = fread(buf, 1, length, handle);
     fclose (handle);
-	
+
     if (count < length)
 	I_Error ("Couldn't read file %s", name);
-		
+
     buf[length] = '\0';
     *buffer = buf;
     return length;
@@ -238,22 +225,7 @@ char *M_TempFile(const char *s)
 {
     const char *tempdir;
 
-#ifdef _WIN32
-
-    // Check the TEMP environment variable to find the location.
-
-    tempdir = getenv("TEMP");
-
-    if (tempdir == NULL)
-    {
-        tempdir = ".";
-    }
-#else
-    // In Unix, just use /tmp.
-
     tempdir = "/tmp";
-#endif
-
     return M_StringJoin(tempdir, DIR_SEPARATOR_S, s, NULL);
 }
 
@@ -598,13 +570,6 @@ char *M_StringJoin(const char *s, ...)
     return result;
 }
 
-// On Windows, vsnprintf() is _vsnprintf().
-#ifdef _WIN32
-#if _MSC_VER < 1400 /* not needed for Visual Studio 2008 */
-#define vsnprintf _vsnprintf
-#endif
-#endif
-
 // Safe, portable vsnprintf().
 int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 {
@@ -641,25 +606,6 @@ int M_snprintf(char *buf, size_t buf_len, const char *s, ...)
     va_end(args);
     return result;
 }
-
-#ifdef _WIN32
-
-char *M_OEMToUTF8(const char *oem)
-{
-    unsigned int len = strlen(oem) + 1;
-    wchar_t *tmp;
-    char *result;
-
-    tmp = malloc(len * sizeof(wchar_t));
-    MultiByteToWideChar(CP_OEMCP, 0, oem, len, tmp, len);
-    result = malloc(len * 4);
-    WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, NULL, NULL);
-    free(tmp);
-
-    return result;
-}
-
-#endif
 
 //
 // M_NormalizeSlashes
