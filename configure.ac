@@ -35,50 +35,6 @@ PKG_CHECK_MODULES(SDL, [sdl2 >= 2.0.7])
 PKG_CHECK_MODULES(SDLMIXER, [SDL2_mixer >= 2.0.2])
 PKG_CHECK_MODULES(SDLNET, [SDL2_net >= 2.0.0])
 
-# Check for bash-completion.
-AC_ARG_ENABLE([bash-completion],
-AS_HELP_STRING([--disable-bash-completion], [Disable bash-completion])
-)
-AS_IF([test "x$enable_bash_completion" != xno], [
-    AS_IF([test "x$HAVE_PYTHON" = xfalse], [
-        AC_MSG_WARN([Building bash-completion requires Python, but Python not found])
-        enable_bash_completion=no
-    ])
-])
-
-# Check for doc.
-AC_ARG_ENABLE([doc],
-AS_HELP_STRING([--disable-doc], [Disable documentation])
-)
-AS_IF([test "x$enable_doc" != xno], [
-    AS_IF([test "x$HAVE_PYTHON" = xfalse], [
-        AC_MSG_WARN([Building documentation requires Python, but Python not found])
-        enable_doc=no
-    ])
-])
-
-# Check for fonts.
-AC_ARG_ENABLE([fonts],
-AS_HELP_STRING([--disable-fonts], [Disable fonts])
-)
-AS_IF([test "x$enable_fonts" != xno], [
-    AS_IF([test "x$HAVE_PYTHON" = xfalse], [
-        AC_MSG_WARN([Building fonts require Python, but Python not found])
-        enable_fonts=no
-    ])
-])
-
-# Check for icons.
-AC_ARG_ENABLE([icons],
-AS_HELP_STRING([--disable-icons], [Disable icons])
-)
-AS_IF([test "x$enable_icons" != xno], [
-    AS_IF([test "x$HAVE_PYTHON" = xfalse], [
-        AC_MSG_WARN([Building icons require Python, but Python not found])
-        enable_icons=no
-    ])
-])
-
 # Check for libsamplerate.
 AC_ARG_WITH([libsamplerate],
 AS_HELP_STRING([--without-libsamplerate],
@@ -160,8 +116,6 @@ dnl Automake v1.8.0 is required, please upgrade!
 AM_INIT_AUTOMAKE([1.8.0 foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
-WINDOWS_RC_VERSION=`echo $PACKAGE_VERSION | sed 's/-.*//; s/\./, /g; s/$/, 0/'`
-
 dnl Without a hyphen. This is used for the bash-completion scripts.
 PROGRAM_SPREFIX=$(echo $PACKAGE_SHORTNAME | tr A-Z a-z)
 
@@ -175,7 +129,6 @@ AC_SUBST(PROGRAM_SPREFIX)
 
 AM_CONFIG_HEADER(config.h:config.hin)
 
-AC_SUBST(WINDOWS_RC_VERSION)
 AC_SUBST(SDLMIXER_CFLAGS)
 AC_SUBST(SDLMIXER_LIBS)
 
@@ -201,22 +154,11 @@ Makefile
 midiproc/Makefile
 opl/Makefile
 opl/examples/Makefile
-pcsound/Makefile
-pkg/Makefile
-pkg/config.make
-pkg/osx/Info.plist
-rpm.spec
-data/Makefile
 src/Makefile
-src/Doom.metainfo.xml
-src/Doom.desktop
-src/Doom_Screensaver.desktop
 src/doom/Makefile
 src/resource.rc
 src/setup-res.rc
 src/setup/Makefile
-src/setup/Setup.desktop
-src/setup/setup-manifest.xml
 textscreen/Makefile
 textscreen/examples/Makefile
 textscreen/fonts/Makefile

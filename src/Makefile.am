@@ -69,7 +69,6 @@ i_joystick.c         i_joystick.h          \
 i_midipipe.c         i_midipipe.h          \
 i_musicpack.c                              \
 i_oplmusic.c                               \
-i_pcsound.c                                \
 i_sdlmusic.c                               \
 i_sdlsound.c                               \
 i_sound.c            i_sound.h             \
@@ -126,7 +125,6 @@ SOURCE_FILES_WITH_DEH = $(SOURCE_FILES) $(DEHACKED_SOURCE_FILES)
 
 EXTRA_LIBS =                                               \
                $(top_builddir)/textscreen/libtextscreen.a  \
-               $(top_builddir)/pcsound/libpcsound.a        \
                $(top_builddir)/opl/libopl.a                \
                @LDFLAGS@                                   \
                @SDL_LIBS@                                  \
