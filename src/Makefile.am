@@ -175,43 +175,12 @@ endif
                         $(top_builddir)/textscreen/libtextscreen.a   \
                         @LDFLAGS@ @SDL_LIBS@ @SDLMIXER_LIBS@ @SDLNET_LIBS@
 
-EXTRA_DIST =                        \
-        CMakeLists.txt              \
-        icon.c                      \
-        Doom_Screensaver.desktop.in \
-        manifest.xml
-
-metainfodir = $(prefix)/share/metainfo
-metainfo_DATA = @PACKAGE_RDNS@.Doom.metainfo.xml
-
-@PACKAGE_RDNS@.Doom.metainfo.xml : Doom.metainfo.xml
-	cp Doom.metainfo.xml $@
-
-appdir = $(prefix)/share/applications
-app_DATA = @PACKAGE_RDNS@.Doom.desktop
-
-@PACKAGE_RDNS@.Doom.desktop : Doom.desktop
-	cp Doom.desktop $@
-
-screensaverdir = $(prefix)/share/applications/screensavers
-screensaver_DATA = @PACKAGE_RDNS@.Doom_Screensaver.desktop
-
-@PACKAGE_RDNS@.Doom_Screensaver.desktop: Doom_Screensaver.desktop
-	cp Doom_Screensaver.desktop $@
-
-CLEANFILES = $(execgames_SCRIPTS) $(app_DATA) $(screensaver_DATA)
+CLEANFILES = $(execgames_SCRIPTS) $(app_DATA)
 
 .rc.o:
 	$(WINDRES) $< -o $@
 %.o : %.rc
 	$(WINDRES) $< -o $@
-
-if HAVE_ICONS
-
-icon.c : $(top_builddir)/data/doom.png
-	$(top_builddir)/data/convert-icon $(top_builddir)/data/doom.png $@
-
-endif
 
 midiread : midifile.c
 	$(CC) -DTEST $(CFLAGS) @LDFLAGS@ midifile.c -o $@

@@ -25,18 +25,4 @@ EXTRA_DIST=                                     \
     CMakeLists.txt                              \
     setup_icon.c
 
-appdir = $(prefix)/share/applications
-app_DATA = @PACKAGE_RDNS@.Setup.desktop
-
 CLEANFILES = $(app_DATA)
-
-@PACKAGE_RDNS@.Setup.desktop : Setup.desktop
-	cp Setup.desktop $@
-
-if HAVE_ICONS
-
-setup_icon.c : $(top_builddir)/data/setup.png
-	$(top_builddir)/data/convert-icon $(top_builddir)/data/setup.png $@
-
-endif
-
