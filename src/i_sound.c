@@ -42,10 +42,6 @@ int snd_cachesize = 64 * 1024 * 1024;
 
 int snd_maxslicetime_ms = 28;
 
-// External command to invoke to play back music.
-
-char *snd_musiccmd = "";
-
 // Whether to vary the pitch of sound effects
 // Each game will set the default differently
 
@@ -67,7 +63,6 @@ static music_module_t *active_music_module;
 
 // Sound modules
 
-extern void I_InitTimidityConfig(void);
 extern sound_module_t sound_sdl_module;
 extern music_module_t music_sdl_module;
 extern music_module_t music_pack_module;
@@ -75,7 +70,6 @@ extern music_module_t music_pack_module;
 // For native music module:
 
 extern char *music_pack_path;
-extern char *timidity_cfg_path;
 
 // DOS-specific options: These are unused but should be maintained
 // so that the config file can be shared between chocolate
@@ -225,17 +219,6 @@ void I_InitSound(boolean use_sfx_prefix)
 
     if (!nosound && !screensaver_mode)
     {
-        // This is kind of a hack. If native MIDI is enabled, set up
-        // the TIMIDITY_CFG environment variable here before SDL_mixer
-        // is opened.
-
-        if (!nomusic
-         && (snd_musicdevice == SNDDEVICE_GENMIDI
-          || snd_musicdevice == SNDDEVICE_GUS))
-        {
-            I_InitTimidityConfig();
-        }
-
         if (!nosfx)
         {
             InitSfxModule(use_sfx_prefix);
@@ -464,12 +447,10 @@ void I_BindSoundVariables(void)
     M_BindIntVariable("snd_sbirq",               &snd_sbirq);
     M_BindIntVariable("snd_sbdma",               &snd_sbdma);
     M_BindIntVariable("snd_maxslicetime_ms",     &snd_maxslicetime_ms);
-    M_BindStringVariable("snd_musiccmd",         &snd_musiccmd);
     M_BindIntVariable("snd_samplerate",          &snd_samplerate);
     M_BindIntVariable("snd_cachesize",           &snd_cachesize);
     M_BindIntVariable("snd_pitchshift",          &snd_pitchshift);
 
     M_BindStringVariable("music_pack_path",      &music_pack_path);
-    M_BindStringVariable("timidity_cfg_path",    &timidity_cfg_path);
 }
 

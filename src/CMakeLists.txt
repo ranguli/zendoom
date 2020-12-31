@@ -57,8 +57,6 @@ set(GAME_SOURCE_FILES
     i_sound.c           i_sound.h
     i_timer.c           i_timer.h
     i_video.c           i_video.h
-    midifile.c          midifile.h
-    mus2mid.c           mus2mid.h
     m_bbox.c            m_bbox.h
     m_cheat.c           m_cheat.h
     m_config.c          m_config.h
@@ -116,13 +114,3 @@ add_executable("${PROGRAM_PREFIX}doom" ${SOURCE_FILES_WITH_DEH})
 
 target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ${GAME_INCLUDE_DIRS})
 target_link_libraries("${PROGRAM_PREFIX}doom" doom ${EXTRA_LIBS})
-
-add_executable(midiread midifile.c z_native.c i_system.c m_argv.c m_misc.c d_iwad.c deh_str.c m_config.c)
-target_compile_definitions(midiread PRIVATE "-DTEST")
-target_include_directories(midiread PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries(midiread SDL2::SDL2main SDL2::SDL2)
-
-add_executable(mus2mid mus2mid.c memio.c z_native.c i_system.c m_argv.c m_misc.c d_iwad.c deh_str.c m_config.c)
-target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE")
-target_include_directories(mus2mid PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries(mus2mid SDL2::SDL2main SDL2::SDL2)
