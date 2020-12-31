@@ -60,7 +60,7 @@ struct sfxinfo_struct
     // lump number of sfx
     int lumpnum;
 
-    // Maximum number of channels that the sound can be played on 
+    // Maximum number of channels that the sound can be played on
     // (Heretic)
     int numchannels;
 
@@ -87,19 +87,11 @@ typedef struct
 
 } musicinfo_t;
 
-typedef enum 
+typedef enum
 {
     SNDDEVICE_NONE = 0,
-    SNDDEVICE_PCSPEAKER = 1,
-    SNDDEVICE_ADLIB = 2,
     SNDDEVICE_SB = 3,
-    SNDDEVICE_PAS = 4,
-    SNDDEVICE_GUS = 5,
-    SNDDEVICE_WAVEBLASTER = 6,
-    SNDDEVICE_SOUNDCANVAS = 7,
     SNDDEVICE_GENMIDI = 8,
-    SNDDEVICE_AWE32 = 9,
-    SNDDEVICE_CD = 10,
 } snddevice_t;
 
 // Interface for sound modules
@@ -232,19 +224,9 @@ extern int snd_musicdevice;
 extern int snd_samplerate;
 extern int snd_cachesize;
 extern int snd_maxslicetime_ms;
-extern char *snd_musiccmd;
 extern int snd_pitchshift;
 
 void I_BindSoundVariables(void);
-
-// DMX version to emulate for OPL emulation:
-typedef enum {
-    opl_doom1_1_666,    // Doom 1 v1.666
-    opl_doom2_1_666,    // Doom 2 v1.666, Hexen, Heretic
-    opl_doom_1_9        // Doom v1.9, Strife
-} opl_driver_ver_t;
-
-void I_SetOPLDriverVer(opl_driver_ver_t ver);
 
 #endif
 

@@ -115,22 +115,6 @@ void S_Init(int sfxVolume, int musicVolume)
 {
     int i;
 
-    if (gameversion == exe_doom_1_666)
-    {
-        if (logical_gamemission == doom)
-        {
-            I_SetOPLDriverVer(opl_doom1_1_666);
-        }
-        else
-        {
-            I_SetOPLDriverVer(opl_doom2_1_666);
-        }
-    }
-    else
-    {
-        I_SetOPLDriverVer(opl_doom_1_9);
-    }
-
     I_PrecacheSounds(S_sfx, NUMSFX);
 
     S_SetSfxVolume(sfxVolume);
@@ -660,8 +644,7 @@ void S_ChangeMusic(int musicnum, int looping)
     // The Doom IWAD file has two versions of the intro music: d_intro
     // and d_introa.  The latter is used for OPL playback.
 
-    if (musicnum == mus_intro && (snd_musicdevice == SNDDEVICE_ADLIB
-                               || snd_musicdevice == SNDDEVICE_SB)
+    if (musicnum == mus_intro
         && W_CheckNumForName("D_INTROA") >= 0)
     {
         musicnum = mus_introa;

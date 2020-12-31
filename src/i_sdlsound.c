@@ -896,12 +896,7 @@ static boolean I_SDL_InitSound(boolean _use_sfx_prefix)
 
 static snddevice_t sound_sdl_devices[] =
 {
-    SNDDEVICE_SB,
-    SNDDEVICE_PAS,
-    SNDDEVICE_GUS,
-    SNDDEVICE_WAVEBLASTER,
-    SNDDEVICE_SOUNDCANVAS,
-    SNDDEVICE_AWE32,
+    SNDDEVICE_SB
 };
 
 sound_module_t sound_sdl_module =

@@ -42,16 +42,12 @@ int snd_cachesize = 64 * 1024 * 1024;
 
 int snd_maxslicetime_ms = 28;
 
-// External command to invoke to play back music.
-
-char *snd_musiccmd = "";
-
 // Whether to vary the pitch of sound effects
 // Each game will set the default differently
 
 int snd_pitchshift = -1;
 
-int snd_musicdevice = SNDDEVICE_SB;
+int snd_musicdevice = SNDDEVICE_GENMIDI;
 int snd_sfxdevice = SNDDEVICE_SB;
 
 // Low-level sound and music modules we are using
@@ -67,21 +63,13 @@ static music_module_t *active_music_module;
 
 // Sound modules
 
-extern void I_InitTimidityConfig(void);
 extern sound_module_t sound_sdl_module;
 extern music_module_t music_sdl_module;
-extern music_module_t music_opl_module;
 extern music_module_t music_pack_module;
-
-// For OPL module:
-
-extern opl_driver_ver_t opl_drv_ver;
-extern int opl_io_port;
 
 // For native music module:
 
 extern char *music_pack_path;
-extern char *timidity_cfg_path;
 
 // DOS-specific options: These are unused but should be maintained
 // so that the config file can be shared between chocolate
@@ -105,7 +93,6 @@ static sound_module_t *sound_modules[] =
 static music_module_t *music_modules[] =
 {
     &music_sdl_module,
-    &music_opl_module,
     NULL,
 };
 
@@ -232,17 +219,6 @@ void I_InitSound(boolean use_sfx_prefix)
 
     if (!nosound && !screensaver_mode)
     {
-        // This is kind of a hack. If native MIDI is enabled, set up
-        // the TIMIDITY_CFG environment variable here before SDL_mixer
-        // is opened.
-
-        if (!nomusic
-         && (snd_musicdevice == SNDDEVICE_GENMIDI
-          || snd_musicdevice == SNDDEVICE_GUS))
-        {
-            I_InitTimidityConfig();
-        }
-
         if (!nosfx)
         {
             InitSfxModule(use_sfx_prefix);
@@ -465,23 +441,16 @@ void I_StopSong(void)
 
 void I_BindSoundVariables(void)
 {
-    extern char *snd_dmxoption;
-
     M_BindIntVariable("snd_musicdevice",         &snd_musicdevice);
     M_BindIntVariable("snd_sfxdevice",           &snd_sfxdevice);
     M_BindIntVariable("snd_sbport",              &snd_sbport);
     M_BindIntVariable("snd_sbirq",               &snd_sbirq);
     M_BindIntVariable("snd_sbdma",               &snd_sbdma);
-    M_BindIntVariable("snd_mport",               &snd_mport);
     M_BindIntVariable("snd_maxslicetime_ms",     &snd_maxslicetime_ms);
-    M_BindStringVariable("snd_musiccmd",         &snd_musiccmd);
-    M_BindStringVariable("snd_dmxoption",        &snd_dmxoption);
     M_BindIntVariable("snd_samplerate",          &snd_samplerate);
     M_BindIntVariable("snd_cachesize",           &snd_cachesize);
-    M_BindIntVariable("opl_io_port",             &opl_io_port);
     M_BindIntVariable("snd_pitchshift",          &snd_pitchshift);
 
     M_BindStringVariable("music_pack_path",      &music_pack_path);
-    M_BindStringVariable("timidity_cfg_path",    &timidity_cfg_path);
 }
 

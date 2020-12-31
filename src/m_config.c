@@ -566,12 +566,6 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(snd_sbdma),
 
     //!
-    // Output port to use for OPL MIDI playback.  Unused.
-    //
-
-    CONFIG_VARIABLE_INT(snd_mport),
-
-    //!
     // Gamma correction level.  A value of zero disables gamma
     // correction, while a value in the range 1-4 gives increasing
     // levels of gamma correction.
@@ -847,30 +841,6 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(snd_pitchshift),
 
     //!
-    // External command to invoke to perform MIDI playback. If set to
-    // the empty string, SDL_mixer's internal MIDI playback is used.
-    // This only has any effect when snd_musicdevice is set to General
-    // MIDI output.
-    //
-
-    CONFIG_VARIABLE_STRING(snd_musiccmd),
-
-    //!
-    // Value to set for the DMXOPTION environment variable. If this contains
-    // "-opl3", output for an OPL3 chip is generated when in OPL MIDI
-    // playback mode.
-    //
-
-    CONFIG_VARIABLE_STRING(snd_dmxoption),
-
-    //!
-    // The I/O port to use to access the OPL chip.  Only relevant when
-    // using native OPL music playback.
-    //
-
-    CONFIG_VARIABLE_INT_HEX(opl_io_port),
-
-    //!
     // Full path to a directory in which WAD files and dehacked patches
     // can be placed to be automatically loaded on startup. A subdirectory
     // of this directory matching the IWAD name is checked to find the
@@ -886,29 +856,6 @@ static default_t extra_defaults_list[] =
     //
 
     CONFIG_VARIABLE_STRING(music_pack_path),
-
-    //!
-    // Full path to a Timidity configuration file to use for MIDI
-    // playback. The file will be evaluated from the directory where
-    // it is evaluated, so there is no need to add "dir" commands
-    // into it.
-    //
-
-    CONFIG_VARIABLE_STRING(timidity_cfg_path),
-
-    //!
-    // Path to GUS patch files to use when operating in GUS emulation
-    // mode.
-    //
-
-    CONFIG_VARIABLE_STRING(gus_patch_path),
-
-    //!
-    // Number of kilobytes of RAM to use in GUS emulation mode. Valid
-    // values are 256, 512, 768 or 1024.
-    //
-
-    CONFIG_VARIABLE_INT(gus_ram_kb),
 
     //!
     // @game doom strife
