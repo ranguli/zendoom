@@ -223,7 +223,7 @@ boolean NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
 
     if (!NET_ReadInt8(packet, &diff->diff))
         return false;
-    
+
     // Read fields
 
     if (diff->diff & NET_TICDIFF_FORWARD)
@@ -378,9 +378,9 @@ void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
     }
 }
 
-// 
+//
 // net_full_ticcmd_t
-// 
+//
 
 boolean NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean lowres_turn)
 {
@@ -400,12 +400,12 @@ boolean NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean
     {
         return false;
     }
-          
+
     for (i=0; i<NET_MAXPLAYERS; ++i)
     {
         cmd->playeringame[i] = (bitfield & (1 << i)) != 0;
     }
-        
+
     // Read cmds
 
     for (i=0; i<NET_MAXPLAYERS; ++i)
@@ -435,7 +435,7 @@ void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean l
     // in this ticcmd
 
     bitfield = 0;
-    
+
     for (i=0; i<NET_MAXPLAYERS; ++i)
     {
         if (cmd->playeringame[i])
@@ -443,7 +443,7 @@ void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean l
             bitfield |= 1 << i;
         }
     }
-    
+
     NET_WriteInt8(packet, bitfield);
 
     // Write player ticcmds
@@ -556,16 +556,6 @@ boolean NET_ReadSHA1Sum(net_packet_t *packet, sha1_digest_t digest)
 void NET_WriteSHA1Sum(net_packet_t *packet, sha1_digest_t digest)
 {
     NET_WriteBlob(packet, digest, sizeof(sha1_digest_t));
-}
-
-boolean NET_ReadPRNGSeed(net_packet_t *packet, prng_seed_t seed)
-{
-    return NET_ReadBlob(packet, seed, sizeof(prng_seed_t));
-}
-
-void NET_WritePRNGSeed(net_packet_t *packet, prng_seed_t seed)
-{
-    NET_WriteBlob(packet, seed, sizeof(prng_seed_t));
 }
 
 static net_protocol_t ParseProtocolName(const char *name)

@@ -35,7 +35,6 @@
 #include "i_system.h"
 #include "i_video.h"
 #include "m_misc.h"
-#include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"
 
@@ -350,40 +349,6 @@ void M_ForceLowercase(char *text)
 }
 
 //
-// M_StrCaseStr
-//
-// Case-insensitive version of strstr()
-//
-
-const char *M_StrCaseStr(const char *haystack, const char *needle)
-{
-    unsigned int haystack_len;
-    unsigned int needle_len;
-    unsigned int len;
-    unsigned int i;
-
-    haystack_len = strlen(haystack);
-    needle_len = strlen(needle);
-
-    if (haystack_len < needle_len)
-    {
-        return NULL;
-    }
-
-    len = haystack_len - needle_len;
-
-    for (i = 0; i <= len; ++i)
-    {
-        if (!strncasecmp(haystack + i, needle, needle_len))
-        {
-            return haystack + i;
-        }
-    }
-
-    return NULL;
-}
-
-//
 // Safe version of strdup() that checks the string was successfully
 // allocated.
 //
@@ -605,48 +570,4 @@ int M_snprintf(char *buf, size_t buf_len, const char *s, ...)
     result = M_vsnprintf(buf, buf_len, s, args);
     va_end(args);
     return result;
-}
-
-//
-// M_NormalizeSlashes
-//
-// Remove trailing slashes, translate backslashes to slashes
-// The string to normalize is passed and returned in str
-//
-// killough 11/98: rewritten
-//
-// [STRIFE] - haleyjd 20110210: Borrowed from Eternity and adapted to respect
-// the DIR_SEPARATOR define used by Choco Doom. This routine originated in
-// BOOM.
-//
-void M_NormalizeSlashes(char *str)
-{
-    char *p;
-
-    // Convert all slashes/backslashes to DIR_SEPARATOR
-    for (p = str; *p; p++)
-    {
-        if ((*p == '/' || *p == '\\') && *p != DIR_SEPARATOR)
-        {
-            *p = DIR_SEPARATOR;
-        }
-    }
-
-    // Remove trailing slashes
-    while (p > str && *--p == DIR_SEPARATOR)
-    {
-        *p = 0;
-    }
-
-    // Collapse multiple slashes
-    for (p = str; (*str++ = *p); )
-    {
-        if (*p++ == DIR_SEPARATOR)
-        {
-            while (*p == DIR_SEPARATOR)
-            {
-                p++;
-            }
-        }
-    }
 }

@@ -82,7 +82,7 @@ extern lighttable_t*	fixedcolormap;
 // Blocky/low detail mode.
 //B remove this?
 //  0 = high, 1 = low
-extern	int		detailshift;	
+extern	int		detailshift;
 
 
 //
@@ -135,14 +135,6 @@ subsector_t*
 R_PointInSubsector
 ( fixed_t	x,
   fixed_t	y );
-
-void
-R_AddPointToBox
-( int		x,
-  int		y,
-  fixed_t*	box );
-
-
 
 //
 // REFRESH - the actual rendering functions.

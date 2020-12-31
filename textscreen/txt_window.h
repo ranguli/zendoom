@@ -190,16 +190,6 @@ void TXT_SetMouseListener(txt_window_t *window,
                           void *user_data);
 
 /**
- * Open a window displaying a message.
- *
- * @param title           Title of the window (UTF-8 format).
- * @param message         The message to display in the window (UTF-8 format).
- * @return                The new window.
- */
-
-txt_window_t *TXT_MessageBox(const char *title, const char *message, ...);
-
-/**
  * Set the help URL for the given window.
  *
  * @param window          The window.

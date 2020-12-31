@@ -1419,7 +1419,6 @@ void D_DoomMain (void)
 
     // init subsystems
     DEH_printf("V_Init: allocate screens.\n");
-    V_Init ();
 
     // Load configuration files before initialising other subsystems.
     DEH_printf("M_LoadDefaults: Load system defaults.\n");

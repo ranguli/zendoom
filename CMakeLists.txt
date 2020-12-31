@@ -18,7 +18,7 @@ string(REGEX REPLACE " Doom$" "" PACKAGE_SHORTNAME "${PACKAGE_NAME}")
 set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2017")
 set(PACKAGE_LICENSE "GNU General Public License, version 2")
 
-add_compile_options("-Wall" "-Wextra" "-Wunused" "-Wdeclaration-after-statement"
+add_compile_options("-Wall" "-Wextra" "-Wunused-function" "-Wdeclaration-after-statement"
                     "-Wredundant-decls")
 
 find_package(SDL2 2.0.7)

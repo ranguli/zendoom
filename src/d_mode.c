@@ -83,7 +83,7 @@ boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
 
     // Find the table entry for this mission/mode combination.
 
-    for (i=0; i<arrlen(valid_modes); ++i) 
+    for (i=0; i<arrlen(valid_modes); ++i)
     {
         if (mission == valid_modes[i].mission
          && mode == valid_modes[i].mode)
@@ -96,22 +96,6 @@ boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
     // Unknown mode/mission combination
 
     return false;
-}
-
-// Get the number of valid episodes for the specified mission/mode.
-
-int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)
-{
-    int episode;
-
-    episode = 1;
-
-    while (D_ValidEpisodeMap(mission, mode, episode, 1))
-    {
-        ++episode;
-    }
-
-    return episode - 1;
 }
 
 // Table of valid versions
@@ -148,9 +132,9 @@ boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
         mission = doom;
     }
 
-    for (i=0; i<arrlen(valid_versions); ++i) 
+    for (i=0; i<arrlen(valid_versions); ++i)
     {
-        if (valid_versions[i].mission == mission 
+        if (valid_versions[i].mission == mission
          && valid_versions[i].version == version)
         {
             return true;
@@ -158,29 +142,6 @@ boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
     }
 
     return false;
-}
-
-// Does this mission type use ExMy form, rather than MAPxy form?
-
-boolean D_IsEpisodeMap(GameMission_t mission)
-{
-    switch (mission)
-    {
-        case doom:
-        case heretic:
-        case pack_chex:
-            return true;
-
-        case none:
-        case hexen:
-        case doom2:
-        case pack_hacx:
-        case pack_tnt:
-        case pack_plut:
-        case strife:
-        default:
-            return false;
-    }
 }
 
 const char *D_GameMissionString(GameMission_t mission)

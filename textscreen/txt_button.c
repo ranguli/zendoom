@@ -66,7 +66,7 @@ static int TXT_ButtonKeyPress(TXT_UNCAST_ARG(button), int key)
         TXT_EmitSignal(button, "pressed");
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -92,12 +92,6 @@ txt_widget_class_t txt_button_class =
     TXT_ButtonMousePress,
     NULL,
 };
-
-void TXT_SetButtonLabel(txt_button_t *button, const char *label)
-{
-    free(button->label);
-    button->label = strdup(label);
-}
 
 txt_button_t *TXT_NewButton(const char *label)
 {

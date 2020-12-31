@@ -60,15 +60,6 @@ txt_button_t *TXT_NewButton(const char *label);
 txt_button_t *TXT_NewButton2(const char *label, TxtWidgetSignalFunc func,
                              void *user_data);
 
-/**
- * Change the label used on a button.
- *
- * @param button       The button.
- * @param label        The new label (UTF-8 format).
- */
-
-void TXT_SetButtonLabel(txt_button_t *button, const char *label);
-
 #endif /* #ifndef TXT_BUTTON_H */
 
 

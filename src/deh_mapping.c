@@ -122,40 +122,6 @@ boolean DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
     return true;
 }
 
-//
-// Set the value of a string field in a structure by name
-//
-
-boolean DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
-                             void *structptr, char *name, char *value)
-{
-    deh_mapping_entry_t *entry;
-    void *location;
-
-    entry = GetMappingEntryByName(context, mapping, name);
-
-    if (entry == NULL)
-    {
-        return false;
-    }
-
-    // Sanity check:
-
-    if (!entry->is_string)
-    {
-        DEH_Error(context, "Tried to set '%s' as string (BUG)", name);
-        return false;
-    }
-
-    location = GetStructField(structptr, mapping, entry);
-
-    // Copy value into field:
-
-    M_StringCopy(location, value, entry->size);
-
-    return true;
-}
-
 void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
                        void *structptr)
 {
@@ -191,7 +157,7 @@ void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
                 SHA1_UpdateInt32(context, *((uint32_t *) location));
                 break;
             default:
-                I_Error("Unknown dehacked mapping field type for '%s' (BUG)", 
+                I_Error("Unknown dehacked mapping field type for '%s' (BUG)",
                         entry->name);
                 break;
         }

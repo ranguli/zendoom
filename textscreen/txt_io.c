@@ -46,7 +46,7 @@ static void NewLine(unsigned char *screendata)
 
         p = screendata + (TXT_SCREEN_H - 1) * 2 * TXT_SCREEN_W;
 
-        for (i=0; i<TXT_SCREEN_W; ++i) 
+        for (i=0; i<TXT_SCREEN_W; ++i)
         {
             *p++ = ' ';
             *p++ = fgcolor | (bgcolor << 4);
@@ -156,21 +156,3 @@ void TXT_RestoreColors(txt_saved_colors_t *save)
     bgcolor = save->bgcolor;
     fgcolor = save->fgcolor;
 }
-
-void TXT_ClearScreen(void)
-{
-    unsigned char *screen;
-    int i;
-
-    screen = TXT_GetScreenData();
-
-    for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
-    {
-        screen[i * 2] = ' ';
-        screen[i * 2 +  1] = (bgcolor << 4) | fgcolor;
-    }
-
-    cur_x = 0;
-    cur_y = 0;
-}
-

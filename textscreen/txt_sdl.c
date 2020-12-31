@@ -28,10 +28,6 @@
 #include "txt_sdl.h"
 #include "txt_utf8.h"
 
-#if defined(_MSC_VER) && !defined(__cplusplus)
-#define inline __inline
-#endif
-
 typedef struct
 {
     const char *name;
@@ -105,34 +101,6 @@ static const SDL_Color ega_colors[] =
     {0xfe, 0xfe, 0xfe, 0xff},          // 15: Bright white
 };
 
-#ifdef _WIN32
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-// Examine system DPI settings to determine whether to use the large font.
-
-static int Win32_UseLargeFont(void)
-{
-    HDC hdc = GetDC(NULL);
-    int dpix;
-
-    if (!hdc)
-    {
-        return 0;
-    }
-
-    dpix = GetDeviceCaps(hdc, LOGPIXELSX);
-    ReleaseDC(NULL, hdc);
-
-    // 144 is the DPI when using "150%" scaling. If the user has this set
-    // then consider this an appropriate threshold for using the large font.
-
-    return dpix >= 144;
-}
-
-#endif
-
 static const txt_font_t *FontForName(const char *name)
 {
     int i;
@@ -197,15 +165,6 @@ static void ChooseFont(void)
     {
         font = &small_font;
     }
-#ifdef _WIN32
-    // On Windows we can use the system DPI settings to make a
-    // more educated guess about whether to use the large font.
-
-    else if (Win32_UseLargeFont())
-    {
-        font = &large_font;
-    }
-#endif
     // TODO: Detect high DPI on Linux by inquiring about Gtk+ scale
     // settings. This looks like it should just be a case of shelling
     // out to invoke the 'gsettings' command, eg.
@@ -814,7 +773,7 @@ int TXT_ScreenHasBlinkingChars(void)
 
     for (y=0; y<TXT_SCREEN_H; ++y)
     {
-        for (x=0; x<TXT_SCREEN_W; ++x) 
+        for (x=0; x<TXT_SCREEN_W; ++x)
         {
             p = &screendata[(y * TXT_SCREEN_W + x) * 2];
 
@@ -832,7 +791,7 @@ int TXT_ScreenHasBlinkingChars(void)
     return 0;
 }
 
-// Sleeps until an event is received, the screen needs to be redrawn, 
+// Sleeps until an event is received, the screen needs to be redrawn,
 // or until timeout expires (if timeout != 0)
 
 void TXT_Sleep(int timeout)
@@ -845,9 +804,9 @@ void TXT_Sleep(int timeout)
 
         time_to_next_blink = BLINK_PERIOD - (SDL_GetTicks() % BLINK_PERIOD);
 
-        // There are blinking characters on the screen, so we 
+        // There are blinking characters on the screen, so we
         // must time out after a while
-       
+
         if (timeout == 0 || timeout > time_to_next_blink)
         {
             // Add one so it is always positive
@@ -904,12 +863,6 @@ void TXT_SetWindowTitle(const char *title)
     SDL_SetWindowTitle(TXT_SDLWindow, title);
 }
 
-void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void *user_data)
-{
-    event_callback = callback;
-    event_callback_data = user_data;
-}
-
 // Safe string functions.
 
 void TXT_StringCopy(char *dest, const char *src, size_t dest_len)
@@ -935,13 +888,6 @@ void TXT_StringConcat(char *dest, const char *src, size_t dest_len)
 
     TXT_StringCopy(dest + offset, src, dest_len - offset);
 }
-
-// On Windows, vsnprintf() is _vsnprintf().
-#ifdef _WIN32
-#if _MSC_VER < 1400 /* not needed for Visual Studio 2008 */
-#define vsnprintf _vsnprintf
-#endif
-#endif
 
 // Safe, portable vsnprintf().
 int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)

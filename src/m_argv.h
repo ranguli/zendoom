@@ -14,7 +14,7 @@
 //
 // DESCRIPTION:
 //  Nil.
-//    
+//
 
 
 #ifndef __M_ARGV__
@@ -42,9 +42,5 @@ void M_AddLooseFiles(void);
 // Parameter has been specified?
 
 boolean M_ParmExists(const char *check);
-
-// Get name of executable used to run this program:
-
-const char *M_GetExecutableName(void);
 
 #endif

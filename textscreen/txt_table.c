@@ -369,8 +369,8 @@ void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...)
     va_start(args, TXT_UNCAST_ARG_NAME(table));
 
     // Keep adding widgets until a NULL is reached.
-   
-    for (;;) 
+
+    for (;;)
     {
         widget = va_arg(args, txt_widget_t *);
 
@@ -409,7 +409,7 @@ static int SelectableCell(txt_table_t *table, int x, int y)
 }
 
 // Tries to locate a selectable widget in the given row, returning
-// the column number of the first column available or -1 if none are 
+// the column number of the first column available or -1 if none are
 // available in the given row.
 //
 // Starts from start_col, then searches nearby columns.
@@ -705,7 +705,7 @@ static void TXT_TableLayout(TXT_UNCAST_ARG(table))
     CalcRowColSizes(table, row_heights, column_widths);
 
     // If this table only has one column, expand column size to fit
-    // the display width.  Ensures that separators reach the window edges 
+    // the display width.  Ensures that separators reach the window edges
     // when drawing windows.
 
     if (table->columns == 1)
@@ -884,7 +884,7 @@ void TXT_InitTable(txt_table_t *table, int columns)
     table->selected_x = 0;
     table->selected_y = 0;
 
-    // Add a strut for each column at the start of the table. 
+    // Add a strut for each column at the start of the table.
     // These are used by the TXT_SetColumnWidths function below:
     // the struts are created with widths of 0 each, but this
     // function changes them.
@@ -904,102 +904,6 @@ txt_table_t *TXT_NewTable(int columns)
     TXT_InitTable(table, columns);
 
     return table;
-}
-
-// Alternative to TXT_NewTable() that allows a list of widgets to be
-// provided in its arguments.
-txt_table_t *TXT_MakeTable(int columns, ...)
-{
-    txt_table_t *table;
-    va_list args;
-
-    table = TXT_NewTable(columns);
-    va_start(args, columns);
-
-    for (;;)
-    {
-        txt_widget_t *widget;
-        widget = va_arg(args, txt_widget_t *);
-
-        if (widget == NULL)
-        {
-            break;
-        }
-
-        TXT_AddWidget(table, widget);
-    }
-
-    va_end(args);
-
-    return table;
-}
-
-// Create a horizontal table from a list of widgets.
-
-txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...)
-{
-    TXT_CAST_ARG(txt_widget_t, first_widget);
-    txt_table_t *result;
-    va_list args;
-    int num_args;
-
-    // First, find the number of arguments to determine the width of
-    // the box.
-
-    va_start(args, TXT_UNCAST_ARG_NAME(first_widget));
-
-    num_args = 1;
-
-    for (;;)
-    {
-        txt_widget_t *widget;
-
-        widget = va_arg(args, txt_widget_t *);
-
-        if (widget == NULL)
-        {
-            // End of list
-
-            break;
-        }
-        else
-        {
-            ++num_args;
-        }
-    }
-    
-    va_end(args);
-
-    // Create the table.
-
-    result = TXT_NewTable(num_args);
-    TXT_AddWidget(result, first_widget);
-
-    // Go through the list again and add each widget.
-
-    va_start(args, TXT_UNCAST_ARG_NAME(first_widget));
-
-    for (;;)
-    {
-        txt_widget_t *widget;
-
-        widget = va_arg(args, txt_widget_t *);
-
-        if (widget == NULL)
-        {
-            // End of list
-
-            break;
-        }
-        else
-        {
-            TXT_AddWidget(result, widget);
-        }
-    }
-    
-    va_end(args);
-
-    return result;
 }
 
 // Get the currently-selected widget in a table, recursively searching
@@ -1076,89 +980,6 @@ int TXT_SelectWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget))
     // Not found.
 
     return 0;
-}
-
-void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns)
-{
-    TXT_CAST_ARG(txt_table_t, table);
-    txt_widget_t **new_widgets;
-    txt_widget_t *widget;
-    int new_num_widgets;
-    int i, j, x;
-
-    // We need as many full rows as are in the current list, plus the
-    // remainder from the last row.
-    new_num_widgets = (table->num_widgets / table->columns) * new_columns
-                    + (table->num_widgets % table->columns);
-    new_widgets = calloc(new_num_widgets, sizeof(txt_widget_t *));
-
-    // Reset and add one by one from the old table.
-    new_num_widgets = 0;
-
-    for (i = 0; i < table->num_widgets; ++i)
-    {
-        widget = table->widgets[i];
-        x = i % table->columns;
-
-        if (x < new_columns)
-        {
-            new_widgets[new_num_widgets] = widget;
-            ++new_num_widgets;
-        }
-        else if (IsActualWidget(widget))
-        {
-            TXT_DestroyWidget(widget);
-        }
-
-        // When we reach the last column of a row, we must pad it out with
-        // extra widgets to reach the next row.
-        if (x == table->columns - 1)
-        {
-            for (j = table->columns; j < new_columns; ++j)
-            {
-                // First row? We need to add struts that are used to apply
-                // the column widths.
-                if (i < table->columns)
-                {
-                    widget = &TXT_NewStrut(0, 0)->widget;
-                }
-                else
-                {
-                    widget = &txt_table_overflow_right;
-                }
-                new_widgets[new_num_widgets] = widget;
-                ++new_num_widgets;
-            }
-        }
-    }
-
-    free(table->widgets);
-    table->widgets = new_widgets;
-    table->num_widgets = new_num_widgets;
-    table->columns = new_columns;
-}
-
-// Sets the widths of columns in a table.
-
-void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...)
-{
-    TXT_CAST_ARG(txt_table_t, table);
-    va_list args;
-    txt_strut_t *strut;
-    int i;
-    int width;
-
-    va_start(args, TXT_UNCAST_ARG_NAME(table));
-
-    for (i=0; i<table->columns; ++i)
-    {
-        width = va_arg(args, int);
-
-        strut = (txt_strut_t *) table->widgets[i];
-        strut->width = width;
-    }
-
-    va_end(args);
 }
 
 // Moves the select by at least the given number of characters.

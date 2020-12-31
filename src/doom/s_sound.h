@@ -32,7 +32,7 @@
 void S_Init(int sfxVolume, int musicVolume);
 
 
-// Shut down sound 
+// Shut down sound
 
 void S_Shutdown(void);
 
@@ -63,9 +63,6 @@ void S_StartMusic(int music_id);
 // Start music using <music_id> from sounds.h,
 //  and set whether looping
 void S_ChangeMusic(int music_id, int looping);
-
-// query if music is playing
-boolean S_MusicPlaying(void);
 
 // Stops the music fer sure.
 void S_StopMusic(void);

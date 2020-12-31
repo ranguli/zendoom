@@ -218,31 +218,6 @@ void OPL_Queue_AdjustCallbacks(opl_callback_queue_t *queue,
 
 #include <assert.h>
 
-static void PrintQueueNode(opl_callback_queue_t *queue, int node, int depth)
-{
-    int i;
-
-    if (node >= queue->num_entries)
-    {
-        return;
-    }
-
-    for (i=0; i<depth * 3; ++i)
-    {
-        printf(" ");
-    }
-
-    printf("%i\n", queue->entries[node].time);
-
-    PrintQueueNode(queue, node * 2 + 1, depth + 1);
-    PrintQueueNode(queue, node * 2 + 2, depth + 1);
-}
-
-static void PrintQueue(opl_callback_queue_t *queue)
-{
-    PrintQueueNode(queue, 0, 0);
-}
-
 int main()
 {
     opl_callback_queue_t *queue;

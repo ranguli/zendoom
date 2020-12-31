@@ -65,16 +65,6 @@ txt_window_action_t *TXT_NewWindowAction(int key, const char *label);
 txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window);
 
 /**
- * Create a new window action that closes the window when the
- * escape key is pressed.  The label "Abort" is used.
- *
- * @param window        The window to close.
- * @return              Pointer to the new window action widget.
- */
-
-txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window);
-
-/**
  * Create a new "select" window action.  This does not really do
  * anything, but reminds the user that "enter" can be pressed to
  * activate the currently-selected widget.

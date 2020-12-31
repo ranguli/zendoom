@@ -93,11 +93,11 @@ static int TXT_RadioButtonKeyPress(TXT_UNCAST_ARG(radiobutton), int key)
         }
         return 1;
     }
-    
+
     return 0;
 }
 
-static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton), 
+static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton),
                                       int x, int y, int b)
 {
     TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
@@ -134,10 +134,3 @@ txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int valu
 
     return radiobutton;
 }
-
-void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value)
-{
-    free(radiobutton->label);
-    radiobutton->label = strdup(value);
-}
-

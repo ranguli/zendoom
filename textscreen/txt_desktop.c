@@ -91,32 +91,6 @@ txt_window_t *TXT_GetActiveWindow(void)
     return all_windows[num_windows - 1];
 }
 
-int TXT_RaiseWindow(txt_window_t *window)
-{
-    int i;
-
-    for (i = 0; i < num_windows - 1; ++i)
-    {
-        if (all_windows[i] == window)
-        {
-            all_windows[i] = all_windows[i + 1];
-            all_windows[i + 1] = window;
-
-            if (i == num_windows - 2)
-            {
-                TXT_SetWindowFocus(all_windows[i], 0);
-                TXT_SetWindowFocus(window, 1);
-            }
-
-            return 1;
-        }
-    }
-
-    // Window not in the list, or at the end of the list (top) already.
-
-    return 0;
-}
-
 int TXT_LowerWindow(txt_window_t *window)
 {
     int i;
@@ -150,11 +124,11 @@ static void DrawDesktopBackground(const char *title)
     unsigned char *p;
 
     screendata = TXT_GetScreenData();
-    
+
     // Fill the screen with gradient characters
 
     p = screendata;
-    
+
     for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
     {
         *p++ = 0xb1;
@@ -312,46 +286,6 @@ void TXT_ExitMainLoop(void)
     main_loop_running = 0;
 }
 
-void TXT_DrawASCIITable(void)
-{
-    unsigned char *screendata;
-    char buf[10];
-    int x, y;
-    int n;
-
-    screendata = TXT_GetScreenData();
-
-    TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
-    TXT_BGColor(TXT_COLOR_BLACK, 0);
-
-    for (y=0; y<16; ++y)
-    {
-        for (x=0; x<16; ++x)
-        {
-            n = y * 16 + x;
-
-            TXT_GotoXY(x * 5, y);
-            TXT_snprintf(buf, sizeof(buf), "%02x   ", n);
-            TXT_Puts(buf);
-
-            // Write the character directly to the screen memory buffer:
-
-            screendata[(y * TXT_SCREEN_W + x * 5 + 3) * 2] = n;
-        }
-    }
-
-    TXT_UpdateScreen();
-}
-
-void TXT_SetPeriodicCallback(TxtIdleCallback callback,
-                             void *user_data,
-                             unsigned int period)
-{
-    periodic_callback = callback;
-    periodic_callback_data = user_data;
-    periodic_callback_period = period;
-}
-
 void TXT_GUIMainLoop(void)
 {
     main_loop_running = 1;
@@ -369,7 +303,6 @@ void TXT_GUIMainLoop(void)
         }
 
         TXT_DrawDesktop();
-//        TXT_DrawASCIITable();
 
         if (periodic_callback == NULL)
         {

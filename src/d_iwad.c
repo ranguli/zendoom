@@ -50,21 +50,6 @@ static const iwad_t iwads[] =
     { "strife1.wad",  strife,    commercial, "Strife" },
 };
 
-boolean D_IsIWADName(const char *name)
-{
-    int i;
-
-    for (i = 0; i < arrlen(iwads); i++)
-    {
-        if (!strcasecmp(name, iwads[i].name))
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 // Array of locations to search for IWAD files
 //
 // "128 IWAD search directories should be enough for anybody".
@@ -400,43 +385,6 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
     return result;
 }
 
-// Find all IWADs in the IWAD search path matching the given mask.
-
-const iwad_t **D_FindAllIWADs(int mask)
-{
-    const iwad_t **result;
-    int result_len;
-    char *filename;
-    int i;
-
-    result = malloc(sizeof(iwad_t *) * (arrlen(iwads) + 1));
-    result_len = 0;
-
-    // Try to find all IWADs
-
-    for (i=0; i<arrlen(iwads); ++i)
-    {
-        if (((1 << iwads[i].mission) & mask) == 0)
-        {
-            continue;
-        }
-
-        filename = D_FindWADByName(iwads[i].name);
-
-        if (filename != NULL)
-        {
-            result[result_len] = &iwads[i];
-            ++result_len;
-        }
-    }
-
-    // End of list
-
-    result[result_len] = NULL;
-
-    return result;
-}
-
 //
 // Get the IWAD name used for savegames.
 //
@@ -477,21 +425,6 @@ const char *D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevari
     }
 
     // Default fallback:
-
-    return "unknown.wad";
-}
-
-const char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)
-{
-    int i;
-
-    for (i = 0; i < arrlen(iwads); ++i)
-    {
-        if (iwads[i].mission == mission && iwads[i].mode == mode)
-        {
-            return iwads[i].name;
-        }
-    }
 
     return "unknown.wad";
 }

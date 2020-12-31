@@ -24,7 +24,6 @@
 #include "config.h"
 #include <strings.h>
 
-
 //
 // The packed attribute forces structures to be packed into the minimum
 // space necessary.  If this is not done, the compiler may align structure
@@ -34,32 +33,13 @@
 // to disk.
 //
 
-#ifdef __GNUC__
-
 #define PACKEDATTR __attribute__((packed))
 
 #define PRINTF_ATTR(fmt, first) __attribute__((format(printf, fmt, first)))
 #define PRINTF_ARG_ATTR(x) __attribute__((format_arg(x)))
 #define NORETURN __attribute__((noreturn))
 
-#else
-#if defined(_MSC_VER)
-#define PACKEDATTR __pragma(pack(pop))
-#else
-#define PACKEDATTR
-#endif
-#define PRINTF_ATTR(fmt, first)
-#define PRINTF_ARG_ATTR(x)
-#define NORETURN
-#endif
-
-#ifdef __WATCOMC__
-#define PACKEDPREFIX _Packed
-#elif defined(_MSC_VER)
-#define PACKEDPREFIX __pragma(pack(push,1))
-#else
 #define PACKEDPREFIX
-#endif
 
 #define PACKED_STRUCT(...) PACKEDPREFIX struct __VA_ARGS__ PACKEDATTR
 
@@ -73,21 +53,11 @@
 
 #include <inttypes.h>
 
-#if defined(__cplusplus) || defined(__bool_true_false_are_defined)
-
-// Use builtin bool type with C++.
-
-typedef bool boolean;
-
-#else
-
 typedef enum
 {
     false,
     true
 } boolean;
-
-#endif
 
 typedef uint8_t byte;
 typedef uint8_t pixel_t;

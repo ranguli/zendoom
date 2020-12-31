@@ -263,11 +263,3 @@ void M_FindResponseFile(void)
         LoadResponseFile(i + 1, myargv[i + 1]);
     }
 }
-
-// Return the name of the executable used to start the program:
-
-const char *M_GetExecutableName(void)
-{
-    return M_BaseName(myargv[0]);
-}
-

@@ -89,7 +89,7 @@ static int TXT_CheckBoxKeyPress(TXT_UNCAST_ARG(checkbox), int key)
         TXT_EmitSignal(checkbox, "changed");
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -129,14 +129,3 @@ txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable)
 
     return checkbox;
 }
-
-txt_checkbox_t *TXT_NewInvertedCheckBox(const char *label, int *variable)
-{
-    txt_checkbox_t *result;
-
-    result = TXT_NewCheckBox(label, variable);
-    result->inverted = 1;
-
-    return result;
-}
-

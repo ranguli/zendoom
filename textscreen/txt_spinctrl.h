@@ -43,7 +43,7 @@ struct txt_spincontrol_s
 {
     txt_widget_t widget;
     txt_spincontrol_type_t type;
-    union { float f; int i; } min, max, *value, step; 
+    union { float f; int i; } min, max, *value, step;
     int editing;
     char *buffer;
     size_t buffer_len;
@@ -60,18 +60,6 @@ struct txt_spincontrol_s
  */
 
 txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
-
-/**
- * Create a new spin control widget tracking a float value.
- *
- * @param value        Pointer to the variable containing the value
- *                     displayed in the widget.
- * @param min          Minimum value that may be set.
- * @param max          Maximum value that may be set.
- * @return             Pointer to the new spin control widget.
- */
-
-txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max);
 
 #endif /* #ifndef TXT_SPINCONTROL_H */
 
