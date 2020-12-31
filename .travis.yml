@@ -18,17 +18,14 @@ addons:
     apt:
         packages:
         - cppcheck
-        - libpng-dev
         - libsdl2-dev
         - libsdl2-mixer-dev
         - libsdl2-net-dev
         - libsdl2-image-dev
-        - libsamplerate0-dev
 
 script: ./.travis.sh
 
 branches:
     only:
     - master
-    - c++-clean
-    - vanilla-net
+    - development
