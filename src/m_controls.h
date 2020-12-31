@@ -175,7 +175,5 @@ void M_BindMapControls(void);
 void M_BindMenuControls(void);
 void M_BindChatControls(unsigned int num_players);
 
-void M_ApplyPlatformDefaults(void);
-
 #endif /* #ifndef __M_CONTROLS_H__ */
 

@@ -523,7 +523,7 @@ boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
 static boolean NET_ReadBlob(net_packet_t *packet, uint8_t *buf, size_t len)
 {
     unsigned int b;
-    int i;
+    unsigned int i;
 
     for (i=0; i<len; ++i)
     {
@@ -540,7 +540,7 @@ static boolean NET_ReadBlob(net_packet_t *packet, uint8_t *buf, size_t len)
 
 static void NET_WriteBlob(net_packet_t *packet, uint8_t *buf, size_t len)
 {
-    int i;
+    unsigned int i;
 
     for (i=0; i<len; ++i)
     {
@@ -560,7 +560,7 @@ void NET_WriteSHA1Sum(net_packet_t *packet, sha1_digest_t digest)
 
 static net_protocol_t ParseProtocolName(const char *name)
 {
-    int i;
+    unsigned int i;
 
     for (i = 0; i < arrlen(protocol_names); ++i)
     {
@@ -592,7 +592,7 @@ net_protocol_t NET_ReadProtocol(net_packet_t *packet)
 // NET_WriteProtocol writes a single string-format protocol name to a packet.
 void NET_WriteProtocol(net_packet_t *packet, net_protocol_t protocol)
 {
-    int i;
+    unsigned int i;
 
     for (i = 0; i < arrlen(protocol_names); ++i)
     {
@@ -617,7 +617,7 @@ net_protocol_t NET_ReadProtocolList(net_packet_t *packet)
 {
     net_protocol_t result;
     unsigned int num_protocols;
-    int i;
+    unsigned int i;
 
     if (!NET_ReadInt8(packet, &num_protocols))
     {
@@ -654,7 +654,7 @@ net_protocol_t NET_ReadProtocolList(net_packet_t *packet)
 // protocols is always sent.
 void NET_WriteProtocolList(net_packet_t *packet)
 {
-    int i;
+    unsigned int i;
 
     NET_WriteInt8(packet, NET_NUM_PROTOCOLS);
 

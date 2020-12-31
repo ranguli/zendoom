@@ -642,12 +642,6 @@ static void GetSfxLumpName(sfxinfo_t *sfx, char *buf, size_t buf_len)
     }
 }
 
-static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
-{
-    // no-op
-}
-
-
 // Load a SFX chunk into memory and ensure that it is locked.
 
 static boolean LockSound(sfxinfo_t *sfxinfo)
@@ -921,7 +915,6 @@ sound_module_t sound_sdl_module =
     I_SDL_UpdateSoundParams,
     I_SDL_StartSound,
     I_SDL_StopSound,
-    I_SDL_SoundIsPlaying,
-    I_SDL_PrecacheSounds,
+    I_SDL_SoundIsPlaying
 };
 

@@ -52,7 +52,7 @@ static void QueuePush(packet_queue_t *queue, net_packet_t *packet)
     if (new_tail == queue->head)
     {
         // queue is full
-        
+
         return;
     }
 
@@ -63,7 +63,7 @@ static void QueuePush(packet_queue_t *queue, net_packet_t *packet)
 static net_packet_t *QueuePop(packet_queue_t *queue)
 {
     net_packet_t *packet;
-    
+
     if (queue->tail == queue->head)
     {
         // queue empty
@@ -96,7 +96,7 @@ static boolean NET_CL_InitServer(void)
     return false;
 }
 
-static void NET_CL_SendPacket(net_addr_t *addr, net_packet_t *packet)
+static void NET_CL_SendPacket(net_packet_t *packet)
 {
     QueuePush(&server_queue, NET_PacketDup(packet));
 }
@@ -112,20 +112,16 @@ static boolean NET_CL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
         *packet = popped;
         *addr = &client_addr;
         client_addr.module = &net_loop_client_module;
-        
+
         return true;
     }
 
     return false;
 }
 
-static void NET_CL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
+static void NET_CL_AddrToString(char *buffer, int buffer_len)
 {
     M_snprintf(buffer, buffer_len, "local server");
-}
-
-static void NET_CL_FreeAddress(net_addr_t *addr)
-{
 }
 
 static net_addr_t *NET_CL_ResolveAddress(const char *address)
@@ -149,7 +145,6 @@ net_module_t net_loop_client_module =
     NET_CL_SendPacket,
     NET_CL_RecvPacket,
     NET_CL_AddrToString,
-    NET_CL_FreeAddress,
     NET_CL_ResolveAddress,
 };
 
@@ -172,7 +167,7 @@ static boolean NET_SV_InitServer(void)
     return true;
 }
 
-static void NET_SV_SendPacket(net_addr_t *addr, net_packet_t *packet)
+static void NET_SV_SendPacket(net_packet_t *packet)
 {
     QueuePush(&client_queue, NET_PacketDup(packet));
 }
@@ -188,20 +183,11 @@ static boolean NET_SV_RecvPacket(net_addr_t **addr, net_packet_t **packet)
         *packet = popped;
         *addr = &server_addr;
         server_addr.module = &net_loop_server_module;
-        
+
         return true;
     }
 
     return false;
-}
-
-static void NET_SV_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
-{
-    M_snprintf(buffer, buffer_len, "local client");
-}
-
-static void NET_SV_FreeAddress(net_addr_t *addr)
-{
 }
 
 static net_addr_t *NET_SV_ResolveAddress(const char *address)
@@ -223,8 +209,6 @@ net_module_t net_loop_server_module =
     NET_SV_InitServer,
     NET_SV_SendPacket,
     NET_SV_RecvPacket,
-    NET_SV_AddrToString,
-    NET_SV_FreeAddress,
     NET_SV_ResolveAddress,
 };
 

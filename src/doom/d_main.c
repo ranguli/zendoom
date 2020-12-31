@@ -341,8 +341,6 @@ void D_BindVariables(void)
 {
     int i;
 
-    M_ApplyPlatformDefaults();
-
     I_BindInputVariables();
     I_BindVideoVariables();
     I_BindJoystickVariables();

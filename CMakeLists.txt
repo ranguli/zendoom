@@ -41,6 +41,6 @@ set(PROGRAM_PREFIX "${PROGRAM_SPREFIX}-")
 
 configure_file(cmake/config.h.cin config.h)
 
-foreach(SUBDIR textscreen opl src)
+foreach(SUBDIR opl src)
     add_subdirectory("${SUBDIR}")
 endforeach()

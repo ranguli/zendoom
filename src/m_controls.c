@@ -271,13 +271,3 @@ void M_BindChatControls(unsigned int num_players)
     }
 }
 
-//
-// Apply custom patches to the default values depending on the
-// platform we are running on.
-//
-
-void M_ApplyPlatformDefaults(void)
-{
-    // no-op. Add your platform-specific patches here.
-}
-
