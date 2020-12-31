@@ -52,7 +52,6 @@ set(GAME_SOURCE_FILES
     i_joystick.c        i_joystick.h
                         i_swap.h
     i_musicpack.c
-    i_oplmusic.c
     i_sdlmusic.c
     i_sdlsound.c
     i_sound.c           i_sound.h
@@ -107,7 +106,7 @@ set(DEHACKED_SOURCE_FILES
 set(SOURCE_FILES ${COMMON_SOURCE_FILES} ${GAME_SOURCE_FILES})
 set(SOURCE_FILES_WITH_DEH ${SOURCE_FILES} ${DEHACKED_SOURCE_FILES})
 
-set(EXTRA_LIBS SDL2::SDL2main SDL2::SDL2 SDL2::mixer SDL2::net opl)
+set(EXTRA_LIBS SDL2::SDL2main SDL2::SDL2 SDL2::mixer SDL2::net)
 
 if(PNG_FOUND)
     list(APPEND EXTRA_LIBS PNG::PNG)
