@@ -15,7 +15,7 @@
 //
 //  * The client waiting screen when we are waiting for the server to
 //    start the game.
-//   
+//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,8 +39,8 @@
 
 static txt_window_t *window;
 static int old_max_players;
-static txt_label_t *player_labels[NET_MAXPLAYERS];
-static txt_label_t *ip_labels[NET_MAXPLAYERS];
+static char *player_labels[NET_MAXPLAYERS];
+static char *ip_labels[NET_MAXPLAYERS];
 static txt_label_t *drone_label;
 static txt_label_t *master_msg_label;
 static boolean had_warning;
@@ -70,6 +70,7 @@ static void OpenWaitDialog(void)
     window = TXT_NewWindow("Waiting for game start...");
 
     TXT_AddWidget(window, TXT_NewLabel("\nPlease wait...\n\n"));
+    printf("Please wait...\n\n");
 
     cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
     TXT_SignalConnect(cancel, "pressed", EscapePressed, NULL);
@@ -101,12 +102,11 @@ static void BuildWindow(void)
 
     for (i = 0; i < net_client_wait_data.max_players; ++i)
     {
-        M_snprintf(buf, sizeof(buf), " %i. ", i + 1);
-        TXT_AddWidget(table, TXT_NewLabel(buf));
-        player_labels[i] = TXT_NewLabel("");
-        ip_labels[i] = TXT_NewLabel("");
-        TXT_AddWidget(table, player_labels[i]);
-        TXT_AddWidget(table, ip_labels[i]);
+        //M_snprintf(buf, sizeof(buf), " %i. ", i + 1);
+        printf(" %i. %s %s\n", i + 1, player_labels[i], ip_labels[i]);
+        //TXT_AddWidget(table, TXT_NewLabel(buf));
+        player_labels[i] = "";
+        ip_labels[i] = "";
     }
 
     drone_label = TXT_NewLabel("");
@@ -118,6 +118,7 @@ static void UpdateGUI(void)
 {
     txt_window_action_t *startgame;
     char buf[50];
+    char command[10];
     unsigned int i;
 
     // If the value of max_players changes, we must rebuild the
@@ -145,20 +146,18 @@ static void UpdateGUI(void)
             color = TXT_COLOR_YELLOW;
         }
 
-        TXT_SetFGColor(player_labels[i], color);
-        TXT_SetFGColor(ip_labels[i], color);
+        //TXT_SetFGColor(player_labels[i], color);
+        //TXT_SetFGColor(ip_labels[i], color);
 
         if (i < net_client_wait_data.num_players)
         {
-            TXT_SetLabel(player_labels[i],
-                         net_client_wait_data.player_names[i]);
-            TXT_SetLabel(ip_labels[i],
-                         net_client_wait_data.player_addrs[i]);
+            player_labels[i] = net_client_wait_data.player_names[i];
+            ip_labels[i] = net_client_wait_data.player_addrs[i];
         }
         else
         {
-            TXT_SetLabel(player_labels[i], "");
-            TXT_SetLabel(ip_labels[i], "");
+            player_labels[i] = "";
+            ip_labels[i] = "";
         }
     }
 
@@ -175,15 +174,18 @@ static void UpdateGUI(void)
 
     if (net_client_wait_data.is_controller)
     {
-        startgame = TXT_NewWindowAction(' ', "Start game");
-        TXT_SignalConnect(startgame, "pressed", StartGame, NULL);
+        printf("You are the controller. Type \"s\" to start server when all players are connected, or any key to refresh the lobby\n");
+        if (getchar() == 's') {
+            NET_CL_LaunchGame();
+        }
     }
     else
     {
         startgame = NULL;
     }
 
-    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, startgame);
+    printf("\e[1;1H\e[2J");
+    //TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, startgame);
 }
 
 static void BuildMasterStatusWindow(void)
@@ -269,10 +271,10 @@ static void CheckSHA1Sums(void)
     }
 
     correct_wad = memcmp(net_local_wad_sha1sum,
-                         net_client_wait_data.wad_sha1sum, 
+                         net_client_wait_data.wad_sha1sum,
                          sizeof(sha1_digest_t)) == 0;
     correct_deh = memcmp(net_local_deh_sha1sum,
-                         net_client_wait_data.deh_sha1sum, 
+                         net_client_wait_data.deh_sha1sum,
                          sizeof(sha1_digest_t)) == 0;
     same_freedoom = net_client_wait_data.is_freedoom == net_local_is_freedoom;
 
@@ -292,7 +294,7 @@ static void CheckSHA1Sums(void)
     {
         printf("Warning: Mixing Freedoom with non-Freedoom\n");
         printf("Local: %u  Server: %i\n",
-               net_local_is_freedoom, 
+               net_local_is_freedoom,
                net_client_wait_data.is_freedoom);
     }
 
@@ -401,7 +403,7 @@ void NET_WaitForLaunch(void)
     }
 
     TXT_SetColor(TXT_COLOR_BLUE, 0x04, 0x14, 0x40); // Romero's "funky blue" color
-    
+
     I_InitWindowIcon();
 
     ParseCommandLineArgs();
