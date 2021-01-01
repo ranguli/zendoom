@@ -78,7 +78,6 @@ musicinfo_t S_music[] =
     MUSIC("dead"),
     MUSIC("stlks2"),
     MUSIC("theda2"),
-    MUSIC("doom2"),
     MUSIC("ddtbl2"),
     MUSIC("runni2"),
     MUSIC("dead2"),
@@ -100,7 +99,7 @@ musicinfo_t S_music[] =
     MUSIC("ultima"),
     MUSIC("read_m"),
     MUSIC("dm2ttl"),
-    MUSIC("dm2int") 
+    MUSIC("dm2int")
 };
 
 

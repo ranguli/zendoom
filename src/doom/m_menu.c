@@ -1097,10 +1097,7 @@ void M_QuitResponse(int key)
 	return;
     if (!netgame)
     {
-	if (gamemode == commercial)
-	    S_StartSound(NULL,quitsounds2[(gametic>>2)&7]);
-	else
-	    S_StartSound(NULL,quitsounds[(gametic>>2)&7]);
+	S_StartSound(NULL,quitsounds[(gametic>>2)&7]);
 	I_WaitVBL(105);
     }
     I_Quit ();
@@ -1111,18 +1108,7 @@ static const char *M_SelectEndMessage(void)
 {
     const char **endmsg;
 
-    if (logical_gamemission == doom)
-    {
-        // Doom 1
-
-        endmsg = doom1_endmsg;
-    }
-    else
-    {
-        // Doom 2
-
-        endmsg = doom2_endmsg;
-    }
+    endmsg = doom1_endmsg;
 
     return endmsg[gametic % NUM_QUITMESSAGES];
 }
@@ -2036,18 +2022,6 @@ void M_Init (void)
     if (gameversion >= exe_final && gameversion <= exe_final2)
     {
         ReadDef2.routine = M_DrawReadThisCommercial;
-    }
-
-    if (gamemode == commercial)
-    {
-        MainMenu[readthis] = MainMenu[quitdoom];
-        MainDef.numitems--;
-        MainDef.y += 8;
-        NewDef.prevMenu = &MainDef;
-        ReadDef1.routine = M_DrawReadThisCommercial;
-        ReadDef1.x = 330;
-        ReadDef1.y = 165;
-        ReadMenu1[rdthsempty1].routine = M_FinishReadThis;
     }
 
     // Versions of doom.exe before the Ultimate Doom release only had

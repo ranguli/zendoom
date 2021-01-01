@@ -51,7 +51,6 @@
 #include "hu_stuff.h"
 #include "st_stuff.h"
 #include "am_map.h"
-#include "statdump.h"
 
 #include "w_wad.h"
 
@@ -599,31 +598,6 @@ void G_DoLoadLevel (void)
     //  setting one.
 
     skyflatnum = R_FlatNumForName(DEH_String(SKYFLATNAME));
-
-    // The "Sky never changes in Doom II" bug was fixed in
-    // the id Anthology version of doom2.exe for Final Doom.
-    if ((gamemode == commercial)
-     && (gameversion == exe_final2))
-    {
-        const char *skytexturename;
-
-        if (gamemap < 12)
-        {
-            skytexturename = "SKY1";
-        }
-        else if (gamemap < 21)
-        {
-            skytexturename = "SKY2";
-        }
-        else
-        {
-            skytexturename = "SKY3";
-        }
-
-        skytexturename = DEH_String(skytexturename);
-
-        skytexture = R_TextureNumForName(skytexturename);
-    }
 
     levelstarttic = gametic;        // for time calculation
 
@@ -1298,11 +1272,6 @@ void G_ExitLevel (void)
 // Here's for the german edition.
 void G_SecretExitLevel (void)
 {
-    // IF NO WOLF3D LEVELS, NO SECRET EXIT!
-    if ( (gamemode == commercial)
-      && (W_CheckNumForName("map31")<0))
-	secretexit = false;
-    else
 	secretexit = true;
     gameaction = ga_completed;
 }
@@ -1320,32 +1289,26 @@ void G_DoCompleted (void)
     if (automapactive)
 	AM_Stop ();
 
-    if (gamemode != commercial)
+    switch(gamemap)
     {
-
-        switch(gamemap)
-        {
-          case 8:
-            gameaction = ga_victory;
-            return;
-          case 9:
-            for (i=0 ; i<MAXPLAYERS ; i++)
-                players[i].didsecret = true;
-            break;
-        }
+      case 8:
+        gameaction = ga_victory;
+        return;
+      case 9:
+        for (i=0 ; i<MAXPLAYERS ; i++)
+            players[i].didsecret = true;
+        break;
     }
 
 //#if 0  Hmmm - why?
-    if ( (gamemap == 8)
-	 && (gamemode != commercial) )
+    if (gamemap == 8)
     {
 	// victory
 	gameaction = ga_victory;
 	return;
     }
 
-    if ( (gamemap == 9)
-	 && (gamemode != commercial) )
+    if (gamemap == 9)
     {
 	// exit secret level
 	for (i=0 ; i<MAXPLAYERS ; i++)
@@ -1359,24 +1322,6 @@ void G_DoCompleted (void)
     wminfo.last = gamemap -1;
 
     // wminfo.next is 0 biased, unlike gamemap
-    if ( gamemode == commercial)
-    {
-	if (secretexit)
-	    switch(gamemap)
-	    {
-	      case 15: wminfo.next = 30; break;
-	      case 31: wminfo.next = 31; break;
-	    }
-	else
-	    switch(gamemap)
-	    {
-	      case 31:
-	      case 32: wminfo.next = 15; break;
-	      default: wminfo.next = gamemap;
-	    }
-    }
-    else
-    {
 	if (secretexit)
 	    wminfo.next = 8; 	// go to secret level
 	else if (gamemap == 9)
@@ -1400,42 +1345,13 @@ void G_DoCompleted (void)
 	}
 	else
 	    wminfo.next = gamemap;          // go to next level
-    }
 
     wminfo.maxkills = totalkills;
     wminfo.maxitems = totalitems;
     wminfo.maxsecret = totalsecret;
     wminfo.maxfrags = 0;
 
-    // Set par time. Exceptions are added for purposes of
-    // statcheck regression testing.
-    if (gamemode == commercial)
-    {
-        // map33 reads its par time from beyond the cpars[] array
-        if (gamemap == 33)
-        {
-            int cpars32;
-
-            memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
-            cpars32 = LONG(cpars32);
-
-            wminfo.partime = TICRATE*cpars32;
-        }
-        else
-        {
-            wminfo.partime = TICRATE*cpars[gamemap-1];
-        }
-    }
-    // Doom episode 4 doesn't have a par time, so this
-    // overflows into the cpars array.
-    else if (gameepisode < 4)
-    {
-        wminfo.partime = TICRATE*pars[gameepisode][gamemap];
-    }
-    else
-    {
-        wminfo.partime = TICRATE*cpars[gamemap];
-    }
+    wminfo.partime = TICRATE*cpars[gamemap];
 
     wminfo.pnum = consoleplayer;
 
@@ -1454,8 +1370,6 @@ void G_DoCompleted (void)
     viewactive = false;
     automapactive = false;
 
-    StatCopy(&wminfo);
-
     WI_Start (&wminfo);
 }
 
@@ -1469,23 +1383,6 @@ void G_WorldDone (void)
 
     if (secretexit)
 	players[consoleplayer].didsecret = true;
-
-    if ( gamemode == commercial )
-    {
-	switch (gamemap)
-	{
-	  case 15:
-	  case 31:
-	    if (!secretexit)
-		break;
-	  case 6:
-	  case 11:
-	  case 20:
-	  case 30:
-	    F_StartFinale ();
-	    break;
-	}
-    }
 }
 
 void G_DoWorldDone (void)
@@ -1767,8 +1664,7 @@ G_InitNew
     if (map < 1)
 	map = 1;
 
-    if ( (map > 9)
-	 && ( gamemode != commercial) )
+    if (map > 9)
       map = 9;
 
     M_ClearRandom ();
@@ -1818,37 +1714,24 @@ G_InitNew
     // restore from a saved game.  This was fixed before the Doom
     // source release, but this IS the way Vanilla DOS Doom behaves.
 
-    if (gamemode == commercial)
+    switch (gameepisode)
     {
-        skytexturename = DEH_String("SKY3");
-        skytexture = R_TextureNumForName(skytexturename);
-        if (gamemap < 21)
-        {
-            skytexturename = DEH_String(gamemap < 12 ? "SKY1" : "SKY2");
-            skytexture = R_TextureNumForName(skytexturename);
-        }
+      default:
+      case 1:
+        skytexturename = "SKY1";
+        break;
+      case 2:
+        skytexturename = "SKY2";
+        break;
+      case 3:
+        skytexturename = "SKY3";
+        break;
+      case 4:        // Special Edition sky
+        skytexturename = "SKY4";
+        break;
     }
-    else
-    {
-        switch (gameepisode)
-        {
-          default:
-          case 1:
-            skytexturename = "SKY1";
-            break;
-          case 2:
-            skytexturename = "SKY2";
-            break;
-          case 3:
-            skytexturename = "SKY3";
-            break;
-          case 4:        // Special Edition sky
-            skytexturename = "SKY4";
-            break;
-        }
-        skytexturename = DEH_String(skytexturename);
-        skytexture = R_TextureNumForName(skytexturename);
-    }
+    skytexturename = DEH_String(skytexturename);
+    skytexture = R_TextureNumForName(skytexturename);
 
     G_DoLoadLevel ();
 }

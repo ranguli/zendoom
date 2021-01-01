@@ -143,23 +143,6 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(music_volume),
 
     //!
-    // @game strife
-    //
-    // If non-zero, dialogue text is displayed over characters' pictures
-    // when engaging actors who have voices.
-    //
-
-    CONFIG_VARIABLE_INT(show_talk),
-
-    //!
-    // @game strife
-    //
-    // Volume of voice sound effects, range 0-15.
-    //
-
-    CONFIG_VARIABLE_INT(voice_volume),
-
-    //!
     // @game doom
     //
     // If non-zero, messages are displayed on the heads-up display
@@ -303,18 +286,6 @@ static default_t	doom_defaults_list[] =
     //
 
     CONFIG_VARIABLE_INT(screenblocks),
-
-    //!
-    // @game strife
-    //
-    // Screen size, range 3-11.
-    //
-    // A value of 11 gives a full-screen view with the status bar not
-    // displayed.  A value of 10 gives a full-screen view with the
-    // status bar displayed.
-    //
-
-    CONFIG_VARIABLE_INT(screensize),
 
     //!
     // @game doom
@@ -559,7 +530,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(show_endoom),
 
     //!
-    // @game doom strife
+    // @game doom
     //
     // If non-zero, a disk activity indicator is displayed when data is read
     // from disk. If zero, the disk activity indicator is not displayed.
@@ -617,7 +588,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_STRING(music_pack_path),
 
     //!
-    // @game doom strife
+    // @game doom
     //
     // If non-zero, the Vanilla savegame limit is enforced; if the
     // savegame exceeds 180224 bytes in size, the game will exit with
@@ -628,7 +599,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(vanilla_savegame_limit),
 
     //!
-    // @game doom strife
+    // @game doom
     //
     // If non-zero, the Vanilla demo size limit is enforced; the game
     // exits with an error when a demo exceeds the demo size limit
@@ -1797,7 +1768,7 @@ char *M_GetSaveGameDir(const char *iwadname)
         topdir = M_StringJoin(configdir, "savegames", NULL);
         M_MakeDirectory(topdir);
 
-        // eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
+        // eg. ~/.local/share/chocolate-doom/savegames/doom.wad/
 
         savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname,
                                    DIR_SEPARATOR_S, NULL);

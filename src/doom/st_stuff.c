@@ -394,7 +394,6 @@ cheatseq_t cheat_god = CHEAT("iddqd", 0);
 cheatseq_t cheat_ammo = CHEAT("idkfa", 0);
 cheatseq_t cheat_ammonokey = CHEAT("idfa", 0);
 cheatseq_t cheat_noclip = CHEAT("idspispopd", 0);
-cheatseq_t cheat_commercial_noclip = CHEAT("idclip", 0);
 
 cheatseq_t	cheat_powerup[7] =
 {
@@ -532,30 +531,14 @@ ST_Responder (event_t* ev)
         // in the Ultimate Doom executable so that it would work for
         // the Doom 1 music as well.
 
-	if (gamemode == commercial || gameversion < exe_ultimate)
-	{
-	  musnum = mus_runnin + (buf[0]-'0')*10 + buf[1]-'0' - 1;
-
-	  if (((buf[0]-'0')*10 + buf[1]-'0') > 35
-       && gameversion >= exe_doom_1_8)
-	    plyr->message = DEH_String(STSTR_NOMUS);
-	  else
-	    S_ChangeMusic(musnum, 1);
-	}
-	else
-	{
 	  musnum = mus_e1m1 + (buf[0]-'1')*9 + (buf[1]-'1');
 
 	  if (((buf[0]-'1')*9 + buf[1]-'1') > 31)
 	    plyr->message = DEH_String(STSTR_NOMUS);
 	  else
 	    S_ChangeMusic(musnum, 1);
-	}
       }
-      else if ( (logical_gamemission == doom
-                 && cht_CheckCheat(&cheat_noclip, ev->data2))
-             || (logical_gamemission != doom
-                 && cht_CheckCheat(&cheat_commercial_noclip,ev->data2)))
+      else if ( (logical_gamemission == doom && cht_CheckCheat(&cheat_noclip, ev->data2)))
       {
         // Noclip cheat.
         // For Doom 1, use the idspipsopd cheat; for all others, use
@@ -617,51 +600,28 @@ ST_Responder (event_t* ev)
 
       cht_GetParam(&cheat_clev, buf);
 
-      if (gamemode == commercial)
-      {
-	epsd = 0;
-	map = (buf[0] - '0')*10 + buf[1] - '0';
-      }
-      else
-      {
-        epsd = buf[0] - '0';
-        map = buf[1] - '0';
-      }
+      epsd = buf[0] - '0';
+      map = buf[1] - '0';
 
-      // Catch invalid maps.
-      if (gamemode != commercial)
+      if (epsd < 1)
       {
-          if (epsd < 1)
-          {
-              return false;
-          }
-          if (epsd > 4)
-          {
-              return false;
-          }
-          if (epsd == 4 && gameversion < exe_ultimate)
-          {
-              return false;
-          }
-          if (map < 1)
-          {
-              return false;
-          }
-          if (map > 9)
-          {
-              return false;
-          }
+          return false;
       }
-      else
+      if (epsd > 4)
       {
-          if (map < 1)
-          {
-              return false;
-          }
-          if (map > 40)
-          {
-              return false;
-          }
+          return false;
+      }
+      if (epsd == 4)
+      {
+          return false;
+      }
+      if (map < 1)
+      {
+          return false;
+      }
+      if (map > 9)
+      {
+          return false;
       }
 
       // So be it.

@@ -26,7 +26,7 @@
 #include "am_map.h"
 #include "st_stuff.h"
 
-typedef struct 
+typedef struct
 {
     const char *name;
     cheatseq_t *seq;
@@ -40,7 +40,6 @@ static deh_cheat_t allcheats[] =
     {"Ammo & Keys",         &cheat_ammo },
     {"Ammo",                &cheat_ammonokey },
     {"No Clipping 1",       &cheat_noclip },
-    {"No Clipping 2",       &cheat_commercial_noclip },
     {"Invincibility",       &cheat_powerup[0] },
     {"Berserk",             &cheat_powerup[1] },
     {"Invisibility",        &cheat_powerup[2] },
@@ -56,7 +55,7 @@ static deh_cheat_t allcheats[] =
 static deh_cheat_t *FindCheatByName(char *name)
 {
     size_t i;
-    
+
     for (i=0; i<arrlen(allcheats); ++i)
     {
         if (!strcasecmp(allcheats[i].name, name))

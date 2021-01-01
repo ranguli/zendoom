@@ -402,7 +402,6 @@ P_TouchSpecialThing
 	break;
 
       case SPR_MEGA:
-	if (gamemode != commercial)
 	    return;
 	player->health = deh_megasphere_health;
 	player->mo->health = player->health;

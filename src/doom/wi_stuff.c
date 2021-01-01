@@ -329,10 +329,6 @@ static int		cnt_time;
 static int		cnt_par;
 static int		cnt_pause;
 
-// # of commercial levels
-static int		NUMCMAPS;
-
-
 //
 //	GRAPHICS
 //
@@ -408,35 +404,6 @@ void WI_slamBackground(void)
 void WI_drawLF(void)
 {
     int y = WI_TITLEY;
-
-    if (gamemode != commercial || wbs->last < NUMCMAPS)
-    {
-        // draw <LevelName>
-        V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->last]->width))/2,
-                    y, lnames[wbs->last]);
-
-        // draw "Finished!"
-        y += (5*SHORT(lnames[wbs->last]->height))/4;
-
-        V_DrawPatch((SCREENWIDTH - SHORT(finished->width)) / 2, y, finished);
-    }
-    else if (wbs->last == NUMCMAPS)
-    {
-        // MAP33 - draw "Finished!" only
-        V_DrawPatch((SCREENWIDTH - SHORT(finished->width)) / 2, y, finished);
-    }
-    else if (wbs->last > NUMCMAPS)
-    {
-        // > MAP33.  Doom bombs out here with a Bad V_DrawPatch error.
-        // I'm pretty sure that doom2.exe is just reading into random
-        // bits of memory at this point, but let's try to be accurate
-        // anyway.  This deliberately triggers a V_DrawPatch error.
-
-        patch_t tmp = { SCREENWIDTH, SCREENHEIGHT, 1, 1,
-                        { 0, 0, 0, 0, 0, 0, 0, 0 } };
-
-        V_DrawPatch(0, y, &tmp);
-    }
 }
 
 
@@ -514,9 +481,6 @@ void WI_initAnimatedBack(void)
     int		i;
     anim_t*	a;
 
-    if (gamemode == commercial)
-	return;
-
     if (wbs->epsd > 2)
 	return;
 
@@ -542,9 +506,6 @@ void WI_updateAnimatedBack(void)
 {
     int		i;
     anim_t*	a;
-
-    if (gamemode == commercial)
-	return;
 
     if (wbs->epsd > 2)
 	return;
@@ -593,9 +554,6 @@ void WI_drawAnimatedBack(void)
 {
     int			i;
     anim_t*		a;
-
-    if (gamemode == commercial)
-	return;
 
     if (wbs->epsd > 2)
 	return;
@@ -792,8 +750,6 @@ void WI_drawShowNextLoc(void)
     // draw animated background
     WI_drawAnimatedBack();
 
-    if ( gamemode != commercial)
-    {
   	if (wbs->epsd > 2)
 	{
 	    WI_drawEL();
@@ -813,11 +769,9 @@ void WI_drawShowNextLoc(void)
 	// draw flashing ptr
 	if (snl_pointeron)
 	    WI_drawOnLnode(wbs->next, yah);
-    }
 
     // draws which level you are entering..
-    if ( (gamemode != commercial)
-	 || wbs->next != 30)
+    if (wbs->next != 30)
 	WI_drawEL();
 
 }
@@ -973,9 +927,6 @@ void WI_updateDeathmatchStats(void)
 	{
 	    S_StartSound(0, sfx_slop);
 
-	    if ( gamemode == commercial)
-		WI_initNoState();
-	    else
 		WI_initShowNextLoc();
 	}
     }
@@ -1244,9 +1195,6 @@ void WI_updateNetgameStats(void)
 	if (acceleratestage)
 	{
 	    S_StartSound(0, sfx_sgcock);
-	    if ( gamemode == commercial )
-		WI_initNoState();
-	    else
 		WI_initShowNextLoc();
 	}
     }
@@ -1420,9 +1368,6 @@ void WI_updateStats(void)
 	{
 	    S_StartSound(0, sfx_sgcock);
 
-	    if (gamemode == commercial)
-		WI_initNoState();
-	    else
 		WI_initShowNextLoc();
 	}
     }
@@ -1512,9 +1457,6 @@ void WI_Ticker(void)
     if (bcnt == 1)
     {
 	// intermission music
-  	if ( gamemode == commercial )
-	  S_ChangeMusic(mus_dm2int, true);
-	else
 	  S_ChangeMusic(mus_inter, true);
     }
 
@@ -1550,16 +1492,6 @@ static void WI_loadUnloadData(load_callback_t callback)
     char name[9];
     anim_t *a;
 
-    if (gamemode == commercial)
-    {
-	for (i=0 ; i<NUMCMAPS ; i++)
-	{
-	    DEH_snprintf(name, 9, "CWILV%2.2d", i);
-            callback(name, &lnames[i]);
-	}
-    }
-    else
-    {
 	for (i=0 ; i<NUMMAPS ; i++)
 	{
 	    DEH_snprintf(name, 9, "WILV%d%d", wbs->epsd, i);
@@ -1597,7 +1529,6 @@ static void WI_loadUnloadData(load_callback_t callback)
 		}
 	    }
 	}
-    }
 
     // More hacks on minus sign.
     if (W_CheckNumForName(DEH_String("WIMINUS")) > 0)
@@ -1677,20 +1608,7 @@ static void WI_loadUnloadData(load_callback_t callback)
         callback(name, &bp[i]);
     }
 
-    // Background image
-
-    if (gamemode == commercial)
-    {
-        M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
-    }
-    else if (gameversion >= exe_ultimate && wbs->epsd == 3)
-    {
-        M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
-    }
-    else
-    {
 	DEH_snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
-    }
 
     // Draw backdrop and save to a temporary buffer
 
@@ -1704,17 +1622,7 @@ static void WI_loadCallback(const char *name, patch_t **variable)
 
 void WI_loadData(void)
 {
-    if (gamemode == commercial)
-    {
-	NUMCMAPS = 32;
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
-				       PU_STATIC, NULL);
-    }
-    else
-    {
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMMAPS,
-				       PU_STATIC, NULL);
-    }
+	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMMAPS, PU_STATIC, NULL);
 
     WI_loadUnloadData(WI_loadCallback);
 
@@ -1775,18 +1683,7 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
     wbs = wbstartstruct;
 
 #ifdef RANGECHECKING
-    if (gamemode != commercial)
-    {
-      if (gameversion >= exe_ultimate)
-	RNGCHECK(wbs->epsd, 0, 3);
-      else
 	RNGCHECK(wbs->epsd, 0, 2);
-    }
-    else
-    {
-	RNGCHECK(wbs->last, 0, 8);
-	RNGCHECK(wbs->next, 0, 8);
-    }
     RNGCHECK(wbs->pnum, 0, MAXPLAYERS);
     RNGCHECK(wbs->pnum, 0, MAXPLAYERS);
 #endif

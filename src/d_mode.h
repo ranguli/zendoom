@@ -27,12 +27,6 @@
 typedef enum
 {
     doom,            // Doom 1
-    doom2,           // Doom 2
-    pack_tnt,        // Final Doom: TNT: Evilution
-    pack_plut,       // Final Doom: The Plutonia Experiment
-    pack_hacx,       // Hacx (modded doom2)
-    strife,          // Strife
-
     none
 } GameMission_t;
 
@@ -44,7 +38,6 @@ typedef enum
 {
     shareware,       // Doom shareware
     registered,      // Doom registered
-    commercial,      // Doom II/Hexen
     retail,          // Ultimate Doom
     indetermined     // Unknown.
 } GameMode_t;
@@ -61,9 +54,7 @@ typedef enum
     exe_hacx,        // Hacx
     exe_ultimate,    // Ultimate Doom (retail)
     exe_final,       // Final Doom
-    exe_final2,      // Final Doom (alternate exe)
-    exe_strife_1_2,  // Strife v1.2
-    exe_strife_1_31  // Strife v1.31
+    exe_final2       // Final Doom (alternate exe)
 } GameVersion_t;
 
 // What IWAD variant are we using?
@@ -71,9 +62,7 @@ typedef enum
 typedef enum
 {
     vanilla,    // Vanilla Doom
-    freedoom,   // FreeDoom: Phase 1 + 2
-    freedm,     // FreeDM
-    bfgedition, // Doom Classic (Doom 3: BFG Edition)
+    freedoom    // FreeDoom: Phase 1 + 2
 } GameVariant_t;
 
 // Skill level.

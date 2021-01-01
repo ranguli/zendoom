@@ -116,10 +116,6 @@ typedef struct
 
     unsigned int is_freedoom;
 
-    // Player class (for Hexen)
-
-    int player_class;
-
 } net_client_t;
 
 // structure used for the recv window
@@ -776,7 +772,6 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
     client->name = M_StringDuplicate(player_name);
     client->recording_lowres = data.lowres_turn;
     client->drone = data.drone;
-    client->player_class = data.player_class;
 
     // Send a reply back to the client, indicating a successful connection
     // and specifying the protocol that will be used for communications.

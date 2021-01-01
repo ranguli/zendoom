@@ -21,11 +21,7 @@
 
 #include "d_mode.h"
 
-#define IWAD_MASK_DOOM    ((1 << doom)           \
-                         | (1 << doom2)          \
-                         | (1 << pack_tnt)       \
-                         | (1 << pack_plut)      \
-                         | (1 << pack_hacx))
+#define IWAD_MASK_DOOM    ((1 << doom))
 
 typedef struct
 {

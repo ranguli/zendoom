@@ -79,7 +79,6 @@ typedef enum
     mus_dead,
     mus_stlks2,
     mus_theda2,
-    mus_doom2,
     mus_ddtbl2,
     mus_runni2,
     mus_dead2,

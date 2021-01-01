@@ -33,17 +33,9 @@
 
 static const iwad_t iwads[] =
 {
-    { "doom2.wad",    doom2,     commercial, "Doom II" },
-    { "plutonia.wad", pack_plut, commercial, "Final Doom: Plutonia Experiment" },
-    { "tnt.wad",      pack_tnt,  commercial, "Final Doom: TNT: Evilution" },
     { "doom.wad",     doom,      retail,     "Doom" },
     { "doom1.wad",    doom,      shareware,  "Doom Shareware" },
-    { "hacx.wad",     pack_hacx, commercial, "Hacx" },
-    { "freedoom2.wad", doom2,    commercial, "Freedoom: Phase 2" },
     { "freedoom1.wad", doom,     retail,     "Freedoom: Phase 1" },
-    { "freedm.wad",   doom2,     commercial, "FreeDM" },
-    //{ "strife0.wad",  strife,    commercial, "Strife" }, // haleyjd: STRIFE-FIXME
-    { "strife1.wad",  strife,    commercial, "Strife" },
 };
 
 // Array of locations to search for IWAD files
@@ -402,14 +394,6 @@ const char *D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevari
         {
             return "freedoom1.wad";
         }
-        else if (gamemission == doom2)
-        {
-            return "freedoom2.wad";
-        }
-    }
-    else if (gamevariant == freedm && gamemission == doom2)
-    {
-        return "freedm.wad";
     }
 
     for (i=0; i<arrlen(iwads); ++i)

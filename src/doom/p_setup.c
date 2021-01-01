@@ -84,12 +84,12 @@ int		bmapwidth;
 int		bmapheight;	// size in mapblocks
 short*		blockmap;	// int for larger maps
 // offsets in blockmap are from here
-short*		blockmaplump;		
+short*		blockmaplump;
 // origin of block map
 fixed_t		bmaporgx;
 fixed_t		bmaporgy;
 // for thing chains
-mobj_t**	blocklinks;		
+mobj_t**	blocklinks;
 
 
 // REJECT
@@ -129,11 +129,11 @@ void P_LoadVertexes (int lump)
     numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
 
     // Allocate zone memory for buffer.
-    vertexes = Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,0);	
+    vertexes = Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,0);
 
     // Load data into cache.
     data = W_CacheLumpNum (lump, PU_STATIC);
-	
+
     ml = (mapvertex_t *)data;
     li = vertexes;
 
@@ -181,12 +181,12 @@ void P_LoadSegs (int lump)
     int			linedef;
     int			side;
     int                 sidenum;
-	
+
     numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-    segs = Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,0);	
+    segs = Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,0);
     memset (segs, 0, numsegs*sizeof(seg_t));
     data = W_CacheLumpNum (lump,PU_STATIC);
-	
+
     ml = (mapseg_t *)data;
     li = segs;
     for (i=0 ; i<numsegs ; i++, li++, ml++)
@@ -235,7 +235,7 @@ void P_LoadSegs (int lump)
 	    li->backsector = 0;
         }
     }
-	
+
     W_ReleaseLumpNum(lump);
 }
 
@@ -249,21 +249,21 @@ void P_LoadSubsectors (int lump)
     int			i;
     mapsubsector_t*	ms;
     subsector_t*	ss;
-	
+
     numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-    subsectors = Z_Malloc (numsubsectors*sizeof(subsector_t),PU_LEVEL,0);	
+    subsectors = Z_Malloc (numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
     data = W_CacheLumpNum (lump,PU_STATIC);
-	
+
     ms = (mapsubsector_t *)data;
     memset (subsectors,0, numsubsectors*sizeof(subsector_t));
     ss = subsectors;
-    
+
     for (i=0 ; i<numsubsectors ; i++, ss++, ms++)
     {
 	ss->numlines = SHORT(ms->numsegs);
 	ss->firstline = SHORT(ms->firstseg);
     }
-	
+
     W_ReleaseLumpNum(lump);
 }
 
@@ -278,12 +278,12 @@ void P_LoadSectors (int lump)
     int			i;
     mapsector_t*	ms;
     sector_t*		ss;
-	
+
     numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-    sectors = Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,0);	
+    sectors = Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,0);
     memset (sectors, 0, numsectors*sizeof(sector_t));
     data = W_CacheLumpNum (lump,PU_STATIC);
-	
+
     ms = (mapsector_t *)data;
     ss = sectors;
     for (i=0 ; i<numsectors ; i++, ss++, ms++)
@@ -297,7 +297,7 @@ void P_LoadSectors (int lump)
 	ss->tag = SHORT(ms->tag);
 	ss->thinglist = NULL;
     }
-	
+
     W_ReleaseLumpNum(lump);
 }
 
@@ -313,14 +313,14 @@ void P_LoadNodes (int lump)
     int		k;
     mapnode_t*	mn;
     node_t*	no;
-	
+
     numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-    nodes = Z_Malloc (numnodes*sizeof(node_t),PU_LEVEL,0);	
+    nodes = Z_Malloc (numnodes*sizeof(node_t),PU_LEVEL,0);
     data = W_CacheLumpNum (lump,PU_STATIC);
-	
+
     mn = (mapnode_t *)data;
     no = nodes;
-    
+
     for (i=0 ; i<numnodes ; i++, no++, mn++)
     {
 	no->x = SHORT(mn->x)<<FRACBITS;
@@ -334,7 +334,7 @@ void P_LoadNodes (int lump)
 		no->bbox[j][k] = SHORT(mn->bbox[j][k])<<FRACBITS;
 	}
     }
-	
+
     W_ReleaseLumpNum(lump);
 }
 
@@ -353,15 +353,13 @@ void P_LoadThings (int lump)
 
     data = W_CacheLumpNum (lump,PU_STATIC);
     numthings = W_LumpLength (lump) / sizeof(mapthing_t);
-	
+
     mt = (mapthing_t *)data;
     for (i=0 ; i<numthings ; i++, mt++)
     {
 	spawn = true;
 
-	// Do not spawn cool, new monsters if !commercial
-	if (gamemode != commercial)
-	{
+	// Do not spawn cool, new monsters in DOOM 1
 	    switch (SHORT(mt->type))
 	    {
 	      case 68:	// Arachnotron
@@ -377,17 +375,16 @@ void P_LoadThings (int lump)
 		spawn = false;
 		break;
 	    }
-	}
 	if (spawn == false)
 	    break;
 
-	// Do spawn all other stuff. 
+	// Do spawn all other stuff.
 	spawnthing.x = SHORT(mt->x);
 	spawnthing.y = SHORT(mt->y);
 	spawnthing.angle = SHORT(mt->angle);
 	spawnthing.type = SHORT(mt->type);
 	spawnthing.options = SHORT(mt->options);
-	
+
 	P_SpawnMapThing(&spawnthing);
     }
 
@@ -419,12 +416,12 @@ void P_LoadLineDefs (int lump)
     line_t*		ld;
     vertex_t*		v1;
     vertex_t*		v2;
-	
+
     numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-    lines = Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);	
+    lines = Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);
     memset (lines, 0, numlines*sizeof(line_t));
     data = W_CacheLumpNum (lump,PU_STATIC);
-	
+
     mld = (maplinedef_t *)data;
     ld = lines;
     for (i=0 ; i<numlines ; i++, mld++, ld++)
@@ -436,7 +433,7 @@ void P_LoadLineDefs (int lump)
 	v2 = ld->v2 = &vertexes[SHORT(mld->v2)];
 	ld->dx = v2->x - v1->x;
 	ld->dy = v2->y - v1->y;
-	
+
 	if (!ld->dx)
 	    ld->slopetype = ST_VERTICAL;
 	else if (!ld->dy)
@@ -448,7 +445,7 @@ void P_LoadLineDefs (int lump)
 	    else
 		ld->slopetype = ST_NEGATIVE;
 	}
-		
+
 	if (v1->x < v2->x)
 	{
 	    ld->bbox[BOXLEFT] = v1->x;
@@ -498,12 +495,12 @@ void P_LoadSideDefs (int lump)
     int			i;
     mapsidedef_t*	msd;
     side_t*		sd;
-	
+
     numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-    sides = Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,0);	
+    sides = Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,0);
     memset (sides, 0, numsides*sizeof(side_t));
     data = W_CacheLumpNum (lump,PU_STATIC);
-	
+
     msd = (mapsidedef_t *)data;
     sd = sides;
     for (i=0 ; i<numsides ; i++, msd++, sd++)
@@ -531,25 +528,25 @@ void P_LoadBlockMap (int lump)
 
     lumplen = W_LumpLength(lump);
     count = lumplen / 2;
-	
+
     blockmaplump = Z_Malloc(lumplen, PU_LEVEL, NULL);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 
     // Swap all short integers to native byte ordering.
-  
+
     for (i=0; i<count; i++)
     {
 	blockmaplump[i] = SHORT(blockmaplump[i]);
     }
-		
+
     // Read the header
 
     bmaporgx = blockmaplump[0]<<FRACBITS;
     bmaporgy = blockmaplump[1]<<FRACBITS;
     bmapwidth = blockmaplump[2];
     bmapheight = blockmaplump[3];
-	
+
     // Clear out mobj chains
 
     count = sizeof(*blocklinks) * bmapwidth * bmapheight;
@@ -575,7 +572,7 @@ void P_GroupLines (void)
     seg_t*		seg;
     fixed_t		bbox[4];
     int			block;
-	
+
     // look up sector number for each subsector
     ss = subsectors;
     for (i=0 ; i<numsubsectors ; i++, ss++)
@@ -599,7 +596,7 @@ void P_GroupLines (void)
 	}
     }
 
-    // build line tables for each sector	
+    // build line tables for each sector
     linebuffer = Z_Malloc (totallines*sizeof(line_t *), PU_LEVEL, 0);
 
     for (i=0; i<numsectors; ++i)
@@ -618,7 +615,7 @@ void P_GroupLines (void)
     // Assign lines to sectors
 
     for (i=0; i<numlines; ++i)
-    { 
+    {
         li = &lines[i];
 
         if (li->frontsector != NULL)
@@ -637,9 +634,9 @@ void P_GroupLines (void)
             ++sector->linecount;
         }
     }
-    
+
     // Generate bounding boxes for sectors
-	
+
     sector = sectors;
     for (i=0 ; i<numsectors ; i++, sector++)
     {
@@ -656,7 +653,7 @@ void P_GroupLines (void)
 	// set the degenmobj_t to the middle of the bounding box
 	sector->soundorg.x = (bbox[BOXRIGHT]+bbox[BOXLEFT])/2;
 	sector->soundorg.y = (bbox[BOXTOP]+bbox[BOXBOTTOM])/2;
-		
+
 	// adjust bounding box to map blocks
 	block = (bbox[BOXTOP]-bmaporgy+MAXRADIUS)>>MAPBLOCKSHIFT;
 	block = block >= bmapheight ? bmapheight-1 : block;
@@ -674,7 +671,7 @@ void P_GroupLines (void)
 	block = block < 0 ? 0 : block;
 	sector->blockbox[BOXLEFT]=block;
     }
-	
+
 }
 
 // Pad the REJECT lump with extra data when the lump is too small,
@@ -777,21 +774,21 @@ P_SetupLevel
     int		i;
     char	lumpname[9];
     int		lumpnum;
-	
+
     totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
     wminfo.partime = 180;
     for (i=0 ; i<MAXPLAYERS ; i++)
     {
-	players[i].killcount = players[i].secretcount 
+	players[i].killcount = players[i].secretcount
 	    = players[i].itemcount = 0;
     }
 
     // Initial height of PointOfView
     // will be set by player think.
-    players[consoleplayer].viewz = 1; 
+    players[consoleplayer].viewz = 1;
 
     // Make sure all sounds are stopped before Z_FreeTags.
-    S_Start ();			
+    S_Start ();
 
     Z_FreeTags (PU_LEVEL, PU_PURGELEVEL-1);
 
@@ -801,30 +798,19 @@ P_SetupLevel
     // if working with a devlopment map, reload it
     W_Reload ();
 
-    // find map name
-    if ( gamemode == commercial)
-    {
-	if (map<10)
-	    DEH_snprintf(lumpname, 9, "map0%i", map);
-	else
-	    DEH_snprintf(lumpname, 9, "map%i", map);
-    }
-    else
-    {
 	lumpname[0] = 'E';
 	lumpname[1] = '0' + episode;
 	lumpname[2] = 'M';
 	lumpname[3] = '0' + map;
 	lumpname[4] = 0;
-    }
 
     lumpnum = W_GetNumForName (lumpname);
-	
+
     maplumpinfo = lumpinfo[lumpnum];
 
     leveltime = 0;
-	
-    // note: most of this ordering is important	
+
+    // note: most of this ordering is important
     P_LoadBlockMap (lumpnum+ML_BLOCKMAP);
     P_LoadVertexes (lumpnum+ML_VERTEXES);
     P_LoadSectors (lumpnum+ML_SECTORS);
@@ -841,7 +827,7 @@ P_SetupLevel
     bodyqueslot = 0;
     deathmatch_p = deathmatchstarts;
     P_LoadThings (lumpnum+ML_THINGS);
-    
+
     // if deathmatch, randomly spawn the active players
     if (deathmatch)
     {
@@ -851,15 +837,15 @@ P_SetupLevel
 		players[i].mo = NULL;
 		G_DeathMatchSpawnPlayer (i);
 	    }
-			
+
     }
 
     // clear special respawning que
-    iquehead = iquetail = 0;		
-	
+    iquehead = iquetail = 0;
+
     // set up world state
     P_SpawnSpecials ();
-	
+
     // build subsector connect matrix
     //	UNUSED P_ConnectSubsectors ();
 

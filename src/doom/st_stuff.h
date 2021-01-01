@@ -58,7 +58,7 @@ typedef enum
 {
     AutomapState,
     FirstPersonState
-    
+
 } st_stateenum_t;
 
 
@@ -68,7 +68,7 @@ typedef enum
     StartChatState,
     WaitDestState,
     GetChatState
-    
+
 } st_chatstateenum_t;
 
 
@@ -79,7 +79,6 @@ extern cheatseq_t cheat_god;
 extern cheatseq_t cheat_ammo;
 extern cheatseq_t cheat_ammonokey;
 extern cheatseq_t cheat_noclip;
-extern cheatseq_t cheat_commercial_noclip;
 extern cheatseq_t cheat_powerup[7];
 extern cheatseq_t cheat_choppers;
 extern cheatseq_t cheat_clev;
