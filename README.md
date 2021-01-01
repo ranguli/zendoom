@@ -10,7 +10,7 @@ It accomplishes this by doing the following:
 - Remove requiring Python 3 in the build system
 - Remove documentation, icons, (generation)
 - Remove the `setup` application, opting to manually edit `.cfg` files  
-- Remove support for PC speaker and GUS emulation
+- Remove support for MUS and MIDI as well as emulation support for PC speaker, OPL, PAS and GUS.
 - Remove GNU `autotools` build support, relying only on `cmake`.
 - Remove `.desktop`, `.metainfo.xml`, `.rc`, and `.manifext.xml` files
 - Remove bash completions and man pages
