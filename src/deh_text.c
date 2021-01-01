@@ -103,5 +103,6 @@ deh_section_t deh_section_text =
     DEH_TextStart,
     NULL,
     NULL,
+    NULL
 };
 

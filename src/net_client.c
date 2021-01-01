@@ -228,8 +228,7 @@ static void UpdateClockSync(unsigned int seq,
 // the d_net.c structures (netcmds/nettics) and save the new ticcmd
 // back into recvwindow_cmd_base.
 
-static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, unsigned int seq,
-                                    ticcmd_t *ticcmds)
+static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, ticcmd_t *ticcmds)
 {
     int i;
 
@@ -270,8 +269,7 @@ static void NET_CL_AdvanceWindow(void)
     {
         // Expand tic diff data into d_net.c structures
 
-        NET_CL_ExpandFullTiccmd(&recvwindow[0].cmd, recvwindow_start,
-                                ticcmds);
+        NET_CL_ExpandFullTiccmd(&recvwindow[0].cmd, ticcmds);
         D_ReceiveTic(ticcmds, recvwindow[0].cmd.playeringame);
 
         // Advance the window

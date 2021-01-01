@@ -78,7 +78,6 @@ extern char *music_pack_path;
 static int snd_sbport = 0;
 static int snd_sbirq = 0;
 static int snd_sbdma = 0;
-static int snd_mport = 0;
 
 // Compiled-in sound modules:
 

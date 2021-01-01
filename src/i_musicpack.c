@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include "doomtype.h"
-#include "memio.h"
 
 #include "deh_str.h"
 #include "i_sound.h"
@@ -1078,7 +1077,7 @@ static boolean SDLIsInitialized(void)
 }
 
 // Callback function that is invoked to track current track position.
-void TrackPositionCallback(int chan, void *stream, int len, void *udata)
+void TrackPositionCallback(int len)
 {
     // Position is doubled up twice: for 16-bit samples and for stereo.
     current_track_pos += len / 4;

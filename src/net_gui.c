@@ -19,7 +19,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
+#include <unistd.h>
 
 #include "config.h"
 #include "doomkeys.h"
@@ -61,9 +63,6 @@ static void BuildWindow(void)
 
 static void UpdateGUI(void)
 {
-    //txt_window_action_t *startgame;
-    //char buf[50];
-    char command[10];
     unsigned int i;
 
     // If the value of max_players changes, we must rebuild the

@@ -27,7 +27,6 @@
 
 #include "config.h"
 #include "doomtype.h"
-#include "memio.h"
 
 #include "deh_str.h"
 #include "i_sound.h"
