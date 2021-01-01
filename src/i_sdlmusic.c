@@ -217,6 +217,22 @@ static void I_SDL_UnRegisterSong(void *handle)
     }
 }
 
+static void *I_SDL_RegisterSong(void *data, int len)
+{
+    char *filename;
+    Mix_Music *music;
+
+    if (!music_initialized)
+    {
+        return NULL;
+    }
+
+    filename = M_TempFile("doom.mid");
+
+    remove(filename);
+    free(filename);
+}
+
 // Is the song playing?
 static boolean I_SDL_MusicIsPlaying(void)
 {
@@ -242,6 +258,7 @@ music_module_t music_sdl_module =
     I_SDL_SetMusicVolume,
     I_SDL_PauseSong,
     I_SDL_ResumeSong,
+    I_SDL_RegisterSong,
     I_SDL_UnRegisterSong,
     I_SDL_PlaySong,
     I_SDL_StopSong,
