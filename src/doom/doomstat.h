@@ -62,10 +62,10 @@ extern GameVariant_t    gamevariant;
 // 'gamemission' can be equal to pack_chex or pack_hacx, but these are
 // just modified versions of doom and doom2, and should be interpreted
 // as the same most of the time.
+//
+// TODO: Doom will become the only logical game mission, this should be removed
 
-#define logical_gamemission                             \
-    (gamemission == pack_chex ? doom :                  \
-     gamemission == pack_hacx ? doom2 : gamemission)
+#define logical_gamemission doom
 
 // Set if homebrew PWAD stuff has been added.
 extern  boolean	modifiedgame;
@@ -87,7 +87,7 @@ extern  int             startloadgame;
 
 extern  boolean		autostart;
 
-// Selected by user. 
+// Selected by user.
 extern  skill_t         gameskill;
 extern  int		gameepisode;
 extern  int		gamemap;
@@ -158,7 +158,7 @@ extern  int             testcontrols_mousespeed;
 extern  int	viewangleoffset;
 
 // Player taking events, and displaying.
-extern  int	consoleplayer;	
+extern  int	consoleplayer;
 extern  int	displayplayer;
 
 
@@ -192,7 +192,7 @@ extern  boolean	demorecording;
 extern boolean lowres_turn;
 
 // Quit after playing a demo from cmdline.
-extern  boolean		singledemo;	
+extern  boolean		singledemo;
 
 
 
@@ -230,7 +230,7 @@ extern  mapthing_t      playerstarts[MAXPLAYERS];
 extern  boolean         playerstartsingame[MAXPLAYERS];
 // Intermission stats.
 // Parameters for world map / intermission.
-extern  wbstartstruct_t		wminfo;	
+extern  wbstartstruct_t		wminfo;
 
 
 

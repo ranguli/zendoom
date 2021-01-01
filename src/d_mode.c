@@ -30,7 +30,6 @@ static struct
     int episode;
     int map;
 } valid_modes[] = {
-    { pack_chex, retail,     1, 5 },
     { doom,      shareware,  1, 9 },
     { doom,      registered, 3, 9 },
     { doom,      retail,     4, 9 }
@@ -92,14 +91,6 @@ static struct {
 boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
 {
     int i;
-
-    // All Doom variants can use the Doom versions.
-
-    if (mission == doom2 || mission == pack_plut || mission == pack_tnt
-     || mission == pack_hacx || mission == pack_chex)
-    {
-        mission = doom;
-    }
 
     for (i=0; i<arrlen(valid_versions); ++i)
     {

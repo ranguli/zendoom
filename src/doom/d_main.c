@@ -993,7 +993,6 @@ static struct
     {"Ultimate Doom",        "ultimate",   exe_ultimate},
     {"Final Doom",           "final",      exe_final},
     {"Final Doom (alt)",     "final2",     exe_final2},
-    {"Chex Quest",           "chex",       exe_chex},
     { NULL,                  NULL,         0},
 };
 
@@ -1014,8 +1013,6 @@ static void InitGameVersion(void)
     //
     // Emulate a specific version of Doom.  Valid values are "1.2",
     // "1.666", "1.7", "1.8", "1.9", "ultimate", "final", "final2",
-    // "hacx" and "chex".
-    //
 
     p = M_CheckParmWithArgs("-gameversion", 1);
 
@@ -1047,19 +1044,7 @@ static void InitGameVersion(void)
     {
         // Determine automatically
 
-        if (gamemission == pack_chex)
-        {
-            // chex.exe - identified by iwad filename
-
-            gameversion = exe_chex;
-        }
-        else if (gamemission == pack_hacx)
-        {
-            // hacx.exe: identified by iwad filename
-
-            gameversion = exe_hacx;
-        }
-        else if (gamemode == shareware || gamemode == registered
+        if (gamemode == shareware || gamemode == registered
               || (gamemode == commercial && gamemission == doom2))
         {
             // original
@@ -1203,41 +1188,6 @@ static void LoadIwadDeh(void)
         }
     }
 
-    // Chex Quest needs a separate Dehacked patch which must be downloaded
-    // and installed next to the IWAD.
-    if (gameversion == exe_chex)
-    {
-        char *chex_deh = NULL;
-        char *dirname;
-
-        // Look for chex.deh in the same directory as the IWAD file.
-        dirname = M_DirName(iwadfile);
-        chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", NULL);
-        free(dirname);
-
-        // If the dehacked patch isn't found, try searching the WAD
-        // search path instead.  We might find it...
-        if (!M_FileExists(chex_deh))
-        {
-            free(chex_deh);
-            chex_deh = D_FindWADByName("chex.deh");
-        }
-
-        // Still not found?
-        if (chex_deh == NULL)
-        {
-            I_Error("Unable to find Chex Quest dehacked file (chex.deh).\n"
-                    "The dehacked file is required in order to emulate\n"
-                    "chex.exe correctly.  It can be found in your nearest\n"
-                    "/idgames repository mirror at:\n\n"
-                    "   utils/exe_edit/patches/chexdeh.zip");
-        }
-
-        if (!DEH_LoadFile(chex_deh))
-        {
-            I_Error("Failed to load chex.deh needed for emulating chex.exe.");
-        }
-    }
 }
 
 static void G_CheckDemoStatusAtExit (void)
@@ -1533,13 +1483,10 @@ void D_DoomMain (void)
 
         // common auto-loaded files for all Doom flavors
 
-        if (gamemission < pack_chex)
-        {
-            autoload_dir = M_GetAutoloadDir("doom-all");
-            DEH_AutoLoadPatches(autoload_dir);
-            W_AutoLoadWADs(autoload_dir);
-            free(autoload_dir);
-        }
+        autoload_dir = M_GetAutoloadDir("doom-all");
+        DEH_AutoLoadPatches(autoload_dir);
+        W_AutoLoadWADs(autoload_dir);
+        free(autoload_dir);
 
         // auto-loaded files per IWAD
         autoload_dir = M_GetAutoloadDir(D_SaveGameIWADName(gamemission, gamevariant));

@@ -50,7 +50,6 @@
 #define HU_TITLE2	(mapnames_commercial[gamemap-1])
 #define HU_TITLEP	(mapnames_commercial[gamemap-1 + 32])
 #define HU_TITLET	(mapnames_commercial[gamemap-1 + 64])
-#define HU_TITLE_CHEX   (mapnames_chex[(gameepisode-1)*9+gamemap-1])
 #define HU_TITLEHEIGHT	1
 #define HU_TITLEX	0
 #define HU_TITLEY	(167 - SHORT(hu_font[0]->height))
@@ -153,60 +152,6 @@ const char *mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
     "NEWLEVEL"
 };
 
-const char *mapnames_chex[] =   // Chex Quest names.
-{
-
-    HUSTR_E1M1,
-    HUSTR_E1M2,
-    HUSTR_E1M3,
-    HUSTR_E1M4,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-    HUSTR_E1M5,
-
-    "NEWLEVEL",
-    "NEWLEVEL",
-    "NEWLEVEL",
-    "NEWLEVEL",
-    "NEWLEVEL",
-    "NEWLEVEL",
-    "NEWLEVEL",
-    "NEWLEVEL",
-    "NEWLEVEL"
-};
-
 // List of names for levels in commercial IWADs
 // (doom2.wad, plutonia.wad, tnt.wad).  These are stored in a
 // single large array; WADs like pl2.wad have a MAP33, and rely on
@@ -228,7 +173,7 @@ const char *mapnames_commercial[] =
     HUSTR_9,
     HUSTR_10,
     HUSTR_11,
-	
+
     HUSTR_12,
     HUSTR_13,
     HUSTR_14,
@@ -238,7 +183,7 @@ const char *mapnames_commercial[] =
     HUSTR_18,
     HUSTR_19,
     HUSTR_20,
-	
+
     HUSTR_21,
     HUSTR_22,
     HUSTR_23,
@@ -265,7 +210,7 @@ const char *mapnames_commercial[] =
     PHUSTR_9,
     PHUSTR_10,
     PHUSTR_11,
-	
+
     PHUSTR_12,
     PHUSTR_13,
     PHUSTR_14,
@@ -275,7 +220,7 @@ const char *mapnames_commercial[] =
     PHUSTR_18,
     PHUSTR_19,
     PHUSTR_20,
-	
+
     PHUSTR_21,
     PHUSTR_22,
     PHUSTR_23,
@@ -288,7 +233,7 @@ const char *mapnames_commercial[] =
     PHUSTR_30,
     PHUSTR_31,
     PHUSTR_32,
-    
+
     // TNT WAD map names.
 
     THUSTR_1,
@@ -302,7 +247,7 @@ const char *mapnames_commercial[] =
     THUSTR_9,
     THUSTR_10,
     THUSTR_11,
-	
+
     THUSTR_12,
     THUSTR_13,
     THUSTR_14,
@@ -312,7 +257,7 @@ const char *mapnames_commercial[] =
     THUSTR_18,
     THUSTR_19,
     THUSTR_20,
-	
+
     THUSTR_21,
     THUSTR_22,
     THUSTR_23,
@@ -381,7 +326,7 @@ void HU_Start(void)
 		       HU_TITLEX, HU_TITLEY,
 		       hu_font,
 		       HU_FONTSTART);
-    
+
     switch ( logical_gamemission )
     {
       case doom:
@@ -406,15 +351,10 @@ void HU_Start(void)
          break;
     }
 
-    if (logical_gamemission == doom && gameversion == exe_chex)
-    {
-        s = HU_TITLE_CHEX;
-    }
-
     // dehacked substitution to get modified level name
 
     s = DEH_String(s);
-    
+
     while (*s)
 	HUlib_addCharToTextLine(&w_title, *(s++));
 
@@ -505,7 +445,7 @@ void HU_Ticker(void)
 			    HUlib_addMessageToSText(&w_message,
 						    DEH_String(player_names[i]),
 						    w_inputbuffer[i].l.l);
-			    
+
 			    message_nottobefuckedwith = true;
 			    message_on = true;
 			    message_counter = HU_MSGTIMEOUT;
@@ -586,7 +526,7 @@ boolean HU_Responder(event_t *ev)
     unsigned char 	c;
     int			i;
     int			numplayers;
-    
+
     static int		num_nobrainers = 0;
 
     numplayers = 0;

@@ -735,15 +735,6 @@ P_KillMobj
     if (target->tics < 1)
 	target->tics = 1;
 
-    //	I_StartSound (&actor->r, actor->info->deathsound);
-
-    // In Chex Quest, monsters don't drop items.
-
-    if (gameversion == exe_chex)
-    {
-        return;
-    }
-
     // Drop stuff.
     // This determines the kind of object spawned
     // during the death frame of a thing.

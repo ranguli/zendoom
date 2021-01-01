@@ -25,7 +25,6 @@
                          | (1 << doom2)          \
                          | (1 << pack_tnt)       \
                          | (1 << pack_plut)      \
-                         | (1 << pack_chex)      \
                          | (1 << pack_hacx))
 
 typedef struct
