@@ -77,23 +77,6 @@ static const char * const nouns[] = {
     "Baron",
     "Knight",
     "Revenant",
-    // Hexen
-    "Ettin",
-    "Maulotaur",
-    "Centaur",
-    "Afrit",
-    "Serpent",
-    // Heretic
-    "Disciple",
-    "Gargoyle",
-    "Golem",
-    "Lich",
-    // Strife
-    "Sentinel",
-    "Acolyte",
-    "Templar",
-    "Reaver",
-    "Spectre",
 };
 
 /*

@@ -206,190 +206,6 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_KEY(key_straferight),
 
     //!
-    // @game strife
-    //
-    // Keyboard key to use health.
-    //
-
-    CONFIG_VARIABLE_KEY(key_useHealth),
-
-    //!
-    // @game hexen
-    //
-    // Keyboard key to jump.
-    //
-
-    CONFIG_VARIABLE_KEY(key_jump),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to fly upward.
-    //
-
-    CONFIG_VARIABLE_KEY(key_flyup),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to fly downwards.
-    //
-
-    CONFIG_VARIABLE_KEY(key_flydown),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to center flying.
-    //
-
-    CONFIG_VARIABLE_KEY(key_flycenter),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to look up.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookup),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to look down.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookdown),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to center the view.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookcenter),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to query inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invquery),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display mission objective.
-    //
-
-    CONFIG_VARIABLE_KEY(key_mission),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display inventory popup.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invPop),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display keys popup.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invKey),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to jump to start of inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invHome),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to jump to end of inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invEnd),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to scroll left in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invleft),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to scroll right in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invright),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to scroll left in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invLeft),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to scroll right in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invRight),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to use the current item in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_useartifact),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to use inventory item.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invUse),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to drop an inventory item.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invDrop),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to look up.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookUp),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to look down.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookDown),
-
-    //!
     // Keyboard key to fire the currently selected weapon.
     //
 
@@ -442,14 +258,6 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(mouseb_forward),
 
     //!
-    // @game hexen strife
-    //
-    // Mouse button to jump.
-    //
-
-    CONFIG_VARIABLE_INT(mouseb_jump),
-
-    //!
     // If non-zero, joystick input is enabled.
     //
 
@@ -485,15 +293,7 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(joyb_speed),
 
     //!
-    // @game hexen strife
-    //
-    // Joystick virtual button that makes the player jump.
-    //
-
-    CONFIG_VARIABLE_INT(joyb_jump),
-
-    //!
-    // @game doom heretic hexen
+    // @game doom
     //
     // Screen size, range 3-11.
     //
@@ -572,39 +372,6 @@ static default_t	doom_defaults_list[] =
     //
 
     CONFIG_VARIABLE_INT(usegamma),
-
-    //!
-    // @game hexen
-    //
-    // Directory in which to store savegames.
-    //
-
-    CONFIG_VARIABLE_STRING(savedir),
-
-    //!
-    // @game hexen
-    //
-    // Controls whether messages are displayed in the heads-up display.
-    // If this has a non-zero value, messages are displayed.
-    //
-
-    CONFIG_VARIABLE_INT(messageson),
-
-    //!
-    // @game strife
-    //
-    // Name of background flat used by view border.
-    //
-
-    CONFIG_VARIABLE_STRING(back_flat),
-
-    //!
-    // @game strife
-    //
-    // Multiplayer nickname (?).
-    //
-
-    CONFIG_VARIABLE_STRING(nickname),
 
     //!
     // Multiplayer chat macro: message to send when alt+0 is pressed.
@@ -783,15 +550,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(startup_delay),
 
     //!
-    // @game heretic hexen strife
-    //
-    // If non-zero, display the graphical startup screen.
-    //
-
-    CONFIG_VARIABLE_INT(graphical_startup),
-
-    //!
-    // @game doom heretic strife
+    // @game doom
     //
     // If non-zero, the ENDOOM text screen is displayed when exiting the
     // game. If zero, the ENDOOM screen is not displayed.
@@ -961,22 +720,6 @@ static default_t extra_defaults_list[] =
     //
 
     CONFIG_VARIABLE_INT(mouseb_nextweapon),
-
-    //!
-    // @game heretic
-    //
-    // Mouse button to move to the left in the inventory.
-    //
-
-    CONFIG_VARIABLE_INT(mouseb_invleft),
-
-    //!
-    // @game heretic
-    //
-    // Mouse button to move to the right in the inventory.
-    //
-
-    CONFIG_VARIABLE_INT(mouseb_invright),
 
     //!
     // If non-zero, double-clicking a mouse button acts like pressing
@@ -1440,150 +1183,6 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_KEY(key_nextweapon),
 
     //!
-    // @game heretic
-    //
-    // Key to use "quartz flask" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_quartz),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "mystic urn" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_urn),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "timebomb of the ancients" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_bomb),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "tome of power" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_tome),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "ring of invincibility" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_ring),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "chaos device" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_chaosdevice),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "shadowsphere" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_shadowsphere),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "wings of wrath" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_wings),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "torch" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_torch),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "morph ovum" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_morph),
-
-    //!
-    // @game hexen
-    //
-    // Key to use one of each artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_all),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "quartz flask" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_health),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "flechette" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_poisonbag),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "disc of repulsion" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_blastradius),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "chaos device" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_teleport),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "banishment device" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_teleportother),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "porkalator" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_egg),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "icon of the defender" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_invulnerability),
-
-    //!
     // Key to re-display last message.
     //
 
@@ -1625,37 +1224,6 @@ static default_t extra_defaults_list[] =
 
     CONFIG_VARIABLE_KEY(key_multi_msgplayer4),
 
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 5 during multiplayer games.
-    //
-
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer5),
-
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 6 during multiplayer games.
-    //
-
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer6),
-
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 7 during multiplayer games.
-    //
-
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer7),
-
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 8 during multiplayer games.
-    //
-
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer8),
 };
 
 static default_collection_t extra_defaults =

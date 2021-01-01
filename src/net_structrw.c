@@ -319,16 +319,6 @@ void NET_TiccmdDiff(ticcmd_t *tic1, ticcmd_t *tic2, net_ticdiff_t *diff)
         diff->diff |= NET_TICDIFF_CONSISTANCY;
     if (tic2->chatchar != 0)
         diff->diff |= NET_TICDIFF_CHATCHAR;
-
-    // Heretic/Hexen-specific
-
-    if (tic1->lookfly != tic2->lookfly || tic2->arti != 0)
-        diff->diff |= NET_TICDIFF_RAVEN;
-
-    // Strife-specific
-
-    if (tic1->buttons2 != tic2->buttons2 || tic2->inventory != 0)
-        diff->diff |= NET_TICDIFF_STRIFE;
 }
 
 void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
@@ -353,29 +343,6 @@ void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
     else
         dest->chatchar = 0;
 
-    // Heretic/Hexen specific:
-
-    if (diff->diff & NET_TICDIFF_RAVEN)
-    {
-        dest->lookfly = diff->cmd.lookfly;
-        dest->arti = diff->cmd.arti;
-    }
-    else
-    {
-        dest->arti = 0;
-    }
-
-    // Strife-specific:
-
-    if (diff->diff & NET_TICDIFF_STRIFE)
-    {
-        dest->buttons2 = diff->cmd.buttons2;
-        dest->inventory = diff->cmd.inventory;
-    }
-    else
-    {
-        dest->inventory = 0;
-    }
 }
 
 //

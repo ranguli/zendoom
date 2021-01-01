@@ -44,11 +44,6 @@
 // is common code. Fix this.
 #define RANGECHECK
 
-// Blending table used for fuzzpatch, etc.
-// Only used in Heretic/Hexen
-
-byte *tinttable = NULL;
-
 // The screen buffer that the v_video.c code draws to.
 
 static pixel_t *dest_screen = NULL;
