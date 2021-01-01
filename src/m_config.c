@@ -1776,7 +1776,7 @@ static void SaveDefaultCollection(default_collection_t *collection)
 
                     int s;
 
-                    for (s=0; s<128; ++s)
+                    for (s=0; s<127; ++s)
                     {
                         if (scantokey[s] == v)
                         {
