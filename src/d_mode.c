@@ -58,20 +58,6 @@ boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
 {
     int i;
 
-    // Hacks for Heretic secret episodes
-
-    if (mission == heretic)
-    {
-        if (mode == retail && episode == 6)
-        {
-            return map >= 1 && map <= 3;
-        }
-        else if (mode == registered && episode == 4)
-        {
-            return map == 1;
-        }
-    }
-
     // Find the table entry for this mission/mode combination.
 
     for (i=0; i<arrlen(valid_modes); ++i)

@@ -341,7 +341,6 @@ void D_StartNetGame(net_gamesettings_t *settings,
 
     settings->consoleplayer = 0;
     settings->num_players = 1;
-    settings->player_classes[0] = player_class;
 
     //!
     // @category net

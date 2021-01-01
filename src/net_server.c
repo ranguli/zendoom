@@ -862,20 +862,6 @@ static void StartGame(void)
 
     sv_settings.num_players = NET_SV_NumPlayers();
 
-    // Copy player classes:
-
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
-    {
-        if (sv_players[i] != NULL)
-        {
-            sv_settings.player_classes[i] = sv_players[i]->player_class;
-        }
-        else
-        {
-            sv_settings.player_classes[i] = 0;
-        }
-    }
-
     nowtime = I_GetTimeMS();
 
     // Send start packets to each connected node

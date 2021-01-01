@@ -32,7 +32,7 @@ typedef struct sfxinfo_struct	sfxinfo_t;
 
 struct sfxinfo_struct
 {
-    // tag name, used for hexen.
+    // tag name, used for hexen(?)
     const char *tagname;
 
     // lump name.  If we are running with use_sfx_prefix=true, a

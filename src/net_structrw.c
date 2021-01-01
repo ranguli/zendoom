@@ -62,8 +62,6 @@ boolean NET_ReadConnectData(net_packet_t *packet, net_connect_data_t *data)
 
 void NET_WriteSettings(net_packet_t *packet, net_gamesettings_t *settings)
 {
-    int i;
-
     NET_WriteInt8(packet, settings->ticdup);
     NET_WriteInt8(packet, settings->extratics);
     NET_WriteInt8(packet, settings->deathmatch);
@@ -82,16 +80,11 @@ void NET_WriteSettings(net_packet_t *packet, net_gamesettings_t *settings)
     NET_WriteInt8(packet, settings->num_players);
     NET_WriteInt8(packet, settings->consoleplayer);
 
-    for (i = 0; i < settings->num_players; ++i)
-    {
-        NET_WriteInt8(packet, settings->player_classes[i]);
-    }
 }
 
 boolean NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
 {
     boolean success;
-    int i;
 
     success = NET_ReadInt8(packet, (unsigned int *) &settings->ticdup)
            && NET_ReadInt8(packet, (unsigned int *) &settings->extratics)
@@ -114,15 +107,6 @@ boolean NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
     if (!success)
     {
         return false;
-    }
-
-    for (i = 0; i < settings->num_players && i < NET_MAXPLAYERS; ++i)
-    {
-        if (!NET_ReadInt8(packet,
-                          (unsigned int *) &settings->player_classes[i]))
-        {
-            return false;
-        }
     }
 
     return true;

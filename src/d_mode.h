@@ -32,8 +32,6 @@ typedef enum
     pack_plut,       // Final Doom: The Plutonia Experiment
     pack_chex,       // Chex Quest (modded doom)
     pack_hacx,       // Hacx (modded doom2)
-    heretic,         // Heretic
-    hexen,           // Hexen
     strife,          // Strife
 
     none
@@ -45,8 +43,8 @@ typedef enum
 
 typedef enum
 {
-    shareware,       // Doom/Heretic shareware
-    registered,      // Doom/Heretic registered
+    shareware,       // Doom shareware
+    registered,      // Doom registered
     commercial,      // Doom II/Hexen
     retail,          // Ultimate Doom
     indetermined     // Unknown.
@@ -67,9 +65,6 @@ typedef enum
     exe_final2,      // Final Doom (alternate exe)
     exe_chex,        // Chex Quest executable (based on Final Doom)
 
-    exe_heretic_1_3, // Heretic 1.3
-
-    exe_hexen_1_1,   // Hexen 1.1
     exe_strife_1_2,  // Strife v1.2
     exe_strife_1_31  // Strife v1.31
 } GameVersion_t;

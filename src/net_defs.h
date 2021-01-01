@@ -16,7 +16,7 @@
 //
 
 #ifndef NET_DEFS_H
-#define NET_DEFS_H 
+#define NET_DEFS_H
 
 #include <stdio.h>
 
@@ -211,10 +211,6 @@ typedef struct
     int num_players;
     int consoleplayer;
 
-    // Hexen player classes:
-
-    int player_classes[NET_MAXPLAYERS];
-
 } net_gamesettings_t;
 
 #define NET_TICDIFF_FORWARD      (1 << 0)
@@ -234,7 +230,7 @@ typedef struct
 
 // Complete set of ticcmds from all players
 
-typedef struct 
+typedef struct
 {
     signed int latency;
     unsigned int seq;

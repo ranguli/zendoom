@@ -35,7 +35,7 @@ boolean W_ParseCommandLine(void)
     boolean modifiedgame = false;
     int p;
 
-    // Merged PWADs are loaded first, because they are supposed to be 
+    // Merged PWADs are loaded first, because they are supposed to be
     // modified IWADs.
 
     //!
@@ -92,7 +92,7 @@ boolean W_ParseCommandLine(void)
             free(filename);
         }
     }
-    
+
     // Add flats
 
     //!
@@ -223,18 +223,12 @@ void W_AutoLoadWADs(const char *path)
     I_EndGlob(glob);
 }
 
-// Lump names that are unique to particular game types. This lets us check
-// the user is not trying to play with the wrong executable, eg.
-// chocolate-doom -iwad hexen.wad.
 static const struct
 {
     GameMission_t mission;
     const char *lumpname;
 } unique_lumps[] = {
-    { doom,    "POSSA1" },
-    { heretic, "IMPXA1" },
-    { hexen,   "ETTNA1" },
-    { strife,  "AGRDA1" },
+    { doom,    "POSSA1" }
 };
 
 void W_CheckCorrectIWAD(GameMission_t mission)
