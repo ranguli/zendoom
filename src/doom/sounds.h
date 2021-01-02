@@ -23,17 +23,16 @@
 #include "i_sound.h"
 
 // the complete set of sound effects
-extern sfxinfo_t	S_sfx[];
+extern sfxinfo_t S_sfx[];
 
 // the complete set of music
-extern musicinfo_t	S_music[];
+extern musicinfo_t S_music[];
 
 //
 // Identifiers for all music in game.
 //
 
-typedef enum
-{
+typedef enum {
     mus_None,
     mus_e1m1,
     mus_e1m2,
@@ -79,7 +78,6 @@ typedef enum
     mus_dead,
     mus_stlks2,
     mus_theda2,
-    mus_doom2,
     mus_ddtbl2,
     mus_runni2,
     mus_dead2,
@@ -105,13 +103,11 @@ typedef enum
     NUMMUSIC
 } musicenum_t;
 
-
 //
 // Identifiers for all sfx in game.
 //
 
-typedef enum
-{
+typedef enum {
     sfx_None,
     sfx_pistol,
     sfx_shotgn,

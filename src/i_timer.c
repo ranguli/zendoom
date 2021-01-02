@@ -18,8 +18,8 @@
 
 #include "SDL.h"
 
-#include "i_timer.h"
 #include "doomtype.h"
+#include "i_timer.h"
 
 //
 // I_GetTime
@@ -28,8 +28,7 @@
 
 static Uint32 basetime = 0;
 
-int  I_GetTime (void)
-{
+int I_GetTime(void) {
     Uint32 ticks;
 
     ticks = SDL_GetTicks();
@@ -39,15 +38,14 @@ int  I_GetTime (void)
 
     ticks -= basetime;
 
-    return (ticks * TICRATE) / 1000;    
+    return (ticks * TICRATE) / 1000;
 }
 
 //
 // Same as I_GetTime, but returns time in milliseconds
 //
 
-int I_GetTimeMS(void)
-{
+int I_GetTimeMS(void) {
     Uint32 ticks;
 
     ticks = SDL_GetTicks();
@@ -60,23 +58,14 @@ int I_GetTimeMS(void)
 
 // Sleep for a specified number of ms
 
-void I_Sleep(int ms)
-{
-    SDL_Delay(ms);
-}
+void I_Sleep(int ms) { SDL_Delay(ms); }
 
-void I_WaitVBL(int count)
-{
-    I_Sleep((count * 1000) / 70);
-}
+void I_WaitVBL(int count) { I_Sleep((count * 1000) / 70); }
 
-
-void I_InitTimer(void)
-{
+void I_InitTimer(void) {
     // initialize timer
 
     SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
 
     SDL_Init(SDL_INIT_TIMER);
 }
-

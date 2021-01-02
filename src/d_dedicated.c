@@ -14,9 +14,9 @@
 // Code specific to the standalone dedicated server.
 //
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
 
 #include "config.h"
 
@@ -27,21 +27,18 @@
 #include "net_server.h"
 #include "z_zone.h"
 
-void NET_CL_Run(void)
-{
+void NET_CL_Run(void) {
     // No client present :-)
     //
-    // This is here because the server code sometimes runs this 
+    // This is here because the server code sometimes runs this
     // to let the client do some processing if it needs to.
     // In a standalone dedicated server, we don't have a client.
 }
 
-void D_DoomMain(void)
-{
+void D_DoomMain(void) {
     printf(PACKAGE_NAME " standalone dedicated server\n");
 
     Z_Init();
 
     NET_DedicatedServer();
 }
-

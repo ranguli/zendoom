@@ -76,7 +76,6 @@ set(GAME_SOURCE_FILES
     net_server.c        net_server.h
     net_structrw.c      net_structrw.h
     sha1.c              sha1.h
-    memio.c             memio.h
     tables.c            tables.h
     v_diskicon.c        v_diskicon.h
     v_video.c           v_video.h

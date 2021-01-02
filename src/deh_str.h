@@ -30,7 +30,6 @@ void DEH_fprintf(FILE *fstream, const char *fmt, ...) PRINTF_ATTR(2, 3);
 void DEH_snprintf(char *buffer, size_t len, const char *fmt, ...) PRINTF_ATTR(3, 4);
 void DEH_AddStringReplacement(const char *from_text, const char *to_text);
 
-
 #if 0
 // Static macro versions of the functions above
 
@@ -42,4 +41,3 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text);
 #endif
 
 #endif /* #ifndef DEH_STR_H */
-

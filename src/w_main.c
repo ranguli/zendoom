@@ -30,12 +30,11 @@
 
 // Parse the command line, merging WAD files that are sppecified.
 // Returns true if at least one file was added.
-boolean W_ParseCommandLine(void)
-{
+boolean W_ParseCommandLine(void) {
     boolean modifiedgame = false;
     int p;
 
-    // Merged PWADs are loaded first, because they are supposed to be 
+    // Merged PWADs are loaded first, because they are supposed to be
     // modified IWADs.
 
     //!
@@ -48,10 +47,8 @@ boolean W_ParseCommandLine(void)
 
     p = M_CheckParmWithArgs("-merge", 1);
 
-    if (p > 0)
-    {
-        for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
-        {
+    if (p > 0) {
+        for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
             char *filename;
 
             modifiedgame = true;
@@ -77,10 +74,8 @@ boolean W_ParseCommandLine(void)
 
     p = M_CheckParmWithArgs("-nwtmerge", 1);
 
-    if (p > 0)
-    {
-        for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
-        {
+    if (p > 0) {
+        for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
             char *filename;
 
             modifiedgame = true;
@@ -92,7 +87,7 @@ boolean W_ParseCommandLine(void)
             free(filename);
         }
     }
-    
+
     // Add flats
 
     //!
@@ -105,10 +100,8 @@ boolean W_ParseCommandLine(void)
 
     p = M_CheckParmWithArgs("-af", 1);
 
-    if (p > 0)
-    {
-        for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
-        {
+    if (p > 0) {
+        for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
             char *filename;
 
             modifiedgame = true;
@@ -131,10 +124,8 @@ boolean W_ParseCommandLine(void)
 
     p = M_CheckParmWithArgs("-as", 1);
 
-    if (p > 0)
-    {
-        for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
-        {
+    if (p > 0) {
+        for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
             char *filename;
 
             modifiedgame = true;
@@ -155,10 +146,8 @@ boolean W_ParseCommandLine(void)
 
     p = M_CheckParmWithArgs("-aa", 1);
 
-    if (p > 0)
-    {
-        for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
-        {
+    if (p > 0) {
+        for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
             char *filename;
 
             modifiedgame = true;
@@ -178,42 +167,37 @@ boolean W_ParseCommandLine(void)
     // Load the specified PWAD files.
     //
 
-    p = M_CheckParmWithArgs ("-file", 1);
-    if (p)
-    {
-	// the parms after p are wadfile/lump names,
-	// until end of parms or another - preceded parm
-	modifiedgame = true;            // homebrew levels
-	while (++p != myargc && myargv[p][0] != '-')
-        {
+    p = M_CheckParmWithArgs("-file", 1);
+    if (p) {
+        // the parms after p are wadfile/lump names,
+        // until end of parms or another - preceded parm
+        modifiedgame = true; // homebrew levels
+        while (++p != myargc && myargv[p][0] != '-') {
             char *filename;
 
             filename = D_TryFindWADByName(myargv[p]);
 
             printf(" adding %s\n", filename);
-	    W_AddFile(filename);
+            W_AddFile(filename);
             free(filename);
         }
     }
 
-//    W_PrintDirectory();
+    //    W_PrintDirectory();
 
     return modifiedgame;
 }
 
 // Load all WAD files from the given directory.
-void W_AutoLoadWADs(const char *path)
-{
+void W_AutoLoadWADs(const char *path) {
     glob_t *glob;
-    const char *filename;
 
-    glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE|GLOB_FLAG_SORTED,
-                            "*.wad", "*.lmp", NULL);
-    for (;;)
-    {
+    glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.wad", "*.lmp", NULL);
+    for (;;) {
+        const char *filename;
+
         filename = I_NextGlob(glob);
-        if (filename == NULL)
-        {
+        if (filename == NULL) {
             break;
         }
         printf(" [autoload] merging %s\n", filename);
@@ -223,44 +207,27 @@ void W_AutoLoadWADs(const char *path)
     I_EndGlob(glob);
 }
 
-// Lump names that are unique to particular game types. This lets us check
-// the user is not trying to play with the wrong executable, eg.
-// chocolate-doom -iwad hexen.wad.
-static const struct
-{
+static const struct {
     GameMission_t mission;
     const char *lumpname;
-} unique_lumps[] = {
-    { doom,    "POSSA1" },
-    { heretic, "IMPXA1" },
-    { hexen,   "ETTNA1" },
-    { strife,  "AGRDA1" },
-};
+} unique_lumps[] = {{doom, "POSSA1"}};
 
-void W_CheckCorrectIWAD(GameMission_t mission)
-{
+void W_CheckCorrectIWAD(GameMission_t mission) {
     int i;
     lumpindex_t lumpnum;
 
-    for (i = 0; i < arrlen(unique_lumps); ++i)
-    {
-        if (mission != unique_lumps[i].mission)
-        {
+    for (i = 0; i < arrlen(unique_lumps); ++i) {
+        if (mission != unique_lumps[i].mission) {
             lumpnum = W_CheckNumForName(unique_lumps[i].lumpname);
 
-            if (lumpnum >= 0)
-            {
+            if (lumpnum >= 0) {
                 I_Error("\nYou are trying to use a %s IWAD file with "
                         "the %s%s binary.\nThis isn't going to work.\n"
                         "You probably want to use the %s%s binary.",
-                        D_SuggestGameName(unique_lumps[i].mission,
-                                          indetermined),
-                        PROGRAM_PREFIX,
-                        D_GameMissionString(mission),
-                        PROGRAM_PREFIX,
+                        D_SuggestGameName(unique_lumps[i].mission, indetermined), PROGRAM_PREFIX,
+                        D_GameMissionString(mission), PROGRAM_PREFIX,
                         D_GameMissionString(unique_lumps[i].mission));
             }
         }
     }
 }
-

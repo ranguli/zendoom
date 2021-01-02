@@ -27,4 +27,3 @@ void W_CheckCorrectIWAD(GameMission_t mission);
 void W_AutoLoadWADs(const char *path);
 
 #endif /* #ifndef W_MAIN_H */
-

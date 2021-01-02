@@ -16,7 +16,6 @@
 //	System specific interface stuff.
 //
 
-
 #ifndef __I_VIDEO__
 #define __I_VIDEO__
 
@@ -24,7 +23,7 @@
 
 // Screen width and height.
 
-#define SCREENWIDTH  320
+#define SCREENWIDTH 320
 #define SCREENHEIGHT 200
 
 // Screen height used when aspect_ratio_correct=true.
@@ -36,22 +35,22 @@ typedef boolean (*grabmouse_callback_t)(void);
 // Called by D_DoomMain,
 // determines the hardware configuration
 // and sets up the video mode
-void I_InitGraphics (void);
+void I_InitGraphics(void);
 
 void I_GraphicsCheckCommandLine(void);
 
 void I_ShutdownGraphics(void);
 
 // Takes full 8 bit values.
-void I_SetPalette (byte* palette);
+void I_SetPalette(byte *palette);
 int I_GetPaletteIndex(int r, int g, int b);
 
-void I_UpdateNoBlit (void);
-void I_FinishUpdate (void);
+void I_UpdateNoBlit(void);
+void I_FinishUpdate(void);
 
-void I_ReadScreen (pixel_t* scr);
+void I_ReadScreen(pixel_t *scr);
 
-void I_BeginRead (void);
+void I_BeginRead(void);
 
 void I_SetWindowTitle(const char *title);
 
@@ -67,12 +66,12 @@ void I_InitWindowIcon(void);
 // Called before processing any tics in a frame (just after displaying a frame).
 // Time consuming syncronous operations are performed here (joystick reading).
 
-void I_StartFrame (void);
+void I_StartFrame(void);
 
 // Called before processing each tic in a frame.
 // Quick syncronous operations are performed here.
 
-void I_StartTic (void);
+void I_StartTic(void);
 
 // Enable the loading disk image displayed when reading from disk.
 

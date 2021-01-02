@@ -31,16 +31,14 @@ extern wad_file_class_t stdc_wad_file;
 extern wad_file_class_t posix_wad_file;
 #endif
 
-static wad_file_class_t *wad_file_classes[] =
-{
+static wad_file_class_t *wad_file_classes[] = {
 #ifdef HAVE_MMAP
     &posix_wad_file,
 #endif
     &stdc_wad_file,
 };
 
-wad_file_t *W_OpenFile(const char *path)
-{
+wad_file_t *W_OpenFile(const char *path) {
     wad_file_t *result;
     int i;
 
@@ -51,8 +49,7 @@ wad_file_t *W_OpenFile(const char *path)
     // directly into memory.
     //
 
-    if (!M_CheckParm("-mmap"))
-    {
+    if (!M_CheckParm("-mmap")) {
         return stdc_wad_file.OpenFile(path);
     }
 
@@ -60,12 +57,10 @@ wad_file_t *W_OpenFile(const char *path)
 
     result = NULL;
 
-    for (i=0; i<arrlen(wad_file_classes); ++i)
-    {
+    for (i = 0; i < arrlen(wad_file_classes); ++i) {
         result = wad_file_classes[i]->OpenFile(path);
 
-        if (result != NULL)
-        {
+        if (result != NULL) {
             break;
         }
     }
@@ -73,14 +68,8 @@ wad_file_t *W_OpenFile(const char *path)
     return result;
 }
 
-void W_CloseFile(wad_file_t *wad)
-{
-    wad->file_class->CloseFile(wad);
-}
+void W_CloseFile(wad_file_t *wad) { wad->file_class->CloseFile(wad); }
 
-size_t W_Read(wad_file_t *wad, unsigned int offset,
-              void *buffer, size_t buffer_len)
-{
+size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len) {
     return wad->file_class->Read(wad, offset, buffer, buffer_len);
 }
-

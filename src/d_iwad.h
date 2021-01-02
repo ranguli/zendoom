@@ -15,21 +15,14 @@
 //     Find IWAD and initialize according to IWAD type.
 //
 
-
 #ifndef __D_IWAD__
 #define __D_IWAD__
 
 #include "d_mode.h"
 
-#define IWAD_MASK_DOOM    ((1 << doom)           \
-                         | (1 << doom2)          \
-                         | (1 << pack_tnt)       \
-                         | (1 << pack_plut)      \
-                         | (1 << pack_chex)      \
-                         | (1 << pack_hacx))
+#define IWAD_MASK_DOOM ((1 << doom))
 
-typedef struct
-{
+typedef struct {
     const char *name;
     GameMission_t mission;
     GameMode_t mode;
@@ -44,4 +37,3 @@ const char *D_SuggestGameName(GameMission_t mission, GameMode_t mode);
 void D_CheckCorrectIWAD(GameMission_t mission);
 
 #endif
-

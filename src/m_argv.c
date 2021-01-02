@@ -15,7 +15,6 @@
 // DESCRIPTION:
 //
 
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,17 +22,14 @@
 
 #include "SDL_stdinc.h"
 
-#include "doomtype.h"
 #include "d_iwad.h"
+#include "doomtype.h"
 #include "i_system.h"
+#include "m_argv.h" // haleyjd 20110212: warning fix
 #include "m_misc.h"
-#include "m_argv.h"  // haleyjd 20110212: warning fix
 
-int		myargc;
-char**		myargv;
-
-
-
+int myargc;
+char **myargv;
 
 //
 // M_CheckParm
@@ -43,14 +39,12 @@ char**		myargv;
 // or 0 if not present
 //
 
-int M_CheckParmWithArgs(const char *check, int num_args)
-{
+int M_CheckParmWithArgs(const char *check, int num_args) {
     int i;
 
-    for (i = 1; i < myargc - num_args; i++)
-    {
-	if (!strcasecmp(check, myargv[i]))
-	    return i;
+    for (i = 1; i < myargc - num_args; i++) {
+        if (!strcasecmp(check, myargv[i]))
+            return i;
     }
 
     return 0;
@@ -63,20 +57,13 @@ int M_CheckParmWithArgs(const char *check, int num_args)
 // line arguments, false if not.
 //
 
-boolean M_ParmExists(const char *check)
-{
-    return M_CheckParm(check) != 0;
-}
+boolean M_ParmExists(const char *check) { return M_CheckParm(check) != 0; }
 
-int M_CheckParm(const char *check)
-{
-    return M_CheckParmWithArgs(check, 0);
-}
+int M_CheckParm(const char *check) { return M_CheckParmWithArgs(check, 0); }
 
-#define MAXARGVS        100
+#define MAXARGVS 100
 
-static void LoadResponseFile(int argv_index, const char *filename)
-{
+static void LoadResponseFile(int argv_index, const char *filename) {
     FILE *handle;
     int size;
     char *infile;
@@ -88,9 +75,8 @@ static void LoadResponseFile(int argv_index, const char *filename)
     // Read the response file into memory
     handle = fopen(filename, "rb");
 
-    if (handle == NULL)
-    {
-        printf ("\nNo such response file!");
+    if (handle == NULL) {
+        printf("\nNo such response file!");
         exit(1);
     }
 
@@ -107,12 +93,10 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     i = 0;
 
-    while (i < size)
-    {
+    while (i < size) {
         k = fread(file + i, 1, size - i, handle);
 
-        if (k < 0)
-        {
+        if (k < 0) {
             I_Error("Failed to read full contents of '%s'", filename);
         }
 
@@ -129,8 +113,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     // Copy all the arguments in the list up to the response file
 
-    for (i=0; i<argv_index; ++i)
-    {
+    for (i = 0; i < argv_index; ++i) {
         newargv[i] = myargv[i];
         ++newargc;
     }
@@ -138,17 +121,14 @@ static void LoadResponseFile(int argv_index, const char *filename)
     infile = file;
     k = 0;
 
-    while(k < size)
-    {
+    while (k < size) {
         // Skip past space characters to the next argument
 
-        while(k < size && isspace(infile[k]))
-        {
+        while (k < size && isspace(infile[k])) {
             ++k;
         }
 
-        if (k >= size)
-        {
+        if (k >= size) {
             break;
         }
 
@@ -156,8 +136,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
         // the contents as a single argument.  This allows long filenames
         // to be specified.
 
-        if (infile[k] == '\"')
-        {
+        if (infile[k] == '\"') {
             // Skip the first character(")
             ++k;
 
@@ -165,30 +144,24 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
             // Read all characters between quotes
 
-            while (k < size && infile[k] != '\"' && infile[k] != '\n')
-            {
+            while (k < size && infile[k] != '\"' && infile[k] != '\n') {
                 ++k;
             }
 
-            if (k >= size || infile[k] == '\n')
-            {
-                I_Error("Quotes unclosed in response file '%s'",
-                        filename);
+            if (k >= size || infile[k] == '\n') {
+                I_Error("Quotes unclosed in response file '%s'", filename);
             }
 
             // Cut off the string at the closing quote
 
             infile[k] = '\0';
             ++k;
-        }
-        else
-        {
+        } else {
             // Read in the next argument until a space is reached
 
             newargv[newargc++] = &infile[k];
 
-            while(k < size && !isspace(infile[k]))
-            {
+            while (k < size && !isspace(infile[k])) {
                 ++k;
             }
 
@@ -202,8 +175,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     // Add arguments following the response file argument
 
-    for (i=argv_index + 1; i<myargc; ++i)
-    {
+    for (i = argv_index + 1; i < myargc; ++i) {
         newargv[newargc] = myargv[i];
         ++newargc;
     }
@@ -228,20 +200,16 @@ static void LoadResponseFile(int argv_index, const char *filename)
 // Find a Response File
 //
 
-void M_FindResponseFile(void)
-{
+void M_FindResponseFile(void) {
     int i;
 
-    for (i = 1; i < myargc; i++)
-    {
-        if (myargv[i][0] == '@')
-        {
+    for (i = 1; i < myargc; i++) {
+        if (myargv[i][0] == '@') {
             LoadResponseFile(i, myargv[i] + 1);
         }
     }
 
-    for (;;)
-    {
+    for (;;) {
         //!
         // @arg <filename>
         //
@@ -251,8 +219,7 @@ void M_FindResponseFile(void)
         // using the abbreviated syntax '@filename.rsp'.
         //
         i = M_CheckParmWithArgs("-response", 1);
-        if (i <= 0)
-        {
+        if (i <= 0) {
             break;
         }
         // Replace the -response argument so that the next time through

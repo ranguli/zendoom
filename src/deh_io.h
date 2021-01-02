@@ -30,4 +30,3 @@ void DEH_Warning(deh_context_t *context, const char *msg, ...) PRINTF_ATTR(2, 3)
 boolean DEH_HadError(deh_context_t *context);
 
 #endif /* #ifndef DEH_IO_H */
-

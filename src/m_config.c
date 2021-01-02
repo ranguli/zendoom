@@ -17,20 +17,19 @@
 //    Configuration file interface.
 //
 
-
+#include <assert.h>
+#include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include <errno.h>
-#include <assert.h>
 
 #include "SDL_filesystem.h"
 
 #include "config.h"
 
-#include "doomtype.h"
 #include "doomkeys.h"
+#include "doomtype.h"
 #include "i_system.h"
 #include "m_argv.h"
 #include "m_config.h"
@@ -54,8 +53,7 @@ static char *autoload_path = "";
 static const char *default_main_config;
 static const char *default_extra_config;
 
-typedef enum
-{
+typedef enum {
     DEFAULT_INT,
     DEFAULT_INT_HEX,
     DEFAULT_STRING,
@@ -63,8 +61,7 @@ typedef enum
     DEFAULT_KEY,
 } default_type_t;
 
-typedef struct
-{
+typedef struct {
     // Name of the variable
     const char *name;
 
@@ -94,31 +91,24 @@ typedef struct
     boolean bound;
 } default_t;
 
-typedef struct
-{
+typedef struct {
     default_t *defaults;
     int numdefaults;
     const char *filename;
 } default_collection_t;
 
-#define CONFIG_VARIABLE_GENERIC(name, type) \
-    { #name, {NULL}, type, 0, 0, false }
+#define CONFIG_VARIABLE_GENERIC(name, type)                                                                  \
+    { #name, {NULL }, type, 0, 0, false }
 
-#define CONFIG_VARIABLE_KEY(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_KEY)
-#define CONFIG_VARIABLE_INT(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT)
-#define CONFIG_VARIABLE_INT_HEX(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT_HEX)
-#define CONFIG_VARIABLE_FLOAT(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_FLOAT)
-#define CONFIG_VARIABLE_STRING(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_STRING)
+#define CONFIG_VARIABLE_KEY(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_KEY)
+#define CONFIG_VARIABLE_INT(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT)
+#define CONFIG_VARIABLE_INT_HEX(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT_HEX)
+#define CONFIG_VARIABLE_FLOAT(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_FLOAT)
+#define CONFIG_VARIABLE_STRING(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_STRING)
 
 //! @begin_config_file default
 
-static default_t	doom_defaults_list[] =
-{
+static default_t doom_defaults_list[] = {
     //!
     // Mouse sensitivity.  This value is used to multiply input mouse
     // movement to control the effect of moving the mouse.
@@ -141,23 +131,6 @@ static default_t	doom_defaults_list[] =
     //
 
     CONFIG_VARIABLE_INT(music_volume),
-
-    //!
-    // @game strife
-    //
-    // If non-zero, dialogue text is displayed over characters' pictures
-    // when engaging actors who have voices.
-    //
-
-    CONFIG_VARIABLE_INT(show_talk),
-
-    //!
-    // @game strife
-    //
-    // Volume of voice sound effects, range 0-15.
-    //
-
-    CONFIG_VARIABLE_INT(voice_volume),
 
     //!
     // @game doom
@@ -204,190 +177,6 @@ static default_t	doom_defaults_list[] =
     //
 
     CONFIG_VARIABLE_KEY(key_straferight),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to use health.
-    //
-
-    CONFIG_VARIABLE_KEY(key_useHealth),
-
-    //!
-    // @game hexen
-    //
-    // Keyboard key to jump.
-    //
-
-    CONFIG_VARIABLE_KEY(key_jump),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to fly upward.
-    //
-
-    CONFIG_VARIABLE_KEY(key_flyup),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to fly downwards.
-    //
-
-    CONFIG_VARIABLE_KEY(key_flydown),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to center flying.
-    //
-
-    CONFIG_VARIABLE_KEY(key_flycenter),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to look up.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookup),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to look down.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookdown),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to center the view.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookcenter),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to query inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invquery),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display mission objective.
-    //
-
-    CONFIG_VARIABLE_KEY(key_mission),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display inventory popup.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invPop),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display keys popup.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invKey),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to jump to start of inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invHome),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to jump to end of inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invEnd),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to scroll left in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invleft),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to scroll right in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invright),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to scroll left in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invLeft),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to scroll right in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invRight),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to use the current item in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_useartifact),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to use inventory item.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invUse),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to drop an inventory item.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invDrop),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to look up.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookUp),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to look down.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookDown),
 
     //!
     // Keyboard key to fire the currently selected weapon.
@@ -442,14 +231,6 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(mouseb_forward),
 
     //!
-    // @game hexen strife
-    //
-    // Mouse button to jump.
-    //
-
-    CONFIG_VARIABLE_INT(mouseb_jump),
-
-    //!
     // If non-zero, joystick input is enabled.
     //
 
@@ -485,15 +266,7 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(joyb_speed),
 
     //!
-    // @game hexen strife
-    //
-    // Joystick virtual button that makes the player jump.
-    //
-
-    CONFIG_VARIABLE_INT(joyb_jump),
-
-    //!
-    // @game doom heretic hexen
+    // @game doom
     //
     // Screen size, range 3-11.
     //
@@ -503,18 +276,6 @@ static default_t	doom_defaults_list[] =
     //
 
     CONFIG_VARIABLE_INT(screenblocks),
-
-    //!
-    // @game strife
-    //
-    // Screen size, range 3-11.
-    //
-    // A value of 11 gives a full-screen view with the status bar not
-    // displayed.  A value of 10 gives a full-screen view with the
-    // status bar displayed.
-    //
-
-    CONFIG_VARIABLE_INT(screensize),
 
     //!
     // @game doom
@@ -572,39 +333,6 @@ static default_t	doom_defaults_list[] =
     //
 
     CONFIG_VARIABLE_INT(usegamma),
-
-    //!
-    // @game hexen
-    //
-    // Directory in which to store savegames.
-    //
-
-    CONFIG_VARIABLE_STRING(savedir),
-
-    //!
-    // @game hexen
-    //
-    // Controls whether messages are displayed in the heads-up display.
-    // If this has a non-zero value, messages are displayed.
-    //
-
-    CONFIG_VARIABLE_INT(messageson),
-
-    //!
-    // @game strife
-    //
-    // Name of background flat used by view border.
-    //
-
-    CONFIG_VARIABLE_STRING(back_flat),
-
-    //!
-    // @game strife
-    //
-    // Multiplayer nickname (?).
-    //
-
-    CONFIG_VARIABLE_STRING(nickname),
 
     //!
     // Multiplayer chat macro: message to send when alt+0 is pressed.
@@ -668,8 +396,7 @@ static default_t	doom_defaults_list[] =
 
 };
 
-static default_collection_t doom_defaults =
-{
+static default_collection_t doom_defaults = {
     doom_defaults_list,
     arrlen(doom_defaults_list),
     NULL,
@@ -677,8 +404,7 @@ static default_collection_t doom_defaults =
 
 //! @begin_config_file extended
 
-static default_t extra_defaults_list[] =
-{
+static default_t extra_defaults_list[] = {
     //!
     // Name of the SDL video driver to use.  If this is an empty string,
     // the default video driver is used.
@@ -783,15 +509,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(startup_delay),
 
     //!
-    // @game heretic hexen strife
-    //
-    // If non-zero, display the graphical startup screen.
-    //
-
-    CONFIG_VARIABLE_INT(graphical_startup),
-
-    //!
-    // @game doom heretic strife
+    // @game doom
     //
     // If non-zero, the ENDOOM text screen is displayed when exiting the
     // game. If zero, the ENDOOM screen is not displayed.
@@ -800,7 +518,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(show_endoom),
 
     //!
-    // @game doom strife
+    // @game doom
     //
     // If non-zero, a disk activity indicator is displayed when data is read
     // from disk. If zero, the disk activity indicator is not displayed.
@@ -858,7 +576,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_STRING(music_pack_path),
 
     //!
-    // @game doom strife
+    // @game doom
     //
     // If non-zero, the Vanilla savegame limit is enforced; if the
     // savegame exceeds 180224 bytes in size, the game will exit with
@@ -869,7 +587,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(vanilla_savegame_limit),
 
     //!
-    // @game doom strife
+    // @game doom
     //
     // If non-zero, the Vanilla demo size limit is enforced; the game
     // exits with an error when a demo exceeds the demo size limit
@@ -961,22 +679,6 @@ static default_t extra_defaults_list[] =
     //
 
     CONFIG_VARIABLE_INT(mouseb_nextweapon),
-
-    //!
-    // @game heretic
-    //
-    // Mouse button to move to the left in the inventory.
-    //
-
-    CONFIG_VARIABLE_INT(mouseb_invleft),
-
-    //!
-    // @game heretic
-    //
-    // Mouse button to move to the right in the inventory.
-    //
-
-    CONFIG_VARIABLE_INT(mouseb_invright),
 
     //!
     // If non-zero, double-clicking a mouse button acts like pressing
@@ -1440,150 +1142,6 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_KEY(key_nextweapon),
 
     //!
-    // @game heretic
-    //
-    // Key to use "quartz flask" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_quartz),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "mystic urn" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_urn),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "timebomb of the ancients" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_bomb),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "tome of power" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_tome),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "ring of invincibility" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_ring),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "chaos device" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_chaosdevice),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "shadowsphere" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_shadowsphere),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "wings of wrath" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_wings),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "torch" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_torch),
-
-    //!
-    // @game heretic
-    //
-    // Key to use "morph ovum" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_morph),
-
-    //!
-    // @game hexen
-    //
-    // Key to use one of each artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_all),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "quartz flask" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_health),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "flechette" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_poisonbag),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "disc of repulsion" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_blastradius),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "chaos device" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_teleport),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "banishment device" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_teleportother),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "porkalator" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_egg),
-
-    //!
-    // @game hexen
-    //
-    // Key to use "icon of the defender" artifact.
-    //
-
-    CONFIG_VARIABLE_KEY(key_arti_invulnerability),
-
-    //!
     // Key to re-display last message.
     //
 
@@ -1625,41 +1183,9 @@ static default_t extra_defaults_list[] =
 
     CONFIG_VARIABLE_KEY(key_multi_msgplayer4),
 
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 5 during multiplayer games.
-    //
-
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer5),
-
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 6 during multiplayer games.
-    //
-
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer6),
-
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 7 during multiplayer games.
-    //
-
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer7),
-
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 8 during multiplayer games.
-    //
-
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer8),
 };
 
-static default_collection_t extra_defaults =
-{
+static default_collection_t extra_defaults = {
     extra_defaults_list,
     arrlen(extra_defaults_list),
     NULL,
@@ -1667,14 +1193,11 @@ static default_collection_t extra_defaults =
 
 // Search a collection for a variable
 
-static default_t *SearchCollection(default_collection_t *collection, const char *name)
-{
+static default_t *SearchCollection(default_collection_t *collection, const char *name) {
     int i;
 
-    for (i=0; i<collection->numdefaults; ++i)
-    {
-        if (!strcmp(name, collection->defaults[i].name))
-        {
+    for (i = 0; i < collection->numdefaults; ++i) {
+        if (!strcmp(name, collection->defaults[i].name)) {
             return &collection->defaults[i];
         }
     }
@@ -1688,47 +1211,151 @@ static default_t *SearchCollection(default_collection_t *collection, const char 
 //  * KEY_PAUSE is wrong - it's in the KEY_NUMLOCK spot. This shouldn't
 //    matter in terms of Vanilla compatibility because neither of
 //    those were valid for key bindings.
-static const int scantokey[127] =
-{
-    0  ,    27,     '1',    '2',    '3',    '4',    '5',    '6',
-    '7',    '8',    '9',    '0',    '-',    '=',    KEY_BACKSPACE, 9,
-    'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',
-    'o',    'p',    '[',    ']',    13,		KEY_RCTRL, 'a',    's',
-    'd',    'f',    'g',    'h',    'j',    'k',    'l',    ';',
-    '\'',   '`',    KEY_RSHIFT,'\\',   'z',    'x',    'c',    'v',
-    'b',    'n',    'm',    ',',    '.',    '/',    KEY_RSHIFT,KEYP_MULTIPLY,
-    KEY_RALT,  ' ',  KEY_CAPSLOCK,KEY_F1,  KEY_F2,   KEY_F3,   KEY_F4,   KEY_F5,
-    KEY_F6,   KEY_F7,   KEY_F8,   KEY_F9,   KEY_F10,  /*KEY_NUMLOCK?*/KEY_PAUSE,KEY_SCRLCK,KEY_HOME,
-    KEY_UPARROW,KEY_PGUP,KEY_MINUS,KEY_LEFTARROW,KEYP_5,KEY_RIGHTARROW,KEYP_PLUS,KEY_END,
-    KEY_DOWNARROW,KEY_PGDN,KEY_INS,KEY_DEL,0,   0,      0,      KEY_F11,
-    KEY_F12,  0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0
-};
+static const int scantokey[127] = {0,
+                                   27,
+                                   '1',
+                                   '2',
+                                   '3',
+                                   '4',
+                                   '5',
+                                   '6',
+                                   '7',
+                                   '8',
+                                   '9',
+                                   '0',
+                                   '-',
+                                   '=',
+                                   KEY_BACKSPACE,
+                                   9,
+                                   'q',
+                                   'w',
+                                   'e',
+                                   'r',
+                                   't',
+                                   'y',
+                                   'u',
+                                   'i',
+                                   'o',
+                                   'p',
+                                   '[',
+                                   ']',
+                                   13,
+                                   KEY_RCTRL,
+                                   'a',
+                                   's',
+                                   'd',
+                                   'f',
+                                   'g',
+                                   'h',
+                                   'j',
+                                   'k',
+                                   'l',
+                                   ';',
+                                   '\'',
+                                   '`',
+                                   KEY_RSHIFT,
+                                   '\\',
+                                   'z',
+                                   'x',
+                                   'c',
+                                   'v',
+                                   'b',
+                                   'n',
+                                   'm',
+                                   ',',
+                                   '.',
+                                   '/',
+                                   KEY_RSHIFT,
+                                   KEYP_MULTIPLY,
+                                   KEY_RALT,
+                                   ' ',
+                                   KEY_CAPSLOCK,
+                                   KEY_F1,
+                                   KEY_F2,
+                                   KEY_F3,
+                                   KEY_F4,
+                                   KEY_F5,
+                                   KEY_F6,
+                                   KEY_F7,
+                                   KEY_F8,
+                                   KEY_F9,
+                                   KEY_F10,
+                                   /*KEY_NUMLOCK?*/ KEY_PAUSE,
+                                   KEY_SCRLCK,
+                                   KEY_HOME,
+                                   KEY_UPARROW,
+                                   KEY_PGUP,
+                                   KEY_MINUS,
+                                   KEY_LEFTARROW,
+                                   KEYP_5,
+                                   KEY_RIGHTARROW,
+                                   KEYP_PLUS,
+                                   KEY_END,
+                                   KEY_DOWNARROW,
+                                   KEY_PGDN,
+                                   KEY_INS,
+                                   KEY_DEL,
+                                   0,
+                                   0,
+                                   0,
+                                   KEY_F11,
+                                   KEY_F12,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0};
 
-
-static void SaveDefaultCollection(default_collection_t *collection)
-{
+static void SaveDefaultCollection(default_collection_t *collection) {
     default_t *defaults;
     int i, v;
     FILE *f;
 
-    f = fopen (collection->filename, "w");
+    f = fopen(collection->filename, "w");
     if (!f)
-	return; // can't write the file, but don't complain
+        return; // can't write the file, but don't complain
 
     defaults = collection->defaults;
 
-    for (i=0 ; i<collection->numdefaults ; i++)
-    {
+    for (i = 0; i < collection->numdefaults; i++) {
         int chars_written;
 
         // Ignore unbound variables
 
-        if (!defaults[i].bound)
-        {
+        if (!defaults[i].bound) {
             continue;
         }
 
@@ -1741,136 +1368,120 @@ static void SaveDefaultCollection(default_collection_t *collection)
 
         // Print the value
 
-        switch (defaults[i].type)
-        {
-            case DEFAULT_KEY:
+        switch (defaults[i].type) {
+        case DEFAULT_KEY:
 
-                // use the untranslated version if we can, to reduce
-                // the possibility of screwing up the user's config
-                // file
+            // use the untranslated version if we can, to reduce
+            // the possibility of screwing up the user's config
+            // file
 
-                v = *defaults[i].location.i;
+            v = *defaults[i].location.i;
 
-                if (v == KEY_RSHIFT)
-                {
-                    // Special case: for shift, force scan code for
-                    // right shift, as this is what Vanilla uses.
-                    // This overrides the change check below, to fix
-                    // configuration files made by old versions that
-                    // mistakenly used the scan code for left shift.
+            if (v == KEY_RSHIFT) {
+                // Special case: for shift, force scan code for
+                // right shift, as this is what Vanilla uses.
+                // This overrides the change check below, to fix
+                // configuration files made by old versions that
+                // mistakenly used the scan code for left shift.
 
-                    v = 54;
-                }
-                else if (defaults[i].untranslated
-                      && v == defaults[i].original_translated)
-                {
-                    // Has not been changed since the last time we
-                    // read the config file.
+                v = 54;
+            } else if (defaults[i].untranslated && v == defaults[i].original_translated) {
+                // Has not been changed since the last time we
+                // read the config file.
 
-                    v = defaults[i].untranslated;
-                }
-                else
-                {
-                    // search for a reverse mapping back to a scancode
-                    // in the scantokey table
+                v = defaults[i].untranslated;
+            } else {
+                // search for a reverse mapping back to a scancode
+                // in the scantokey table
 
-                    int s;
+                int s;
 
-                    for (s=0; s<128; ++s)
-                    {
-                        if (scantokey[s] == v)
-                        {
-                            v = s;
-                            break;
-                        }
+                for (s = 0; s < 127; ++s) {
+                    if (scantokey[s] == v) {
+                        v = s;
+                        break;
                     }
                 }
+            }
 
-	        fprintf(f, "%i", v);
-                break;
+            fprintf(f, "%i", v);
+            break;
 
-            case DEFAULT_INT:
-	        fprintf(f, "%i", *defaults[i].location.i);
-                break;
+        case DEFAULT_INT:
+            fprintf(f, "%i", *defaults[i].location.i);
+            break;
 
-            case DEFAULT_INT_HEX:
-	        fprintf(f, "0x%x", *defaults[i].location.i);
-                break;
+        case DEFAULT_INT_HEX:
+            fprintf(f, "0x%x", *defaults[i].location.i);
+            break;
 
-            case DEFAULT_FLOAT:
-                fprintf(f, "%f", *defaults[i].location.f);
-                break;
+        case DEFAULT_FLOAT:
+            fprintf(f, "%f", *defaults[i].location.f);
+            break;
 
-            case DEFAULT_STRING:
-	        fprintf(f,"\"%s\"", *defaults[i].location.s);
-                break;
+        case DEFAULT_STRING:
+            fprintf(f, "\"%s\"", *defaults[i].location.s);
+            break;
         }
 
         fprintf(f, "\n");
     }
 
-    fclose (f);
+    fclose(f);
 }
 
 // Parses integer values in the configuration file
 
-static int ParseIntParameter(const char *strparm)
-{
+static int ParseIntParameter(const char *strparm) {
     int parm;
 
     if (strparm[0] == '0' && strparm[1] == 'x')
-        sscanf(strparm+2, "%x", (unsigned int *) &parm);
+        sscanf(strparm + 2, "%x", (unsigned int *)&parm);
     else
         sscanf(strparm, "%i", &parm);
 
     return parm;
 }
 
-static void SetVariable(default_t *def, const char *value)
-{
+static void SetVariable(default_t *def, const char *value) {
     int intparm;
 
     // parameter found
 
-    switch (def->type)
-    {
-        case DEFAULT_STRING:
-            *def->location.s = M_StringDuplicate(value);
-            break;
+    switch (def->type) {
+    case DEFAULT_STRING:
+        *def->location.s = M_StringDuplicate(value);
+        break;
 
-        case DEFAULT_INT:
-        case DEFAULT_INT_HEX:
-            *def->location.i = ParseIntParameter(value);
-            break;
+    case DEFAULT_INT:
+    case DEFAULT_INT_HEX:
+        *def->location.i = ParseIntParameter(value);
+        break;
 
-        case DEFAULT_KEY:
+    case DEFAULT_KEY:
 
-            // translate scancodes read from config
-            // file (save the old value in untranslated)
+        // translate scancodes read from config
+        // file (save the old value in untranslated)
 
-            intparm = ParseIntParameter(value);
-            def->untranslated = intparm;
-            if (intparm >= 0 && intparm < 128)
-            {
-                intparm = scantokey[intparm];
-            }
-            else
-            {
-                intparm = 0;
-            }
+        intparm = ParseIntParameter(value);
+        def->untranslated = intparm;
+        if (intparm >= 0 && intparm < 128) {
+            intparm = scantokey[intparm];
+        } else {
+            intparm = 0;
+        }
 
-            def->original_translated = intparm;
-            *def->location.i = intparm;
-            break;
+        def->original_translated = intparm;
+        *def->location.i = intparm;
+        break;
 
-        case DEFAULT_FLOAT:
-            *def->location.f = (float) atof(value);
-            break;
+    case DEFAULT_FLOAT:
+        *def->location.f = (float)atof(value);
+        break;
     }
 }
 
-static void LoadDefaultCollection(default_collection_t *collection)
-{
+static void LoadDefaultCollection(default_collection_t *collection) {
     FILE *f;
     default_t *def;
     char defname[80];
@@ -1879,18 +1490,15 @@ static void LoadDefaultCollection(default_collection_t *collection)
     // read the file in, overriding any set defaults
     f = fopen(collection->filename, "r");
 
-    if (f == NULL)
-    {
+    if (f == NULL) {
         // File not opened, but don't complain.
         // It's probably just the first time they ran the game.
 
         return;
     }
 
-    while (!feof(f))
-    {
-        if (fscanf(f, "%79s %99[^\n]\n", defname, strparm) != 2)
-        {
+    while (!feof(f)) {
+        if (fscanf(f, "%79s %99[^\n]\n", defname, strparm) != 2) {
             // This line doesn't match
 
             continue;
@@ -1900,8 +1508,7 @@ static void LoadDefaultCollection(default_collection_t *collection)
 
         def = SearchCollection(collection, defname);
 
-        if (def == NULL || !def->bound)
-        {
+        if (def == NULL || !def->bound) {
             // Unknown variable?  Unbound variables are also treated
             // as unknown.
 
@@ -1911,15 +1518,12 @@ static void LoadDefaultCollection(default_collection_t *collection)
         // Strip off trailing non-printable characters (\r characters
         // from DOS text files)
 
-        while (strlen(strparm) > 0 && !isprint(strparm[strlen(strparm)-1]))
-        {
-            strparm[strlen(strparm)-1] = '\0';
+        while (strlen(strparm) > 0 && !isprint(strparm[strlen(strparm) - 1])) {
+            strparm[strlen(strparm) - 1] = '\0';
         }
 
         // Surrounded by quotes? If so, remove them.
-        if (strlen(strparm) >= 2
-         && strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"')
-        {
+        if (strlen(strparm) >= 2 && strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"') {
             strparm[strlen(strparm) - 1] = '\0';
             memmove(strparm, strparm + 1, sizeof(strparm) - 1);
         }
@@ -1927,13 +1531,12 @@ static void LoadDefaultCollection(default_collection_t *collection)
         SetVariable(def, strparm);
     }
 
-    fclose (f);
+    fclose(f);
 }
 
 // Set the default filenames to use for configuration files.
 
-void M_SetConfigFilenames(const char *main_config, const char *extra_config)
-{
+void M_SetConfigFilenames(const char *main_config, const char *extra_config) {
     default_main_config = main_config;
     default_extra_config = extra_config;
 }
@@ -1942,8 +1545,7 @@ void M_SetConfigFilenames(const char *main_config, const char *extra_config)
 // M_SaveDefaults
 //
 
-void M_SaveDefaults (void)
-{
+void M_SaveDefaults(void) {
     SaveDefaultCollection(&doom_defaults);
     SaveDefaultCollection(&extra_defaults);
 }
@@ -1952,8 +1554,7 @@ void M_SaveDefaults (void)
 // M_LoadDefaults
 //
 
-void M_LoadDefaults (void)
-{
+void M_LoadDefaults(void) {
     int i;
 
     // This variable is a special snowflake for no good reason.
@@ -1971,15 +1572,11 @@ void M_LoadDefaults (void)
 
     i = M_CheckParmWithArgs("-config", 1);
 
-    if (i)
-    {
-	doom_defaults.filename = myargv[i+1];
-	printf ("	default file: %s\n",doom_defaults.filename);
-    }
-    else
-    {
-        doom_defaults.filename
-            = M_StringJoin(configdir, default_main_config, NULL);
+    if (i) {
+        doom_defaults.filename = myargv[i + 1];
+        printf("	default file: %s\n", doom_defaults.filename);
+    } else {
+        doom_defaults.filename = M_StringJoin(configdir, default_main_config, NULL);
     }
 
     printf("saving config in %s\n", doom_defaults.filename);
@@ -1993,16 +1590,11 @@ void M_LoadDefaults (void)
 
     i = M_CheckParmWithArgs("-extraconfig", 1);
 
-    if (i)
-    {
-        extra_defaults.filename = myargv[i+1];
-        printf("        extra configuration file: %s\n",
-               extra_defaults.filename);
-    }
-    else
-    {
-        extra_defaults.filename
-            = M_StringJoin(configdir, default_extra_config, NULL);
+    if (i) {
+        extra_defaults.filename = myargv[i + 1];
+        printf("        extra configuration file: %s\n", extra_defaults.filename);
+    } else {
+        extra_defaults.filename = M_StringJoin(configdir, default_extra_config, NULL);
     }
 
     LoadDefaultCollection(&doom_defaults);
@@ -2011,23 +1603,20 @@ void M_LoadDefaults (void)
 
 // Get a configuration file variable by its name
 
-static default_t *GetDefaultForName(const char *name)
-{
+static default_t *GetDefaultForName(const char *name) {
     default_t *result;
 
     // Try the main list and the extras
 
     result = SearchCollection(&doom_defaults, name);
 
-    if (result == NULL)
-    {
+    if (result == NULL) {
         result = SearchCollection(&extra_defaults, name);
     }
 
     // Not found? Internal error.
 
-    if (result == NULL)
-    {
+    if (result == NULL) {
         I_Error("Unknown configuration variable: '%s'", name);
     }
 
@@ -2038,21 +1627,18 @@ static default_t *GetDefaultForName(const char *name)
 // Bind a variable to a given configuration file variable, by name.
 //
 
-void M_BindIntVariable(const char *name, int *location)
-{
+void M_BindIntVariable(const char *name, int *location) {
     default_t *variable;
 
     variable = GetDefaultForName(name);
-    assert(variable->type == DEFAULT_INT
-        || variable->type == DEFAULT_INT_HEX
-        || variable->type == DEFAULT_KEY);
+    assert(variable->type == DEFAULT_INT || variable->type == DEFAULT_INT_HEX ||
+           variable->type == DEFAULT_KEY);
 
     variable->location.i = location;
     variable->bound = true;
 }
 
-void M_BindFloatVariable(const char *name, float *location)
-{
+void M_BindFloatVariable(const char *name, float *location) {
     default_t *variable;
 
     variable = GetDefaultForName(name);
@@ -2062,8 +1648,7 @@ void M_BindFloatVariable(const char *name, float *location)
     variable->bound = true;
 }
 
-void M_BindStringVariable(const char *name, char **location)
-{
+void M_BindStringVariable(const char *name, char **location) {
     default_t *variable;
 
     variable = GetDefaultForName(name);
@@ -2076,14 +1661,12 @@ void M_BindStringVariable(const char *name, char **location)
 // Set the value of a particular variable; an API function for other
 // parts of the program to assign values to config variables by name.
 
-boolean M_SetVariable(const char *name, const char *value)
-{
+boolean M_SetVariable(const char *name, const char *value) {
     default_t *variable;
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound)
-    {
+    if (variable == NULL || !variable->bound) {
         return false;
     }
 
@@ -2092,15 +1675,12 @@ boolean M_SetVariable(const char *name, const char *value)
     return true;
 }
 
-const char *M_GetStringVariable(const char *name)
-{
+const char *M_GetStringVariable(const char *name) {
     default_t *variable;
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
-     || variable->type != DEFAULT_STRING)
-    {
+    if (variable == NULL || !variable->bound || variable->type != DEFAULT_STRING) {
         return NULL;
     }
 
@@ -2110,10 +1690,7 @@ const char *M_GetStringVariable(const char *name)
 // Get the path to the default configuration dir to use, if NULL
 // is passed to M_SetConfigDir.
 
-static char *GetDefaultConfigDir(void)
-{
-    return M_StringDuplicate("");
-}
+static char *GetDefaultConfigDir(void) { return M_StringDuplicate(""); }
 
 //
 // SetConfigDir:
@@ -2122,21 +1699,16 @@ static char *GetDefaultConfigDir(void)
 // files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
 //
 
-void M_SetConfigDir(const char *dir)
-{
+void M_SetConfigDir(const char *dir) {
     // Use the directory that was passed, or find the default.
 
-    if (dir != NULL)
-    {
+    if (dir != NULL) {
         configdir = dir;
-    }
-    else
-    {
+    } else {
         configdir = GetDefaultConfigDir();
     }
 
-    if (strcmp(configdir, "") != 0)
-    {
+    if (strcmp(configdir, "") != 0) {
         printf("Using %s for configuration and saves\n", configdir);
     }
 
@@ -2145,24 +1717,23 @@ void M_SetConfigDir(const char *dir)
     M_MakeDirectory(configdir);
 }
 
-#define MUSIC_PACK_README \
-"Extract music packs into this directory in .flac or .ogg format;\n"   \
-"they will be automatically loaded based on filename to replace the\n" \
-"in-game music with high quality versions.\n\n" \
-"For more information check here:\n\n" \
-"  <https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs>\n\n"
+#define MUSIC_PACK_README                                                                                    \
+    "Extract music packs into this directory in .flac or .ogg format;\n"                                     \
+    "they will be automatically loaded based on filename to replace the\n"                                   \
+    "in-game music with high quality versions.\n\n"                                                          \
+    "For more information check here:\n\n"                                                                   \
+    "  "                                                                                                     \
+    "<https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs>\n\n"
 
 // Set the value of music_pack_path if it is currently empty, and create
 // the directory if necessary.
-void M_SetMusicPackDir(void)
-{
+void M_SetMusicPackDir(void) {
     const char *current_path;
     char *prefdir, *music_pack_path, *readme_path;
 
     current_path = M_GetStringVariable("music_pack_path");
 
-    if (current_path != NULL && strlen(current_path) > 0)
-    {
+    if (current_path != NULL && strlen(current_path) > 0) {
         return;
     }
 
@@ -2175,8 +1746,7 @@ void M_SetMusicPackDir(void)
 
     // We write a README file with some basic instructions on how to use
     // the directory.
-    readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S,
-                               "README.txt", NULL);
+    readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S, "README.txt", NULL);
     M_WriteFile(readme_path, MUSIC_PACK_README, strlen(MUSIC_PACK_README));
 
     free(readme_path);
@@ -2189,8 +1759,7 @@ void M_SetMusicPackDir(void)
 // Creates the directory as necessary.
 //
 
-char *M_GetSaveGameDir(const char *iwadname)
-{
+char *M_GetSaveGameDir(const char *iwadname) {
     char *savegamedir;
     char *topdir;
     int p;
@@ -2203,11 +1772,9 @@ char *M_GetSaveGameDir(const char *iwadname)
     //
 
     p = M_CheckParmWithArgs("-savedir", 1);
-    if (p)
-    {
+    if (p) {
         savegamedir = myargv[p + 1];
-        if (!M_FileExists(savegamedir))
-        {
+        if (!M_FileExists(savegamedir)) {
             M_MakeDirectory(savegamedir);
         }
 
@@ -2218,21 +1785,17 @@ char *M_GetSaveGameDir(const char *iwadname)
     }
     // If not "doing" a configuration directory (Windows), don't "do"
     // a savegame directory, either.
-    else if (!strcmp(configdir, ""))
-    {
-	savegamedir = M_StringDuplicate("");
-    }
-    else
-    {
+    else if (!strcmp(configdir, "")) {
+        savegamedir = M_StringDuplicate("");
+    } else {
         // ~/.local/share/chocolate-doom/savegames
 
         topdir = M_StringJoin(configdir, "savegames", NULL);
         M_MakeDirectory(topdir);
 
-        // eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
+        // eg. ~/.local/share/chocolate-doom/savegames/doom.wad/
 
-        savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname,
-                                   DIR_SEPARATOR_S, NULL);
+        savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname, DIR_SEPARATOR_S, NULL);
 
         M_MakeDirectory(savegamedir);
 
@@ -2246,12 +1809,10 @@ char *M_GetSaveGameDir(const char *iwadname)
 // Calculate the path to the directory for autoloaded WADs/DEHs.
 // Creates the directory as necessary.
 //
-char *M_GetAutoloadDir(const char *iwadname)
-{
+char *M_GetAutoloadDir(const char *iwadname) {
     char *result;
 
-    if (autoload_path == NULL || strlen(autoload_path) == 0)
-    {
+    if (autoload_path == NULL || strlen(autoload_path) == 0) {
         char *prefdir;
         prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
         autoload_path = M_StringJoin(prefdir, "autoload", NULL);
@@ -2267,4 +1828,3 @@ char *M_GetAutoloadDir(const char *iwadname)
 
     return result;
 }
-

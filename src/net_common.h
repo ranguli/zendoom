@@ -21,8 +21,7 @@
 #include "net_defs.h"
 #include "net_packet.h"
 
-typedef enum
-{
+typedef enum {
     // Client has sent a SYN, is waiting for a SYN in response.
     NET_CONN_STATE_CONNECTING,
 
@@ -46,8 +45,7 @@ typedef enum
 
 // Reason a connection was terminated
 
-typedef enum
-{
+typedef enum {
     // As the result of a local disconnect request
 
     NET_DISCONNECT_LOCAL,
@@ -66,8 +64,7 @@ typedef enum
 
 typedef struct net_reliable_packet_s net_reliable_packet_t;
 
-typedef struct 
-{
+typedef struct {
     net_connstate_t state;
     net_disconnect_reason_t disconnect_reason;
     net_addr_t *addr;
@@ -81,26 +78,20 @@ typedef struct
     int reliable_recv_seq;
 } net_connection_t;
 
-
 void NET_Conn_SendPacket(net_connection_t *conn, net_packet_t *packet);
-void NET_Conn_InitClient(net_connection_t *conn, net_addr_t *addr,
-                         net_protocol_t protocol);
-void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr,
-                         net_protocol_t protocol);
-boolean NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet,
-                        unsigned int *packet_type);
+void NET_Conn_InitClient(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol);
+void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol);
+boolean NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet, unsigned int *packet_type);
 void NET_Conn_Disconnect(net_connection_t *conn);
 void NET_Conn_Run(net_connection_t *conn);
 net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type);
 
 // Other miscellaneous common functions
 unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b);
-boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission,
-                              net_gamesettings_t *settings);
+boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission, net_gamesettings_t *settings);
 
 void NET_OpenLog(void);
 void NET_Log(const char *fmt, ...);
 void NET_LogPacket(net_packet_t *packet);
 
 #endif /* #ifndef NET_COMMON_H */
-

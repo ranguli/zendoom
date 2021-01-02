@@ -16,12 +16,11 @@
 //      Miscellaneous.
 //
 
-
 #ifndef __M_MISC__
 #define __M_MISC__
 
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 #include "doomtype.h"
 
@@ -41,8 +40,7 @@ void M_ForceLowercase(char *text);
 char *M_StringDuplicate(const char *orig);
 boolean M_StringCopy(char *dest, const char *src, size_t dest_size);
 boolean M_StringConcat(char *dest, const char *src, size_t dest_size);
-char *M_StringReplace(const char *haystack, const char *needle,
-                      const char *replacement);
+char *M_StringReplace(const char *haystack, const char *needle, const char *replacement);
 char *M_StringJoin(const char *s, ...);
 boolean M_StringStartsWith(const char *s, const char *prefix);
 boolean M_StringEndsWith(const char *s, const char *suffix);

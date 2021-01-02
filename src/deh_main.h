@@ -18,8 +18,8 @@
 #ifndef DEH_MAIN_H
 #define DEH_MAIN_H
 
-#include "doomtype.h"
 #include "deh_str.h"
+#include "doomtype.h"
 #include "sha1.h"
 
 // These are the limits that dehacked uses (from dheinit.h in the dehacked
@@ -45,4 +45,3 @@ extern boolean deh_allow_long_cheats;
 extern boolean deh_apply_cheats;
 
 #endif /* #ifndef DEH_MAIN_H */
-

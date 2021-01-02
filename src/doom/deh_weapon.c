@@ -28,46 +28,41 @@
 #include "deh_mapping.h"
 
 DEH_BEGIN_MAPPING(weapon_mapping, weaponinfo_t)
-  DEH_MAPPING("Ammo type",        ammo)
-  DEH_MAPPING("Deselect frame",   upstate)
-  DEH_MAPPING("Select frame",     downstate)
-  DEH_MAPPING("Bobbing frame",    readystate)
-  DEH_MAPPING("Shooting frame",   atkstate)
-  DEH_MAPPING("Firing frame",     flashstate)
+DEH_MAPPING("Ammo type", ammo)
+DEH_MAPPING("Deselect frame", upstate)
+DEH_MAPPING("Select frame", downstate)
+DEH_MAPPING("Bobbing frame", readystate)
+DEH_MAPPING("Shooting frame", atkstate)
+DEH_MAPPING("Firing frame", flashstate)
 DEH_END_MAPPING
 
-static void *DEH_WeaponStart(deh_context_t *context, char *line)
-{
+static void *DEH_WeaponStart(deh_context_t *context, char *line) {
     int weapon_number = 0;
 
-    if (sscanf(line, "Weapon %i", &weapon_number) != 1)
-    {
+    if (sscanf(line, "Weapon %i", &weapon_number) != 1) {
         DEH_Warning(context, "Parse error on section start");
         return NULL;
     }
 
-    if (weapon_number < 0 || weapon_number >= NUMWEAPONS)
-    {
+    if (weapon_number < 0 || weapon_number >= NUMWEAPONS) {
         DEH_Warning(context, "Invalid weapon number: %i", weapon_number);
         return NULL;
     }
-    
+
     return &weaponinfo[weapon_number];
 }
 
-static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
-{
+static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag) {
     char *variable_name, *value;
     weaponinfo_t *weapon;
     int ivalue;
-    
+
     if (tag == NULL)
         return;
 
-    weapon = (weaponinfo_t *) tag;
+    weapon = (weaponinfo_t *)tag;
 
-    if (!DEH_ParseAssignment(line, &variable_name, &value))
-    {
+    if (!DEH_ParseAssignment(line, &variable_name, &value)) {
         // Failed to parse
 
         DEH_Warning(context, "Failed to parse assignment");
@@ -79,23 +74,14 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
     DEH_SetMapping(context, &weapon_mapping, weapon, variable_name, ivalue);
 }
 
-static void DEH_WeaponSHA1Sum(sha1_context_t *context)
-{
+static void DEH_WeaponSHA1Sum(sha1_context_t *context) {
     int i;
 
-    for (i=0; i<NUMWEAPONS ;++i)
-    {
+    for (i = 0; i < NUMWEAPONS; ++i) {
         DEH_StructSHA1Sum(context, &weapon_mapping, &weaponinfo[i]);
     }
 }
 
-deh_section_t deh_section_weapon =
-{
-    "Weapon",
-    NULL,
-    DEH_WeaponStart,
-    DEH_WeaponParseLine,
-    NULL,
-    DEH_WeaponSHA1Sum,
+deh_section_t deh_section_weapon = {
+    "Weapon", NULL, DEH_WeaponStart, DEH_WeaponParseLine, NULL, DEH_WeaponSHA1Sum,
 };
-

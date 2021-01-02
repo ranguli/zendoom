@@ -16,7 +16,6 @@
 //	WAD I/O functions.
 //
 
-
 #ifndef __W_WAD__
 #define __W_WAD__
 
@@ -24,7 +23,6 @@
 
 #include "doomtype.h"
 #include "w_file.h"
-
 
 //
 // TYPES
@@ -37,18 +35,16 @@
 typedef struct lumpinfo_s lumpinfo_t;
 typedef int lumpindex_t;
 
-struct lumpinfo_s
-{
-    char	name[8];
+struct lumpinfo_s {
+    char name[8];
     wad_file_t *wad_file;
-    int		position;
-    int		size;
-    void       *cache;
+    int position;
+    int size;
+    void *cache;
 
     // Used for hash table lookups
     lumpindex_t next;
 };
-
 
 extern lumpinfo_t **lumpinfo;
 extern unsigned int numlumps;
