@@ -11,6 +11,7 @@ It accomplishes this by doing the following:
 - Remove documentation, icons, (generation)
 - Remove the `setup` application, opting to manually edit `.cfg` files  
 - Remove support for MUS and MIDI as well as emulation support for PC speaker, OPL, PAS and GUS.
+  - Remove support for reading 'in-WAD' music (due to removing MUS support). Music playback is done only through SDL via [music packs](https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs).
 - Remove GNU `autotools` build support, relying only on `cmake`.
 - Remove `.desktop`, `.metainfo.xml`, `.rc`, and `.manifext.xml` files
 - Remove bash completions and man pages
