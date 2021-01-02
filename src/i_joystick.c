@@ -15,16 +15,15 @@
 //       SDL Joystick code.
 //
 
-
 #include "SDL.h"
 #include "SDL_joystick.h"
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#include "doomtype.h"
 #include "d_event.h"
+#include "doomtype.h"
 #include "i_joystick.h"
 #include "i_system.h"
 
@@ -72,36 +71,28 @@ static int joystick_look_invert = 0;
 
 // Virtual to physical button joystick button mapping. By default this
 // is a straight mapping.
-static int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-};
+static int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-void I_ShutdownJoystick(void)
-{
-    if (joystick != NULL)
-    {
+void I_ShutdownJoystick(void) {
+    if (joystick != NULL) {
         SDL_JoystickClose(joystick);
         joystick = NULL;
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     }
 }
 
-static boolean IsValidAxis(int axis)
-{
+static boolean IsValidAxis(int axis) {
     int num_axes;
 
-    if (axis < 0)
-    {
+    if (axis < 0) {
         return true;
     }
 
-    if (IS_BUTTON_AXIS(axis))
-    {
+    if (IS_BUTTON_AXIS(axis)) {
         return true;
     }
 
-    if (IS_HAT_AXIS(axis))
-    {
+    if (IS_HAT_AXIS(axis)) {
         return HAT_AXIS_HAT(axis) < SDL_JoystickNumHats(joystick);
     }
 
@@ -110,8 +101,7 @@ static boolean IsValidAxis(int axis)
     return axis < num_axes;
 }
 
-static int DeviceIndex(void)
-{
+static int DeviceIndex(void) {
     SDL_JoystickGUID guid, dev_guid;
     int i;
 
@@ -120,21 +110,17 @@ static int DeviceIndex(void)
     // GUID identifies a class of device rather than a specific device.
     // Check if joystick_index has the expected GUID, as this can act
     // as a tie-breaker in case there are multiple identical devices.
-    if (joystick_index >= 0 && joystick_index < SDL_NumJoysticks())
-    {
+    if (joystick_index >= 0 && joystick_index < SDL_NumJoysticks()) {
         dev_guid = SDL_JoystickGetDeviceGUID(joystick_index);
-        if (!memcmp(&guid, &dev_guid, sizeof(SDL_JoystickGUID)))
-        {
+        if (!memcmp(&guid, &dev_guid, sizeof(SDL_JoystickGUID))) {
             return joystick_index;
         }
     }
 
     // Check all devices to look for one with the expected GUID.
-    for (i = 0; i < SDL_NumJoysticks(); ++i)
-    {
+    for (i = 0; i < SDL_NumJoysticks(); ++i) {
         dev_guid = SDL_JoystickGetDeviceGUID(i);
-        if (!memcmp(&guid, &dev_guid, sizeof(SDL_JoystickGUID)))
-        {
+        if (!memcmp(&guid, &dev_guid, sizeof(SDL_JoystickGUID))) {
             printf("I_InitJoystick: Joystick moved to index %d.\n", i);
             return i;
         }
@@ -144,24 +130,20 @@ static int DeviceIndex(void)
     return -1;
 }
 
-void I_InitJoystick(void)
-{
+void I_InitJoystick(void) {
     int index;
 
-    if (!usejoystick || !strcmp(joystick_guid, ""))
-    {
+    if (!usejoystick || !strcmp(joystick_guid, "")) {
         return;
     }
 
-    if (SDL_Init(SDL_INIT_JOYSTICK) < 0)
-    {
+    if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
         return;
     }
 
     index = DeviceIndex();
 
-    if (index < 0)
-    {
+    if (index < 0) {
         printf("I_InitJoystick: Couldn't find joystick with GUID \"%s\": "
                "device not found or not connected?\n",
                joystick_guid);
@@ -173,18 +155,14 @@ void I_InitJoystick(void)
 
     joystick = SDL_JoystickOpen(index);
 
-    if (joystick == NULL)
-    {
+    if (joystick == NULL) {
         printf("I_InitJoystick: Failed to open joystick #%i\n", index);
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
         return;
     }
 
-    if (!IsValidAxis(joystick_x_axis)
-     || !IsValidAxis(joystick_y_axis)
-     || !IsValidAxis(joystick_strafe_axis)
-     || !IsValidAxis(joystick_look_axis))
-    {
+    if (!IsValidAxis(joystick_x_axis) || !IsValidAxis(joystick_y_axis) ||
+        !IsValidAxis(joystick_strafe_axis) || !IsValidAxis(joystick_look_axis)) {
         printf("I_InitJoystick: Invalid joystick axis for configured joystick "
                "(run joystick setup again)\n");
 
@@ -202,37 +180,28 @@ void I_InitJoystick(void)
     I_AtExit(I_ShutdownJoystick, true);
 }
 
-static boolean IsAxisButton(int physbutton)
-{
-    if (IS_BUTTON_AXIS(joystick_x_axis))
-    {
-        if (physbutton == BUTTON_AXIS_NEG(joystick_x_axis)
-         || physbutton == BUTTON_AXIS_POS(joystick_x_axis))
-        {
+static boolean IsAxisButton(int physbutton) {
+    if (IS_BUTTON_AXIS(joystick_x_axis)) {
+        if (physbutton == BUTTON_AXIS_NEG(joystick_x_axis) ||
+            physbutton == BUTTON_AXIS_POS(joystick_x_axis)) {
             return true;
         }
     }
-    if (IS_BUTTON_AXIS(joystick_y_axis))
-    {
-        if (physbutton == BUTTON_AXIS_NEG(joystick_y_axis)
-         || physbutton == BUTTON_AXIS_POS(joystick_y_axis))
-        {
+    if (IS_BUTTON_AXIS(joystick_y_axis)) {
+        if (physbutton == BUTTON_AXIS_NEG(joystick_y_axis) ||
+            physbutton == BUTTON_AXIS_POS(joystick_y_axis)) {
             return true;
         }
     }
-    if (IS_BUTTON_AXIS(joystick_strafe_axis))
-    {
-        if (physbutton == BUTTON_AXIS_NEG(joystick_strafe_axis)
-         || physbutton == BUTTON_AXIS_POS(joystick_strafe_axis))
-        {
+    if (IS_BUTTON_AXIS(joystick_strafe_axis)) {
+        if (physbutton == BUTTON_AXIS_NEG(joystick_strafe_axis) ||
+            physbutton == BUTTON_AXIS_POS(joystick_strafe_axis)) {
             return true;
         }
     }
-    if (IS_BUTTON_AXIS(joystick_look_axis))
-    {
-        if (physbutton == BUTTON_AXIS_NEG(joystick_look_axis)
-         || physbutton == BUTTON_AXIS_POS(joystick_look_axis))
-        {
+    if (IS_BUTTON_AXIS(joystick_look_axis)) {
+        if (physbutton == BUTTON_AXIS_NEG(joystick_look_axis) ||
+            physbutton == BUTTON_AXIS_POS(joystick_look_axis)) {
             return true;
         }
     }
@@ -242,23 +211,18 @@ static boolean IsAxisButton(int physbutton)
 
 // Get the state of the given virtual button.
 
-static int ReadButtonState(int vbutton)
-{
+static int ReadButtonState(int vbutton) {
     int physbutton;
 
     // Map from virtual button to physical (SDL) button.
-    if (vbutton < NUM_VIRTUAL_BUTTONS)
-    {
+    if (vbutton < NUM_VIRTUAL_BUTTONS) {
         physbutton = joystick_physical_buttons[vbutton];
-    }
-    else
-    {
+    } else {
         physbutton = vbutton;
     }
 
     // Never read axis buttons as buttons.
-    if (IsAxisButton(physbutton))
-    {
+    if (IsAxisButton(physbutton)) {
         return 0;
     }
 
@@ -267,17 +231,14 @@ static int ReadButtonState(int vbutton)
 
 // Get a bitmask of all currently-pressed buttons
 
-static int GetButtonsState(void)
-{
+static int GetButtonsState(void) {
     int i;
     int result;
 
     result = 0;
 
-    for (i = 0; i < 20; ++i)
-    {
-        if (ReadButtonState(i))
-        {
+    for (i = 0; i < 20; ++i) {
+        if (ReadButtonState(i)) {
             result |= 1 << i;
         }
     }
@@ -287,14 +248,12 @@ static int GetButtonsState(void)
 
 // Read the state of an axis, inverting if necessary.
 
-static int GetAxisState(int axis, int invert)
-{
+static int GetAxisState(int axis, int invert) {
     int result;
 
     // Axis -1 means disabled.
 
-    if (axis < 0)
-    {
+    if (axis < 0) {
         return 0;
     }
 
@@ -303,67 +262,47 @@ static int GetAxisState(int axis, int invert)
 
     result = 0;
 
-    if (IS_BUTTON_AXIS(axis))
-    {
-        if (SDL_JoystickGetButton(joystick, BUTTON_AXIS_NEG(axis)))
-        {
+    if (IS_BUTTON_AXIS(axis)) {
+        if (SDL_JoystickGetButton(joystick, BUTTON_AXIS_NEG(axis))) {
             result -= 32767;
         }
-        if (SDL_JoystickGetButton(joystick, BUTTON_AXIS_POS(axis)))
-        {
+        if (SDL_JoystickGetButton(joystick, BUTTON_AXIS_POS(axis))) {
             result += 32767;
         }
-    }
-    else if (IS_HAT_AXIS(axis))
-    {
+    } else if (IS_HAT_AXIS(axis)) {
         int direction = HAT_AXIS_DIRECTION(axis);
         int hatval = SDL_JoystickGetHat(joystick, HAT_AXIS_HAT(axis));
 
-        if (direction == HAT_AXIS_HORIZONTAL)
-        {
-            if ((hatval & SDL_HAT_LEFT) != 0)
-            {
+        if (direction == HAT_AXIS_HORIZONTAL) {
+            if ((hatval & SDL_HAT_LEFT) != 0) {
                 result -= 32767;
+            } else if ((hatval & SDL_HAT_RIGHT) != 0) {
+                result += 32767;
             }
-            else if ((hatval & SDL_HAT_RIGHT) != 0)
-            {
+        } else if (direction == HAT_AXIS_VERTICAL) {
+            if ((hatval & SDL_HAT_UP) != 0) {
+                result -= 32767;
+            } else if ((hatval & SDL_HAT_DOWN) != 0) {
                 result += 32767;
             }
         }
-        else if (direction == HAT_AXIS_VERTICAL)
-        {
-            if ((hatval & SDL_HAT_UP) != 0)
-            {
-                result -= 32767;
-            }
-            else if ((hatval & SDL_HAT_DOWN) != 0)
-            {
-                result += 32767;
-            }
-        }
-    }
-    else
-    {
+    } else {
         result = SDL_JoystickGetAxis(joystick, axis);
 
-        if (result < DEAD_ZONE && result > -DEAD_ZONE)
-        {
+        if (result < DEAD_ZONE && result > -DEAD_ZONE) {
             result = 0;
         }
     }
 
-    if (invert)
-    {
+    if (invert) {
         result = -result;
     }
 
     return result;
 }
 
-void I_UpdateJoystick(void)
-{
-    if (joystick != NULL)
-    {
+void I_UpdateJoystick(void) {
+    if (joystick != NULL) {
         event_t ev;
 
         ev.type = ev_joystick;
@@ -377,27 +316,24 @@ void I_UpdateJoystick(void)
     }
 }
 
-void I_BindJoystickVariables(void)
-{
+void I_BindJoystickVariables(void) {
     int i;
 
-    M_BindIntVariable("use_joystick",          &usejoystick);
-    M_BindStringVariable("joystick_guid",      &joystick_guid);
-    M_BindIntVariable("joystick_index",        &joystick_index);
-    M_BindIntVariable("joystick_x_axis",       &joystick_x_axis);
-    M_BindIntVariable("joystick_y_axis",       &joystick_y_axis);
-    M_BindIntVariable("joystick_strafe_axis",  &joystick_strafe_axis);
-    M_BindIntVariable("joystick_x_invert",     &joystick_x_invert);
-    M_BindIntVariable("joystick_y_invert",     &joystick_y_invert);
-    M_BindIntVariable("joystick_strafe_invert",&joystick_strafe_invert);
-    M_BindIntVariable("joystick_look_axis",    &joystick_look_axis);
-    M_BindIntVariable("joystick_look_invert",  &joystick_look_invert);
+    M_BindIntVariable("use_joystick", &usejoystick);
+    M_BindStringVariable("joystick_guid", &joystick_guid);
+    M_BindIntVariable("joystick_index", &joystick_index);
+    M_BindIntVariable("joystick_x_axis", &joystick_x_axis);
+    M_BindIntVariable("joystick_y_axis", &joystick_y_axis);
+    M_BindIntVariable("joystick_strafe_axis", &joystick_strafe_axis);
+    M_BindIntVariable("joystick_x_invert", &joystick_x_invert);
+    M_BindIntVariable("joystick_y_invert", &joystick_y_invert);
+    M_BindIntVariable("joystick_strafe_invert", &joystick_strafe_invert);
+    M_BindIntVariable("joystick_look_axis", &joystick_look_axis);
+    M_BindIntVariable("joystick_look_invert", &joystick_look_invert);
 
-    for (i = 0; i < NUM_VIRTUAL_BUTTONS; ++i)
-    {
+    for (i = 0; i < NUM_VIRTUAL_BUTTONS; ++i) {
         char name[32];
         M_snprintf(name, sizeof(name), "joystick_physical_button%i", i);
         M_BindIntVariable(name, &joystick_physical_buttons[i]);
     }
 }
-

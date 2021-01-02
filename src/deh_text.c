@@ -30,8 +30,7 @@
 // Given a string length, find the maximum length of a
 // string that can replace it.
 
-static int TXT_MaxStringLength(int len)
-{
+static int TXT_MaxStringLength(int len) {
     // Enough bytes for the string and the NUL terminator
 
     len += 1;
@@ -47,14 +46,12 @@ static int TXT_MaxStringLength(int len)
     return len - 1;
 }
 
-static void *DEH_TextStart(deh_context_t *context, char *line)
-{
+static void *DEH_TextStart(deh_context_t *context, char *line) {
     char *from_text, *to_text;
     int fromlen, tolen;
     int i;
 
-    if (sscanf(line, "Text %i %i", &fromlen, &tolen) != 2)
-    {
+    if (sscanf(line, "Text %i %i", &fromlen, &tolen) != 2) {
         DEH_Warning(context, "Parse error on section start");
         return NULL;
     }
@@ -62,8 +59,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
     // Only allow string replacements that are possible in Vanilla Doom.
     // Chocolate Doom is unforgiving!
 
-    if (!deh_allow_long_strings && tolen > TXT_MaxStringLength(fromlen))
-    {
+    if (!deh_allow_long_strings && tolen > TXT_MaxStringLength(fromlen)) {
         DEH_Error(context, "Replacement string is longer than the maximum "
                            "possible in doom.exe");
         return NULL;
@@ -74,16 +70,14 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 
     // read in the "from" text
 
-    for (i=0; i<fromlen; ++i)
-    {
+    for (i = 0; i < fromlen; ++i) {
         from_text[i] = DEH_GetChar(context);
     }
     from_text[fromlen] = '\0';
 
     // read in the "to" text
 
-    for (i=0; i<tolen; ++i)
-    {
+    for (i = 0; i < tolen; ++i) {
         to_text[i] = DEH_GetChar(context);
     }
     to_text[tolen] = '\0';
@@ -96,13 +90,4 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
     return NULL;
 }
 
-deh_section_t deh_section_text =
-{
-    "Text",
-    NULL,
-    DEH_TextStart,
-    NULL,
-    NULL,
-    NULL
-};
-
+deh_section_t deh_section_text = {"Text", NULL, DEH_TextStart, NULL, NULL, NULL};

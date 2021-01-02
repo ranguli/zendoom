@@ -16,7 +16,6 @@
 //	The not so system specific sound interface.
 //
 
-
 #ifndef __I_SOUND__
 #define __I_SOUND__
 
@@ -28,10 +27,9 @@
 //
 // SoundFX struct.
 //
-typedef struct sfxinfo_struct	sfxinfo_t;
+typedef struct sfxinfo_struct sfxinfo_t;
 
-struct sfxinfo_struct
-{
+struct sfxinfo_struct {
     // tag name, used for hexen(?)
     const char *tagname;
 
@@ -67,8 +65,7 @@ struct sfxinfo_struct
 //
 // MusicInfo struct.
 //
-typedef struct
-{
+typedef struct {
     // up to 6-character name
     const char *name;
 
@@ -83,8 +80,7 @@ typedef struct
 
 } musicinfo_t;
 
-typedef enum
-{
+typedef enum {
     SNDDEVICE_NONE = 0,
     SNDDEVICE_SB = 3,
     SNDDEVICE_GENMIDI = 8,
@@ -92,8 +88,7 @@ typedef enum
 
 // Interface for sound modules
 
-typedef struct
-{
+typedef struct {
     // List of sound devices that this sound module is used for.
 
     snddevice_t *sound_devices;
@@ -151,8 +146,7 @@ void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);
 
 // Interface for music modules
 
-typedef struct
-{
+typedef struct {
     // List of sound devices that this music module is used for.
 
     snddevice_t *sound_devices;
@@ -225,4 +219,3 @@ extern int snd_pitchshift;
 void I_BindSoundVariables(void);
 
 #endif
-

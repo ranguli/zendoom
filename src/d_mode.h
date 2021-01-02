@@ -24,9 +24,8 @@
 
 // The "mission" controls what game we are playing.
 
-typedef enum
-{
-    doom,            // Doom 1
+typedef enum {
+    doom, // Doom 1
     none
 } GameMission_t;
 
@@ -34,42 +33,38 @@ typedef enum
 // in: eg. shareware vs. registered.  So doom1.wad and doom.wad are the
 // same mission, but a different mode.
 
-typedef enum
-{
-    shareware,       // Doom shareware
-    registered,      // Doom registered
-    retail,          // Ultimate Doom
-    indetermined     // Unknown.
+typedef enum {
+    shareware,   // Doom shareware
+    registered,  // Doom registered
+    retail,      // Ultimate Doom
+    indetermined // Unknown.
 } GameMode_t;
 
 // What version are we emulating?
 
-typedef enum
-{
-    exe_doom_1_2,    // Doom 1.2: shareware and registered
-    exe_doom_1_666,  // Doom 1.666: for shareware, registered and commercial
-    exe_doom_1_7,    // Doom 1.7/1.7a: "
-    exe_doom_1_8,    // Doom 1.8: "
-    exe_doom_1_9,    // Doom 1.9: "
-    exe_hacx,        // Hacx
-    exe_ultimate,    // Ultimate Doom (retail)
-    exe_final,       // Final Doom
-    exe_final2       // Final Doom (alternate exe)
+typedef enum {
+    exe_doom_1_2,   // Doom 1.2: shareware and registered
+    exe_doom_1_666, // Doom 1.666: for shareware, registered and commercial
+    exe_doom_1_7,   // Doom 1.7/1.7a: "
+    exe_doom_1_8,   // Doom 1.8: "
+    exe_doom_1_9,   // Doom 1.9: "
+    exe_hacx,       // Hacx
+    exe_ultimate,   // Ultimate Doom (retail)
+    exe_final,      // Final Doom
+    exe_final2      // Final Doom (alternate exe)
 } GameVersion_t;
 
 // What IWAD variant are we using?
 
-typedef enum
-{
-    vanilla,    // Vanilla Doom
-    freedoom    // FreeDoom: Phase 1 + 2
+typedef enum {
+    vanilla, // Vanilla Doom
+    freedoom // FreeDoom: Phase 1 + 2
 } GameVariant_t;
 
 // Skill level.
 
-typedef enum
-{
-    sk_noitems = -1,        // the "-skill 0" hack
+typedef enum {
+    sk_noitems = -1, // the "-skill 0" hack
     sk_baby = 0,
     sk_easy,
     sk_medium,
@@ -79,10 +74,8 @@ typedef enum
 
 boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode);
 boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version);
-boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
-                          int episode, int map);
+boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, int map);
 const char *D_GameMissionString(GameMission_t mission);
 const char *D_GameModeString(GameMode_t mode);
 
 #endif /* #ifndef __D_MODE__ */
-

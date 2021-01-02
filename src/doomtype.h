@@ -17,7 +17,6 @@
 //	 separating modules.
 //
 
-
 #ifndef __DOOMTYPE__
 #define __DOOMTYPE__
 
@@ -53,11 +52,7 @@
 
 #include <inttypes.h>
 
-typedef enum
-{
-    false,
-    true
-} boolean;
+typedef enum { false, true } boolean;
 
 typedef uint8_t byte;
 typedef uint8_t pixel_t;
@@ -72,4 +67,3 @@ typedef int16_t dpixel_t;
 #define arrlen(array) (sizeof(array) / sizeof(*array))
 
 #endif
-

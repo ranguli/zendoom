@@ -19,20 +19,18 @@
 //	uses native calls to malloc() and free().
 //
 
-
 #include <stdlib.h>
 #include <string.h>
 
-#include "z_zone.h"
-#include "i_system.h"
 #include "doomtype.h"
+#include "i_system.h"
+#include "z_zone.h"
 
-#define ZONEID	0x1d4a11
+#define ZONEID 0x1d4a11
 
 typedef struct memblock_s memblock_t;
 
-struct memblock_s
-{
+struct memblock_s {
     int id; // = ZONEID
     int tag;
     int size;
@@ -49,12 +47,10 @@ static memblock_t *allocated_blocks[PU_NUM_TAGS];
 
 static int test_malloced = 0;
 
-void *test_malloc(size_t size)
-{
+void *test_malloc(size_t size) {
     int *result;
 
-    if (test_malloced + size > 2 * 1024 * 1024)
-    {
+    if (test_malloced + size > 2 * 1024 * 1024) {
         return NULL;
     }
 
@@ -67,11 +63,10 @@ void *test_malloc(size_t size)
     return result + 1;
 }
 
-void test_free(void *data)
-{
+void test_free(void *data) {
     int *i;
 
-    i = ((int *) data) - 1;
+    i = ((int *)data) - 1;
 
     test_malloced -= *i;
 
@@ -83,40 +78,32 @@ void test_free(void *data)
 
 #endif /* #ifdef TESTING */
 
-
 // Add a block into the linked list for its type.
 
-static void Z_InsertBlock(memblock_t *block)
-{
+static void Z_InsertBlock(memblock_t *block) {
     block->prev = NULL;
     block->next = allocated_blocks[block->tag];
     allocated_blocks[block->tag] = block;
 
-    if (block->next != NULL)
-    {
+    if (block->next != NULL) {
         block->next->prev = block;
     }
 }
 
 // Remove a block from its linked list.
 
-static void Z_RemoveBlock(memblock_t *block)
-{
+static void Z_RemoveBlock(memblock_t *block) {
     // Unlink from list
 
-    if (block->prev == NULL)
-    {
+    if (block->prev == NULL) {
         // Start of list
 
         allocated_blocks[block->tag] = block->next;
-    }
-    else
-    {
+    } else {
         block->prev->next = block->next;
     }
 
-    if (block->next != NULL)
-    {
+    if (block->next != NULL) {
         block->next->prev = block->prev;
     }
 }
@@ -124,29 +111,24 @@ static void Z_RemoveBlock(memblock_t *block)
 //
 // Z_Init
 //
-void Z_Init (void)
-{
+void Z_Init(void) {
     memset(allocated_blocks, 0, sizeof(allocated_blocks));
     printf("zone memory: Using native C allocator.\n");
 }
 
-
 //
 // Z_Free
 //
-void Z_Free (void* ptr)
-{
-    memblock_t*		block;
+void Z_Free(void *ptr) {
+    memblock_t *block;
 
-    block = (memblock_t *) ((byte *)ptr - sizeof(memblock_t));
+    block = (memblock_t *)((byte *)ptr - sizeof(memblock_t));
 
-    if (block->id != ZONEID)
-    {
-        I_Error ("Z_Free: freed a pointer without ZONEID");
+    if (block->id != ZONEID) {
+        I_Error("Z_Free: freed a pointer without ZONEID");
     }
 
-    if (block->tag != PU_FREE && block->user != NULL)
-    {
+    if (block->tag != PU_FREE && block->user != NULL) {
         // clear the user's mark
 
         *block->user = NULL;
@@ -164,16 +146,14 @@ void Z_Free (void* ptr)
 //
 // Returns true if any blocks were freed.
 
-static boolean ClearCache(int size)
-{
+static boolean ClearCache(int size) {
     memblock_t *block;
     memblock_t *next_block;
     int remaining;
 
     block = allocated_blocks[PU_CACHE];
 
-    if (block == NULL)
-    {
+    if (block == NULL) {
         // Cache is already empty.
 
         return false;
@@ -183,22 +163,19 @@ static boolean ClearCache(int size)
     // of the list are the ones that have been free for longer and
     // are more likely to be unneeded now.
 
-    while (block->next != NULL)
-    {
+    while (block->next != NULL) {
         block = block->next;
     }
 
-    //printf("out of memory; cleaning out the cache: %i\n", test_malloced);
+    // printf("out of memory; cleaning out the cache: %i\n", test_malloced);
 
     // Search backwards through the list freeing blocks until we have
     // freed the amount of memory required.
 
     remaining = size;
 
-    while (remaining > 0)
-    {
-        if (block == NULL)
-        {
+    while (remaining > 0) {
+        if (block == NULL) {
             // No blocks left to free; we've done our best.
 
             break;
@@ -210,8 +187,7 @@ static boolean ClearCache(int size)
 
         remaining -= block->size;
 
-        if (block->user)
-        {
+        if (block->user) {
             *block->user = NULL;
         }
 
@@ -228,35 +204,30 @@ static boolean ClearCache(int size)
 // You can pass a NULL user if the tag is < PU_PURGELEVEL.
 //
 
-void *Z_Malloc(int size, int tag, void *user)
-{
+void *Z_Malloc(int size, int tag, void *user) {
     memblock_t *newblock;
     unsigned char *data;
     void *result;
 
-    if (tag < 0 || tag >= PU_NUM_TAGS || tag == PU_FREE)
-    {
+    if (tag < 0 || tag >= PU_NUM_TAGS || tag == PU_FREE) {
         I_Error("Z_Malloc: attempted to allocate a block with an invalid "
-                "tag: %i", tag);
+                "tag: %i",
+                tag);
     }
 
-    if (user == NULL && tag >= PU_PURGELEVEL)
-    {
-        I_Error ("Z_Malloc: an owner is required for purgable blocks");
+    if (user == NULL && tag >= PU_PURGELEVEL) {
+        I_Error("Z_Malloc: an owner is required for purgable blocks");
     }
 
     // Malloc a block of the required size
 
     newblock = NULL;
 
-    while (newblock == NULL)
-    {
-        newblock = (memblock_t *) malloc(sizeof(memblock_t) + size);
+    while (newblock == NULL) {
+        newblock = (memblock_t *)malloc(sizeof(memblock_t) + size);
 
-        if (newblock == NULL)
-        {
-            if (!ClearCache(sizeof(memblock_t) + size))
-            {
+        if (newblock == NULL) {
+            if (!ClearCache(sizeof(memblock_t) + size)) {
                 I_Error("Z_Malloc: failed on allocation of %i bytes", size);
             }
         }
@@ -272,42 +243,35 @@ void *Z_Malloc(int size, int tag, void *user)
 
     Z_InsertBlock(newblock);
 
-    data = (unsigned char *) newblock;
+    data = (unsigned char *)newblock;
     result = data + sizeof(memblock_t);
 
-    if (user != NULL)
-    {
+    if (user != NULL) {
         *newblock->user = result;
     }
 
     return result;
 }
 
-
-
 //
 // Z_FreeTags
 //
 
-void Z_FreeTags(int lowtag, int hightag)
-{
+void Z_FreeTags(int lowtag, int hightag) {
     int i;
 
-    for (i=lowtag; i<= hightag; ++i)
-    {
+    for (i = lowtag; i <= hightag; ++i) {
         memblock_t *block;
         memblock_t *next;
 
         // Free all in this chain
 
-        for (block=allocated_blocks[i]; block != NULL; )
-        {
+        for (block = allocated_blocks[i]; block != NULL;) {
             next = block->next;
 
             // Free this block
 
-            if (block->user != NULL)
-            {
+            if (block->user != NULL) {
                 *block->user = NULL;
             }
 
@@ -318,38 +282,31 @@ void Z_FreeTags(int lowtag, int hightag)
             block = next;
         }
 
-	// This chain is empty now
+        // This chain is empty now
 
-	allocated_blocks[i] = NULL;
+        allocated_blocks[i] = NULL;
     }
 }
-
-
 
 //
 // Z_CheckHeap
 //
-void Z_CheckHeap (void)
-{
+void Z_CheckHeap(void) {
     memblock_t *block;
     memblock_t *prev;
     int i;
 
     // Check all chains
 
-    for (i=0; i<PU_NUM_TAGS; ++i)
-    {
+    for (i = 0; i < PU_NUM_TAGS; ++i) {
         prev = NULL;
 
-        for (block=allocated_blocks[i]; block != NULL; block = block->next)
-        {
-            if (block->id != ZONEID)
-            {
+        for (block = allocated_blocks[i]; block != NULL; block = block->next) {
+            if (block->id != ZONEID) {
                 I_Error("Z_CheckHeap: Block without a ZONEID!");
             }
 
-            if (block->prev != prev)
-            {
+            if (block->prev != prev) {
                 I_Error("Z_CheckHeap: Doubly-linked list corrupted!");
             }
 
@@ -358,26 +315,22 @@ void Z_CheckHeap (void)
     }
 }
 
-
-
-
 //
 // Z_ChangeTag
 //
 
-void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
-{
-    memblock_t*	block;
+void Z_ChangeTag2(void *ptr, int tag, const char *file, int line) {
+    memblock_t *block;
 
-    block = (memblock_t *) ((byte *)ptr - sizeof(memblock_t));
+    block = (memblock_t *)((byte *)ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
-        I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
-                file, line);
+        I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!", file, line);
 
     if (tag >= PU_PURGELEVEL && block->user == NULL)
         I_Error("%s:%i: Z_ChangeTag: an owner is required "
-                "for purgable blocks", file, line);
+                "for purgable blocks",
+                file, line);
 
     // Remove the block from its current list, and rehook it into
     // its new list.

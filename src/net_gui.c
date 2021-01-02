@@ -17,10 +17,10 @@
 //    start the game.
 //
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <unistd.h>
 
 #include "config.h"
@@ -47,57 +47,46 @@ static boolean had_warning;
 // zero, do not autostart.
 static int expected_nodes;
 
-static void BuildWindow(void)
-{
+static void BuildWindow(void) {
     int i;
 
     // Player labels
 
-    for (i = 0; i < net_client_wait_data.max_players; ++i)
-    {
+    for (i = 0; i < net_client_wait_data.max_players; ++i) {
         printf(" %i. %s %s\n", i + 1, player_labels[i], ip_labels[i]);
         player_labels[i] = "";
         ip_labels[i] = "";
     }
 }
 
-static void UpdateGUI(void)
-{
+static void UpdateGUI(void) {
     unsigned int i;
 
     // If the value of max_players changes, we must rebuild the
     // contents of the window. This includes when the first
     // waiting data packet is received.
 
-    if (net_client_received_wait_data)
-    {
-        if (net_client_wait_data.max_players != old_max_players)
-        {
+    if (net_client_received_wait_data) {
+        if (net_client_wait_data.max_players != old_max_players) {
             BuildWindow();
         }
-    }
-    else
-    {
+    } else {
         return;
     }
 
-    for (i = 0; i < net_client_wait_data.max_players; ++i)
-    {
-        if (i < net_client_wait_data.num_players)
-        {
+    for (i = 0; i < net_client_wait_data.max_players; ++i) {
+        if (i < net_client_wait_data.num_players) {
             player_labels[i] = net_client_wait_data.player_names[i];
             ip_labels[i] = net_client_wait_data.player_addrs[i];
-        }
-        else
-        {
+        } else {
             player_labels[i] = "";
             ip_labels[i] = "";
         }
     }
 
-    if (net_client_wait_data.is_controller)
-    {
-        printf("You are the controller. Type \"s\" to start server when all players are connected, or any key to refresh the lobby\n");
+    if (net_client_wait_data.is_controller) {
+        printf("You are the controller. Type \"s\" to start server when all "
+               "players are connected, or any key to refresh the lobby\n");
         if (getchar() == 's') {
             NET_CL_LaunchGame();
         }
@@ -106,135 +95,101 @@ static void UpdateGUI(void)
     printf("\e[1;1H\e[2J"); // Clear screen
 }
 
-static void CheckMasterStatus(void)
-{
+static void CheckMasterStatus(void) {
     boolean added;
 
-    if (!NET_Query_CheckAddedToMaster(&added))
-    {
+    if (!NET_Query_CheckAddedToMaster(&added)) {
         return;
     }
 
-    if (added)
-    {
-        printf(
-            "Your server is now registered with the global master server.\n"
-            "Other players can find your server online.");
-    }
-    else
-    {
-        printf(
-            "Failed to register with the master server. Your server is not\n"
-            "publicly accessible. You may need to reconfigure your Internet\n"
-            "router to add a port forward for UDP port 2342. Look up\n"
-            "information on port forwarding online.");
+    if (added) {
+        printf("Your server is now registered with the global master server.\n"
+               "Other players can find your server online.");
+    } else {
+        printf("Failed to register with the master server. Your server is not\n"
+               "publicly accessible. You may need to reconfigure your Internet\n"
+               "router to add a port forward for UDP port 2342. Look up\n"
+               "information on port forwarding online.");
     }
 }
 
-static void PrintSHA1Digest(const char *s, const byte *digest)
-{
+static void PrintSHA1Digest(const char *s, const byte *digest) {
     unsigned int i;
 
     printf("%s: ", s);
 
-    for (i=0; i<sizeof(sha1_digest_t); ++i)
-    {
+    for (i = 0; i < sizeof(sha1_digest_t); ++i) {
         printf("%02x", digest[i]);
     }
 
     printf("\n");
 }
 
-static void CheckSHA1Sums(void)
-{
+static void CheckSHA1Sums(void) {
     boolean correct_wad, correct_deh;
     boolean same_freedoom;
 
-    if (!net_client_received_wait_data || had_warning)
-    {
+    if (!net_client_received_wait_data || had_warning) {
         return;
     }
 
-    correct_wad = memcmp(net_local_wad_sha1sum,
-                         net_client_wait_data.wad_sha1sum,
-                         sizeof(sha1_digest_t)) == 0;
-    correct_deh = memcmp(net_local_deh_sha1sum,
-                         net_client_wait_data.deh_sha1sum,
-                         sizeof(sha1_digest_t)) == 0;
+    correct_wad = memcmp(net_local_wad_sha1sum, net_client_wait_data.wad_sha1sum, sizeof(sha1_digest_t)) == 0;
+    correct_deh = memcmp(net_local_deh_sha1sum, net_client_wait_data.deh_sha1sum, sizeof(sha1_digest_t)) == 0;
     same_freedoom = net_client_wait_data.is_freedoom == net_local_is_freedoom;
 
-    if (correct_wad && correct_deh && same_freedoom)
-    {
+    if (correct_wad && correct_deh && same_freedoom) {
         return;
     }
 
-    if (!correct_wad)
-    {
+    if (!correct_wad) {
         printf("Warning: WAD SHA1 does not match server:\n");
         PrintSHA1Digest("Local", net_local_wad_sha1sum);
         PrintSHA1Digest("Server", net_client_wait_data.wad_sha1sum);
     }
 
-    if (!same_freedoom)
-    {
+    if (!same_freedoom) {
         printf("Warning: Mixing Freedoom with non-Freedoom\n");
-        printf("Local: %u  Server: %i\n",
-               net_local_is_freedoom,
-               net_client_wait_data.is_freedoom);
+        printf("Local: %u  Server: %i\n", net_local_is_freedoom, net_client_wait_data.is_freedoom);
     }
 
-    if (!correct_deh)
-    {
+    if (!correct_deh) {
         printf("Warning: Dehacked SHA1 does not match server:\n");
         PrintSHA1Digest("Local", net_local_deh_sha1sum);
         PrintSHA1Digest("Server", net_client_wait_data.deh_sha1sum);
     }
 
-    if (!same_freedoom)
-    {
+    if (!same_freedoom) {
         // If Freedoom and Doom IWADs are mixed, the WAD directory
         // will be wrong, but this is not neccessarily a problem.
         // Display a different message to the WAD directory message.
 
-        if (net_local_is_freedoom)
-        {
-            printf
-            ("You are using the Freedoom IWAD to play with players\n"
-             "using an official Doom IWAD.  Make sure that you are\n"
-             "playing the same levels as other players.\n");
+        if (net_local_is_freedoom) {
+            printf("You are using the Freedoom IWAD to play with players\n"
+                   "using an official Doom IWAD.  Make sure that you are\n"
+                   "playing the same levels as other players.\n");
+        } else {
+            printf("You are using an official IWAD to play with players\n"
+                   "using the Freedoom IWAD.  Make sure that you are\n"
+                   "playing the same levels as other players.\n");
         }
-        else
-        {
-            printf
-            ("You are using an official IWAD to play with players\n"
-             "using the Freedoom IWAD.  Make sure that you are\n"
-             "playing the same levels as other players.\n");
-        }
-    }
-    else if (!correct_wad)
-    {
-       printf
-            ("Your WAD directory does not match other players in the game.\n"
-             "Check that you have loaded the exact same WAD files as other\n"
-             "players.\n");
+    } else if (!correct_wad) {
+        printf("Your WAD directory does not match other players in the game.\n"
+               "Check that you have loaded the exact same WAD files as other\n"
+               "players.\n");
     }
 
-    if (!correct_deh)
-    {
-        printf
-            ("Your dehacked signature does not match other players in the\n"
-             "game.  Check that you have loaded the same dehacked patches\n"
-             "as other players.\n");
+    if (!correct_deh) {
+        printf("Your dehacked signature does not match other players in the\n"
+               "game.  Check that you have loaded the same dehacked patches\n"
+               "as other players.\n");
     }
 
-    printf
-            ("If you continue, this may cause your game to desync.");
+    printf("If you continue, this may cause your game to desync.");
 
     had_warning = true;
 }
 
-static void ParseCommandLineArgs(void)
-{
+static void ParseCommandLineArgs(void) {
     int i;
 
     //!
@@ -245,37 +200,28 @@ static void ParseCommandLineArgs(void)
     //
 
     i = M_CheckParmWithArgs("-nodes", 1);
-    if (i > 0)
-    {
+    if (i > 0) {
         expected_nodes = atoi(myargv[i + 1]);
     }
 }
 
-static void CheckAutoLaunch(void)
-{
+static void CheckAutoLaunch(void) {
     int nodes;
 
-    if (net_client_received_wait_data
-     && net_client_wait_data.is_controller
-     && expected_nodes > 0)
-    {
-        nodes = net_client_wait_data.num_players
-              + net_client_wait_data.num_drones;
+    if (net_client_received_wait_data && net_client_wait_data.is_controller && expected_nodes > 0) {
+        nodes = net_client_wait_data.num_players + net_client_wait_data.num_drones;
 
-        if (nodes >= expected_nodes)
-        {
+        if (nodes >= expected_nodes) {
             expected_nodes = 0;
         }
     }
 }
 
-void NET_WaitForLaunch(void)
-{
+void NET_WaitForLaunch(void) {
     ParseCommandLineArgs();
     had_warning = false;
 
-    while (net_waiting_for_launch)
-    {
+    while (net_waiting_for_launch) {
         UpdateGUI();
         CheckAutoLaunch();
         CheckSHA1Sums();
@@ -284,8 +230,7 @@ void NET_WaitForLaunch(void)
         NET_CL_Run();
         NET_SV_Run();
 
-        if (!net_client_connected)
-        {
+        if (!net_client_connected) {
             I_Error("Lost connection to server");
         }
 

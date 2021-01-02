@@ -15,11 +15,11 @@
 // Dehacked I/O code (does all reads from dehacked files)
 //
 
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "m_misc.h"
 #include "w_wad.h"
@@ -28,14 +28,9 @@
 #include "deh_defs.h"
 #include "deh_io.h"
 
-typedef enum
-{
-    DEH_INPUT_FILE,
-    DEH_INPUT_LUMP
-} deh_input_type_t;
+typedef enum { DEH_INPUT_FILE, DEH_INPUT_LUMP } deh_input_type_t;
 
-struct deh_context_s
-{
+struct deh_context_s {
     deh_input_type_t type;
     char *filename;
 
@@ -62,8 +57,7 @@ struct deh_context_s
     boolean had_error;
 };
 
-static deh_context_t *DEH_NewContext(void)
-{
+static deh_context_t *DEH_NewContext(void) {
     deh_context_t *context;
 
     context = Z_Malloc(sizeof(*context), PU_STATIC, NULL);
@@ -83,8 +77,7 @@ static deh_context_t *DEH_NewContext(void)
 // Open a dehacked file for reading
 // Returns NULL if open failed
 
-deh_context_t *DEH_OpenFile(const char *filename)
-{
+deh_context_t *DEH_OpenFile(const char *filename) {
     FILE *fstream;
     deh_context_t *context;
 
@@ -104,8 +97,7 @@ deh_context_t *DEH_OpenFile(const char *filename)
 
 // Open a WAD lump for reading.
 
-deh_context_t *DEH_OpenLump(int lumpnum)
-{
+deh_context_t *DEH_OpenLump(int lumpnum) {
     deh_context_t *context;
     void *lump;
 
@@ -127,14 +119,10 @@ deh_context_t *DEH_OpenLump(int lumpnum)
 
 // Close dehacked file
 
-void DEH_CloseFile(deh_context_t *context)
-{
-    if (context->type == DEH_INPUT_FILE)
-    {
+void DEH_CloseFile(deh_context_t *context) {
+    if (context->type == DEH_INPUT_FILE) {
         fclose(context->stream);
-    }
-    else if (context->type == DEH_INPUT_LUMP)
-    {
+    } else if (context->type == DEH_INPUT_LUMP) {
         W_ReleaseLumpNum(context->lumpnum);
     }
 
@@ -143,10 +131,8 @@ void DEH_CloseFile(deh_context_t *context)
     Z_Free(context);
 }
 
-int DEH_GetCharFile(deh_context_t *context)
-{
-    if (feof(context->stream))
-    {
+int DEH_GetCharFile(deh_context_t *context) {
+    if (feof(context->stream)) {
         // end of file
 
         return -1;
@@ -155,12 +141,10 @@ int DEH_GetCharFile(deh_context_t *context)
     return fgetc(context->stream);
 }
 
-int DEH_GetCharLump(deh_context_t *context)
-{
+int DEH_GetCharLump(deh_context_t *context) {
     int result;
 
-    if (context->input_buffer_pos >= context->input_buffer_len)
-    {
+    if (context->input_buffer_pos >= context->input_buffer_len) {
         return -1;
     }
 
@@ -172,31 +156,27 @@ int DEH_GetCharLump(deh_context_t *context)
 
 // Reads a single character from a dehacked file
 
-int DEH_GetChar(deh_context_t *context)
-{
+int DEH_GetChar(deh_context_t *context) {
     int result = 0;
 
     // Read characters, but ignore carriage returns
     // Essentially this is a DOS->Unix conversion
 
-    do
-    {
-        switch (context->type)
-        {
-            case DEH_INPUT_FILE:
-                result = DEH_GetCharFile(context);
-                break;
+    do {
+        switch (context->type) {
+        case DEH_INPUT_FILE:
+            result = DEH_GetCharFile(context);
+            break;
 
-            case DEH_INPUT_LUMP:
-                result = DEH_GetCharLump(context);
-                break;
+        case DEH_INPUT_LUMP:
+            result = DEH_GetCharLump(context);
+            break;
         }
     } while (result == '\r');
 
     // Track the current line number
 
-    if (context->last_was_newline)
-    {
+    if (context->last_was_newline) {
         ++context->linenum;
     }
 
@@ -207,8 +187,7 @@ int DEH_GetChar(deh_context_t *context)
 
 // Increase the read buffer size
 
-static void IncreaseReadBuffer(deh_context_t *context)
-{
+static void IncreaseReadBuffer(deh_context_t *context) {
     char *newbuffer;
     int newbuffer_size;
 
@@ -225,18 +204,15 @@ static void IncreaseReadBuffer(deh_context_t *context)
 
 // Read a whole line
 
-char *DEH_ReadLine(deh_context_t *context, boolean extended)
-{
+char *DEH_ReadLine(deh_context_t *context, boolean extended) {
     int c;
     int pos;
     boolean escaped = false;
 
-    for (pos = 0;;)
-    {
+    for (pos = 0;;) {
         c = DEH_GetChar(context);
 
-        if (c < 0 && pos == 0)
-        {
+        if (c < 0 && pos == 0) {
             // end of file
 
             return NULL;
@@ -244,19 +220,16 @@ char *DEH_ReadLine(deh_context_t *context, boolean extended)
 
         // cope with lines of any length: increase the buffer size
 
-        if (pos >= context->readbuffer_size)
-        {
+        if (pos >= context->readbuffer_size) {
             IncreaseReadBuffer(context);
         }
 
         // extended string support
-        if (extended && c == '\\')
-        {
+        if (extended && c == '\\') {
             c = DEH_GetChar(context);
 
             // "\n" in the middle of a string indicates an internal linefeed
-            if (c == 'n')
-            {
+            if (c == 'n') {
                 context->readbuffer[pos] = '\n';
                 ++pos;
                 continue;
@@ -264,8 +237,7 @@ char *DEH_ReadLine(deh_context_t *context, boolean extended)
 
             // values to be assigned may be split onto multiple lines by ending
             // each line that is to be continued with a backslash
-            if (c == '\n')
-            {
+            if (c == '\n') {
                 escaped = true;
                 continue;
             }
@@ -273,37 +245,30 @@ char *DEH_ReadLine(deh_context_t *context, boolean extended)
 
         // blanks before the backslash are included in the string
         // but indentation after the linefeed is not
-        if (escaped && c >= 0 && isspace(c) && c != '\n')
-        {
+        if (escaped && c >= 0 && isspace(c) && c != '\n') {
             continue;
-        }
-        else
-        {
+        } else {
             escaped = false;
         }
 
-        if (c == '\n' || c < 0)
-        {
+        if (c == '\n' || c < 0) {
             // end of line: a full line has been read
 
             context->readbuffer[pos] = '\0';
             break;
-        }
-        else if (c != '\0')
-        {
+        } else if (c != '\0') {
             // normal character; don't allow NUL characters to be
             // added.
 
-            context->readbuffer[pos] = (char) c;
+            context->readbuffer[pos] = (char)c;
             ++pos;
         }
     }
-    
+
     return context->readbuffer;
 }
 
-void DEH_Warning(deh_context_t *context, const char *msg, ...)
-{
+void DEH_Warning(deh_context_t *context, const char *msg, ...) {
     va_list args;
 
     va_start(args, msg);
@@ -315,8 +280,7 @@ void DEH_Warning(deh_context_t *context, const char *msg, ...)
     va_end(args);
 }
 
-void DEH_Error(deh_context_t *context, const char *msg, ...)
-{
+void DEH_Error(deh_context_t *context, const char *msg, ...) {
     va_list args;
 
     va_start(args, msg);
@@ -330,8 +294,4 @@ void DEH_Error(deh_context_t *context, const char *msg, ...)
     context->had_error = true;
 }
 
-boolean DEH_HadError(deh_context_t *context)
-{
-    return context->had_error;
-}
-
+boolean DEH_HadError(deh_context_t *context) { return context->had_error; }

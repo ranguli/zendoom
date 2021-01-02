@@ -81,31 +81,25 @@ static int snd_sbdma = 0;
 
 // Compiled-in sound modules:
 
-static sound_module_t *sound_modules[] =
-{
+static sound_module_t *sound_modules[] = {
     &sound_sdl_module,
     NULL,
 };
 
 // Compiled-in music modules:
 
-static music_module_t *music_modules[] =
-{
+static music_module_t *music_modules[] = {
     &music_sdl_module,
     NULL,
 };
 
 // Check if a sound device is in the given list of devices
 
-static boolean SndDeviceInList(snddevice_t device, snddevice_t *list,
-                               int len)
-{
+static boolean SndDeviceInList(snddevice_t device, snddevice_t *list, int len) {
     int i;
 
-    for (i=0; i<len; ++i)
-    {
-        if (device == list[i])
-        {
+    for (i = 0; i < len; ++i) {
+        if (device == list[i]) {
             return true;
         }
     }
@@ -116,25 +110,20 @@ static boolean SndDeviceInList(snddevice_t device, snddevice_t *list,
 // Find and initialize a sound_module_t appropriate for the setting
 // in snd_sfxdevice.
 
-static void InitSfxModule(boolean use_sfx_prefix)
-{
+static void InitSfxModule(boolean use_sfx_prefix) {
     int i;
 
     sound_module = NULL;
 
-    for (i=0; sound_modules[i] != NULL; ++i)
-    {
+    for (i = 0; sound_modules[i] != NULL; ++i) {
         // Is the sfx device in the list of devices supported by
         // this module?
 
-        if (SndDeviceInList(snd_sfxdevice,
-                            sound_modules[i]->sound_devices,
-                            sound_modules[i]->num_sound_devices))
-        {
+        if (SndDeviceInList(snd_sfxdevice, sound_modules[i]->sound_devices,
+                            sound_modules[i]->num_sound_devices)) {
             // Initialize the module
 
-            if (sound_modules[i]->Init(use_sfx_prefix))
-            {
+            if (sound_modules[i]->Init(use_sfx_prefix)) {
                 sound_module = sound_modules[i];
                 return;
             }
@@ -144,25 +133,20 @@ static void InitSfxModule(boolean use_sfx_prefix)
 
 // Initialize music according to snd_musicdevice.
 
-static void InitMusicModule(void)
-{
+static void InitMusicModule(void) {
     int i;
 
     music_module = NULL;
 
-    for (i=0; music_modules[i] != NULL; ++i)
-    {
+    for (i = 0; music_modules[i] != NULL; ++i) {
         // Is the music device in the list of devices supported
         // by this module?
 
-        if (SndDeviceInList(snd_musicdevice,
-                            music_modules[i]->sound_devices,
-                            music_modules[i]->num_sound_devices))
-        {
+        if (SndDeviceInList(snd_musicdevice, music_modules[i]->sound_devices,
+                            music_modules[i]->num_sound_devices)) {
             // Initialize the module
 
-            if (music_modules[i]->Init())
-            {
+            if (music_modules[i]->Init()) {
                 music_module = music_modules[i];
                 return;
             }
@@ -176,8 +160,7 @@ static void InitMusicModule(void)
 //  allocates channel buffer, sets S_sfx lookup.
 //
 
-void I_InitSound(boolean use_sfx_prefix)
-{
+void I_InitSound(boolean use_sfx_prefix) {
     boolean nosound, nosfx, nomusic, nomusicpacks;
 
     //!
@@ -216,187 +199,137 @@ void I_InitSound(boolean use_sfx_prefix)
 
     // Initialize the sound and music subsystems.
 
-    if (!nosound && !screensaver_mode)
-    {
-        if (!nosfx)
-        {
+    if (!nosound && !screensaver_mode) {
+        if (!nosfx) {
             InitSfxModule(use_sfx_prefix);
         }
 
-        if (!nomusic)
-        {
+        if (!nomusic) {
             InitMusicModule();
             active_music_module = music_module;
         }
 
         // We may also have substitute MIDIs we can load.
-        if (!nomusicpacks && music_module != NULL)
-        {
+        if (!nomusicpacks && music_module != NULL) {
             music_packs_active = music_pack_module.Init();
         }
     }
 }
 
-void I_ShutdownSound(void)
-{
-    if (sound_module != NULL)
-    {
+void I_ShutdownSound(void) {
+    if (sound_module != NULL) {
         sound_module->Shutdown();
     }
 
-    if (music_packs_active)
-    {
+    if (music_packs_active) {
         music_pack_module.Shutdown();
     }
 
-    if (music_module != NULL)
-    {
+    if (music_module != NULL) {
         music_module->Shutdown();
     }
 }
 
-int I_GetSfxLumpNum(sfxinfo_t *sfxinfo)
-{
-    if (sound_module != NULL)
-    {
+int I_GetSfxLumpNum(sfxinfo_t *sfxinfo) {
+    if (sound_module != NULL) {
         return sound_module->GetSfxLumpNum(sfxinfo);
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
 
-void I_UpdateSound(void)
-{
-    if (sound_module != NULL)
-    {
+void I_UpdateSound(void) {
+    if (sound_module != NULL) {
         sound_module->Update();
     }
 
-    if (active_music_module != NULL && active_music_module->Poll != NULL)
-    {
+    if (active_music_module != NULL && active_music_module->Poll != NULL) {
         active_music_module->Poll();
     }
 }
 
-static void CheckVolumeSeparation(int *vol, int *sep)
-{
-    if (*sep < 0)
-    {
+static void CheckVolumeSeparation(int *vol, int *sep) {
+    if (*sep < 0) {
         *sep = 0;
-    }
-    else if (*sep > 254)
-    {
+    } else if (*sep > 254) {
         *sep = 254;
     }
 
-    if (*vol < 0)
-    {
+    if (*vol < 0) {
         *vol = 0;
-    }
-    else if (*vol > 127)
-    {
+    } else if (*vol > 127) {
         *vol = 127;
     }
 }
 
-void I_UpdateSoundParams(int channel, int vol, int sep)
-{
-    if (sound_module != NULL)
-    {
+void I_UpdateSoundParams(int channel, int vol, int sep) {
+    if (sound_module != NULL) {
         CheckVolumeSeparation(&vol, &sep);
         sound_module->UpdateSoundParams(channel, vol, sep);
     }
 }
 
-int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch)
-{
-    if (sound_module != NULL)
-    {
+int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch) {
+    if (sound_module != NULL) {
         CheckVolumeSeparation(&vol, &sep);
         return sound_module->StartSound(sfxinfo, channel, vol, sep, pitch);
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
 
-void I_StopSound(int channel)
-{
-    if (sound_module != NULL)
-    {
+void I_StopSound(int channel) {
+    if (sound_module != NULL) {
         sound_module->StopSound(channel);
     }
 }
 
-boolean I_SoundIsPlaying(int channel)
-{
-    if (sound_module != NULL)
-    {
+boolean I_SoundIsPlaying(int channel) {
+    if (sound_module != NULL) {
         return sound_module->SoundIsPlaying(channel);
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
 
-void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
-{
-    if (sound_module != NULL && sound_module->CacheSounds != NULL)
-    {
+void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds) {
+    if (sound_module != NULL && sound_module->CacheSounds != NULL) {
         sound_module->CacheSounds(sounds, num_sounds);
     }
 }
 
-void I_InitMusic(void)
-{
-}
+void I_InitMusic(void) {}
 
-void I_ShutdownMusic(void)
-{
+void I_ShutdownMusic(void) {}
 
-}
-
-void I_SetMusicVolume(int volume)
-{
-    if (active_music_module != NULL)
-    {
+void I_SetMusicVolume(int volume) {
+    if (active_music_module != NULL) {
         active_music_module->SetMusicVolume(volume);
     }
 }
 
-void I_PauseSong(void)
-{
-    if (active_music_module != NULL)
-    {
+void I_PauseSong(void) {
+    if (active_music_module != NULL) {
         active_music_module->PauseMusic();
     }
 }
 
-void I_ResumeSong(void)
-{
-    if (active_music_module != NULL)
-    {
+void I_ResumeSong(void) {
+    if (active_music_module != NULL) {
         active_music_module->ResumeMusic();
     }
 }
 
-void *I_RegisterSong(void *data, int len)
-{
+void *I_RegisterSong(void *data, int len) {
     // If the music pack module is active, check to see if there is a
     // valid substitution for this track. If there is, we set the
     // active_music_module pointer to the music pack module for the
     // duration of this particular track.
-    if (music_packs_active)
-    {
+    if (music_packs_active) {
         void *handle;
 
         handle = music_pack_module.RegisterSong(data, len);
-        if (handle != NULL)
-        {
+        if (handle != NULL) {
             active_music_module = &music_pack_module;
             return handle;
         }
@@ -404,52 +337,41 @@ void *I_RegisterSong(void *data, int len)
 
     // No substitution for this track, so use the main module.
     active_music_module = music_module;
-    if (active_music_module != NULL)
-    {
+    if (active_music_module != NULL) {
         return active_music_module->RegisterSong(data, len);
-    }
-    else
-    {
+    } else {
         return NULL;
     }
 }
 
-void I_UnRegisterSong(void *handle)
-{
-    if (active_music_module != NULL)
-    {
+void I_UnRegisterSong(void *handle) {
+    if (active_music_module != NULL) {
         active_music_module->UnRegisterSong(handle);
     }
 }
 
-void I_PlaySong(void *handle, boolean looping)
-{
-    if (active_music_module != NULL)
-    {
+void I_PlaySong(void *handle, boolean looping) {
+    if (active_music_module != NULL) {
         active_music_module->PlaySong(handle, looping);
     }
 }
 
-void I_StopSong(void)
-{
-    if (active_music_module != NULL)
-    {
+void I_StopSong(void) {
+    if (active_music_module != NULL) {
         active_music_module->StopSong();
     }
 }
 
-void I_BindSoundVariables(void)
-{
-    M_BindIntVariable("snd_musicdevice",         &snd_musicdevice);
-    M_BindIntVariable("snd_sfxdevice",           &snd_sfxdevice);
-    M_BindIntVariable("snd_sbport",              &snd_sbport);
-    M_BindIntVariable("snd_sbirq",               &snd_sbirq);
-    M_BindIntVariable("snd_sbdma",               &snd_sbdma);
-    M_BindIntVariable("snd_maxslicetime_ms",     &snd_maxslicetime_ms);
-    M_BindIntVariable("snd_samplerate",          &snd_samplerate);
-    M_BindIntVariable("snd_cachesize",           &snd_cachesize);
-    M_BindIntVariable("snd_pitchshift",          &snd_pitchshift);
+void I_BindSoundVariables(void) {
+    M_BindIntVariable("snd_musicdevice", &snd_musicdevice);
+    M_BindIntVariable("snd_sfxdevice", &snd_sfxdevice);
+    M_BindIntVariable("snd_sbport", &snd_sbport);
+    M_BindIntVariable("snd_sbirq", &snd_sbirq);
+    M_BindIntVariable("snd_sbdma", &snd_sbdma);
+    M_BindIntVariable("snd_maxslicetime_ms", &snd_maxslicetime_ms);
+    M_BindIntVariable("snd_samplerate", &snd_samplerate);
+    M_BindIntVariable("snd_cachesize", &snd_cachesize);
+    M_BindIntVariable("snd_pitchshift", &snd_pitchshift);
 
-    M_BindStringVariable("music_pack_path",      &music_pack_path);
+    M_BindStringVariable("music_pack_path", &music_pack_path);
 }
-

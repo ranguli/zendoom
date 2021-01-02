@@ -14,13 +14,13 @@
 // Common code shared between the client and server
 //
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
 #include <string.h>
 
-#include "doomtype.h"
 #include "d_mode.h"
+#include "doomtype.h"
 #include "i_system.h"
 #include "i_timer.h"
 #include "m_argv.h"
@@ -40,8 +40,7 @@
 
 // reliable packet that is guaranteed to reach its destination
 
-struct net_reliable_packet_s
-{
+struct net_reliable_packet_s {
     net_packet_t *packet;
     int last_send_time;
     int seq;
@@ -50,9 +49,7 @@ struct net_reliable_packet_s
 
 static FILE *net_debug = NULL;
 
-static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr,
-                          net_protocol_t protocol)
-{
+static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol) {
     conn->last_send_time = -1;
     conn->num_retries = 0;
     conn->addr = addr;
@@ -65,18 +62,14 @@ static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr,
 
 // Initialize as a client connection
 
-void NET_Conn_InitClient(net_connection_t *conn, net_addr_t *addr,
-                         net_protocol_t protocol)
-{
+void NET_Conn_InitClient(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol) {
     NET_Conn_Init(conn, addr, protocol);
     conn->state = NET_CONN_STATE_CONNECTING;
 }
 
 // Initialize as a server connection
 
-void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr,
-                         net_protocol_t protocol)
-{
+void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol) {
     NET_Conn_Init(conn, addr, protocol);
     conn->state = NET_CONN_STATE_CONNECTED;
 }
@@ -85,14 +78,12 @@ void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr,
 // All packets should be sent through this interface, as it maintains the
 // keepalive_send_time counter.
 
-void NET_Conn_SendPacket(net_connection_t *conn, net_packet_t *packet)
-{
+void NET_Conn_SendPacket(net_connection_t *conn, net_packet_t *packet) {
     conn->keepalive_send_time = I_GetTimeMS();
     NET_SendPacket(conn->addr, packet);
 }
 
-static void NET_Conn_ParseDisconnect(net_connection_t *conn)
-{
+static void NET_Conn_ParseDisconnect(net_connection_t *conn) {
     net_packet_t *reply;
 
     // Other end wants to disconnect
@@ -111,11 +102,9 @@ static void NET_Conn_ParseDisconnect(net_connection_t *conn)
 
 // Parse a DISCONNECT_ACK packet
 
-static void NET_Conn_ParseDisconnectACK(net_connection_t *conn)
-{
+static void NET_Conn_ParseDisconnectACK(net_connection_t *conn) {
 
-    if (conn->state == NET_CONN_STATE_DISCONNECTING)
-    {
+    if (conn->state == NET_CONN_STATE_DISCONNECTING) {
         // We have received an acknowledgement to our disconnect
         // request. We have been disconnected successfully.
 
@@ -125,24 +114,20 @@ static void NET_Conn_ParseDisconnectACK(net_connection_t *conn)
     }
 }
 
-static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *packet)
-{
+static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *packet) {
     unsigned int seq;
 
-    if (!NET_ReadInt8(packet, &seq))
-    {
+    if (!NET_ReadInt8(packet, &seq)) {
         return;
     }
 
-    if (conn->reliable_packets == NULL)
-    {
+    if (conn->reliable_packets == NULL) {
         return;
     }
 
     // Is this an acknowledgement for the first packet in the list?
 
-    if (seq == (unsigned int)((conn->reliable_packets->seq + 1) & 0xff))
-    {
+    if (seq == (unsigned int)((conn->reliable_packets->seq + 1) & 0xff)) {
         net_reliable_packet_t *rp;
 
         // Discard it, then.
@@ -160,31 +145,25 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
 //
 // Returns true if the packet should be discarded (incorrect sequence)
 
-static boolean NET_Conn_ReliablePacket(net_connection_t *conn,
-                                       net_packet_t *packet)
-{
+static boolean NET_Conn_ReliablePacket(net_connection_t *conn, net_packet_t *packet) {
     unsigned int seq;
     net_packet_t *reply;
     boolean result;
 
     // Read the sequence number
 
-    if (!NET_ReadInt8(packet, &seq))
-    {
+    if (!NET_ReadInt8(packet, &seq)) {
         return true;
     }
 
-    if (seq != (unsigned int)(conn->reliable_recv_seq & 0xff))
-    {
+    if (seq != (unsigned int)(conn->reliable_recv_seq & 0xff)) {
         // This is not the next expected packet in the sequence!
         //
         // Discard the packet.  If we were smart, we would use a proper
         // sliding window protocol to do this, but I'm lazy.
 
         result = true;
-    }
-    else
-    {
+    } else {
         // Now we can receive the next packet in the sequence.
 
         conn->reliable_recv_seq = (conn->reliable_recv_seq + 1) & 0xff;
@@ -214,17 +193,13 @@ static boolean NET_Conn_ReliablePacket(net_connection_t *conn,
 //
 // Returns true if eaten by common code
 
-boolean NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet,
-                        unsigned int *packet_type)
-{
+boolean NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet, unsigned int *packet_type) {
     conn->keepalive_recv_time = I_GetTimeMS();
 
     // Is this a reliable packet?
 
-    if (*packet_type & NET_RELIABLE_PACKET)
-    {
-        if (NET_Conn_ReliablePacket(conn, packet))
-        {
+    if (*packet_type & NET_RELIABLE_PACKET) {
+        if (NET_Conn_ReliablePacket(conn, packet)) {
             // Invalid packet: eat it.
 
             return true;
@@ -235,24 +210,23 @@ boolean NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet,
         *packet_type &= ~NET_RELIABLE_PACKET;
     }
 
-    switch (*packet_type)
-    {
-        case NET_PACKET_TYPE_DISCONNECT:
-            NET_Conn_ParseDisconnect(conn);
-            break;
-        case NET_PACKET_TYPE_DISCONNECT_ACK:
-            NET_Conn_ParseDisconnectACK(conn);
-            break;
-        case NET_PACKET_TYPE_KEEPALIVE:
-            // No special action needed.
-            break;
-        case NET_PACKET_TYPE_RELIABLE_ACK:
-            NET_Conn_ParseReliableACK(conn, packet);
-            break;
-        default:
-            // Not a common packet
+    switch (*packet_type) {
+    case NET_PACKET_TYPE_DISCONNECT:
+        NET_Conn_ParseDisconnect(conn);
+        break;
+    case NET_PACKET_TYPE_DISCONNECT_ACK:
+        NET_Conn_ParseDisconnectACK(conn);
+        break;
+    case NET_PACKET_TYPE_KEEPALIVE:
+        // No special action needed.
+        break;
+    case NET_PACKET_TYPE_RELIABLE_ACK:
+        NET_Conn_ParseReliableACK(conn, packet);
+        break;
+    default:
+        // Not a common packet
 
-            return false;
+        return false;
     }
 
     // We found a packet that we found interesting, and ate it.
@@ -260,12 +234,9 @@ boolean NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet,
     return true;
 }
 
-void NET_Conn_Disconnect(net_connection_t *conn)
-{
-    if (conn->state != NET_CONN_STATE_DISCONNECTED
-     && conn->state != NET_CONN_STATE_DISCONNECTING
-     && conn->state != NET_CONN_STATE_DISCONNECTED_SLEEP)
-    {
+void NET_Conn_Disconnect(net_connection_t *conn) {
+    if (conn->state != NET_CONN_STATE_DISCONNECTED && conn->state != NET_CONN_STATE_DISCONNECTING &&
+        conn->state != NET_CONN_STATE_DISCONNECTED_SLEEP) {
         conn->state = NET_CONN_STATE_DISCONNECTING;
         conn->disconnect_reason = NET_DISCONNECT_LOCAL;
         conn->last_send_time = -1;
@@ -273,19 +244,16 @@ void NET_Conn_Disconnect(net_connection_t *conn)
     }
 }
 
-void NET_Conn_Run(net_connection_t *conn)
-{
+void NET_Conn_Run(net_connection_t *conn) {
     net_packet_t *packet;
     unsigned int nowtime;
 
     nowtime = I_GetTimeMS();
 
-    if (conn->state == NET_CONN_STATE_CONNECTED)
-    {
+    if (conn->state == NET_CONN_STATE_CONNECTED) {
         // Check the keepalive counters
 
-        if (nowtime - conn->keepalive_recv_time > CONNECTION_TIMEOUT_LEN * 1000)
-        {
+        if (nowtime - conn->keepalive_recv_time > CONNECTION_TIMEOUT_LEN * 1000) {
             // Haven't received any packets from the other end in a long
             // time.  Assume disconnected.
 
@@ -293,8 +261,7 @@ void NET_Conn_Run(net_connection_t *conn)
             conn->disconnect_reason = NET_DISCONNECT_TIMEOUT;
         }
 
-        if (nowtime - conn->keepalive_send_time > KEEPALIVE_PERIOD * 1000)
-        {
+        if (nowtime - conn->keepalive_send_time > KEEPALIVE_PERIOD * 1000) {
             // We have not sent anything in a long time.
             // Send a keepalive.
 
@@ -309,28 +276,21 @@ void NET_Conn_Run(net_connection_t *conn)
         //
         // NB.  This is braindead, we have a fixed time of one second.
 
-        if (conn->reliable_packets != NULL
-         && (conn->reliable_packets->last_send_time < 0
-          || nowtime - conn->reliable_packets->last_send_time > 1000))
-        {
+        if (conn->reliable_packets != NULL && (conn->reliable_packets->last_send_time < 0 ||
+                                               nowtime - conn->reliable_packets->last_send_time > 1000)) {
             // Packet timed out, time to resend
 
             NET_Conn_SendPacket(conn, conn->reliable_packets->packet);
             conn->reliable_packets->last_send_time = nowtime;
         }
-    }
-    else if (conn->state == NET_CONN_STATE_DISCONNECTING)
-    {
+    } else if (conn->state == NET_CONN_STATE_DISCONNECTING) {
         // Waiting for a reply to our DISCONNECT request.
 
-        if (conn->last_send_time < 0
-         || nowtime - conn->last_send_time > 1000)
-        {
+        if (conn->last_send_time < 0 || nowtime - conn->last_send_time > 1000) {
             // it has been a second since the last disconnect packet
             // was sent, and still no reply.
 
-            if (conn->num_retries < MAX_RETRIES)
-            {
+            if (conn->num_retries < MAX_RETRIES) {
                 // send another disconnect
 
                 packet = NET_NewPacket(10);
@@ -340,9 +300,7 @@ void NET_Conn_Run(net_connection_t *conn)
                 conn->last_send_time = nowtime;
 
                 ++conn->num_retries;
-            }
-            else
-            {
+            } else {
                 // No more retries allowed.
                 // Force disconnect.
 
@@ -350,14 +308,11 @@ void NET_Conn_Run(net_connection_t *conn)
                 conn->disconnect_reason = NET_DISCONNECT_LOCAL;
             }
         }
-    }
-    else if (conn->state == NET_CONN_STATE_DISCONNECTED_SLEEP)
-    {
+    } else if (conn->state == NET_CONN_STATE_DISCONNECTED_SLEEP) {
         // We are disconnected, waiting in case we need to send
         // a DISCONNECT_ACK to the server again.
 
-        if (nowtime - conn->last_send_time > 5000)
-        {
+        if (nowtime - conn->last_send_time > 5000) {
             // Idle for 5 seconds, switch state
 
             conn->state = NET_CONN_STATE_DISCONNECTED;
@@ -366,8 +321,7 @@ void NET_Conn_Run(net_connection_t *conn)
     }
 }
 
-net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
-{
+net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type) {
     net_packet_t *packet;
     net_reliable_packet_t *rp;
     net_reliable_packet_t **listend;
@@ -390,9 +344,8 @@ net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
     rp->seq = conn->reliable_send_seq;
     rp->last_send_time = -1;
 
-    for (listend = &conn->reliable_packets;
-         *listend != NULL;
-         listend = &((*listend)->next));
+    for (listend = &conn->reliable_packets; *listend != NULL; listend = &((*listend)->next))
+        ;
 
     *listend = rp;
 
@@ -408,8 +361,7 @@ net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
 // Used to expand the least significant byte of a tic number into
 // the full tic number, from the current tic number
 
-unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b)
-{
+unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b) {
     unsigned int l, h;
     unsigned int result;
 
@@ -428,9 +380,7 @@ unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b)
 
 // Check that game settings are valid
 
-boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission,
-                              net_gamesettings_t *settings)
-{
+boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission, net_gamesettings_t *settings) {
     if (settings->ticdup <= 0)
         return false;
 
@@ -452,37 +402,30 @@ boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission,
     return true;
 }
 
-static void CloseLog(void)
-{
-    if (net_debug != NULL)
-    {
+static void CloseLog(void) {
+    if (net_debug != NULL) {
         fclose(net_debug);
         net_debug = NULL;
     }
 }
 
-void NET_OpenLog(void)
-{
+void NET_OpenLog(void) {
     int p;
 
     p = M_CheckParmWithArgs("-netlog", 1);
-    if (p > 0)
-    {
+    if (p > 0) {
         net_debug = fopen(myargv[p + 1], "w");
-        if (net_debug == NULL)
-        {
+        if (net_debug == NULL) {
             I_Error("Failed to open %s to write debug log.", myargv[p + 1]);
         }
         I_AtExit(CloseLog, true);
     }
 }
 
-void NET_Log(const char *fmt, ...)
-{
+void NET_Log(const char *fmt, ...) {
     va_list args;
 
-    if (net_debug == NULL)
-    {
+    if (net_debug == NULL) {
         return;
     }
 
@@ -493,33 +436,25 @@ void NET_Log(const char *fmt, ...)
     fprintf(net_debug, "\n");
 }
 
-void NET_LogPacket(net_packet_t *packet)
-{
+void NET_LogPacket(net_packet_t *packet) {
     int i, bytes;
 
-    if (net_debug == NULL)
-    {
+    if (net_debug == NULL) {
         return;
     }
 
     bytes = packet->len - packet->pos;
-    if (bytes == 0)
-    {
+    if (bytes == 0) {
         return;
     }
     fprintf(net_debug, "\t%02x", packet->data[packet->pos]);
-    for (i = 1; i < bytes; ++i)
-    {
-        if ((i % 16) == 0)
-        {
+    for (i = 1; i < bytes; ++i) {
+        if ((i % 16) == 0) {
             fprintf(net_debug, "\n\t");
-        }
-        else
-        {
+        } else {
             fprintf(net_debug, " ");
         }
         fprintf(net_debug, "%02x", packet->data[packet->pos + i]);
     }
     fprintf(net_debug, "\n");
 }
-

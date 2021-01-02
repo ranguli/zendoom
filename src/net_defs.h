@@ -20,8 +20,8 @@
 
 #include <stdio.h>
 
-#include "doomtype.h"
 #include "d_ticcmd.h"
+#include "doomtype.h"
 #include "sha1.h"
 
 // Absolute maximum number of "nodes" in the game.  This is different to
@@ -49,16 +49,14 @@ typedef struct _net_packet_s net_packet_t;
 typedef struct _net_addr_s net_addr_t;
 typedef struct _net_context_s net_context_t;
 
-struct _net_packet_s
-{
+struct _net_packet_s {
     byte *data;
     size_t len;
     size_t alloced;
     unsigned int pos;
 };
 
-struct _net_module_s
-{
+struct _net_module_s {
     // Initialize this module for use as a client
 
     boolean (*InitClient)(void);
@@ -92,15 +90,14 @@ struct _net_module_s
 
 // net_addr_t
 
-struct _net_addr_s
-{
+struct _net_addr_s {
     net_module_t *module;
     int refcount;
     void *handle;
 };
 
 // Magic number sent when connecting to check this is a valid client
-#define NET_MAGIC_NUMBER     1454104972U
+#define NET_MAGIC_NUMBER 1454104972U
 
 // Old magic number used by Chocolate Doom versions before v3.0:
 #define NET_OLD_MAGIC_NUMBER 3436803284U
@@ -116,8 +113,7 @@ struct _net_addr_s
 // to use, so the order matters.
 // NOTE: The values in this enum do not have any special value outside of
 // the program they're compiled in. What matters is the string representation.
-typedef enum
-{
+typedef enum {
     // Protocol introduced with Chocolate Doom v3.0. Each compatibility-
     // breaking change to the network protocol will produce a new protocol
     // number in this enum.
@@ -132,8 +128,7 @@ typedef enum
 
 // packet types
 
-typedef enum
-{
+typedef enum {
     NET_PACKET_TYPE_SYN,
     NET_PACKET_TYPE_ACK, // deprecated
     NET_PACKET_TYPE_REJECTED,
@@ -153,8 +148,7 @@ typedef enum
     NET_PACKET_TYPE_NAT_HOLE_PUNCH,
 } net_packet_type_t;
 
-typedef enum
-{
+typedef enum {
     NET_MASTER_PACKET_TYPE_ADD,
     NET_MASTER_PACKET_TYPE_ADD_RESPONSE,
     NET_MASTER_PACKET_TYPE_QUERY,
@@ -171,8 +165,7 @@ typedef enum
 
 // Settings specified when the client connects to the server.
 
-typedef struct
-{
+typedef struct {
     int gamemode;
     int gamemission;
     int lowres_turn;
@@ -187,8 +180,7 @@ typedef struct
 // Game settings sent by client to server when initiating game start,
 // and received from the server by clients when the game starts.
 
-typedef struct
-{
+typedef struct {
     int ticdup;
     int extratics;
     int deathmatch;
@@ -203,7 +195,7 @@ typedef struct
     int new_sync;
     int timelimit;
     int loadgame;
-    int random;  // [Strife only]
+    int random; // [Strife only]
 
     // These fields are only used by the server when sending a game
     // start message:
@@ -213,25 +205,23 @@ typedef struct
 
 } net_gamesettings_t;
 
-#define NET_TICDIFF_FORWARD      (1 << 0)
-#define NET_TICDIFF_SIDE         (1 << 1)
-#define NET_TICDIFF_TURN         (1 << 2)
-#define NET_TICDIFF_BUTTONS      (1 << 3)
-#define NET_TICDIFF_CONSISTANCY  (1 << 4)
-#define NET_TICDIFF_CHATCHAR     (1 << 5)
-#define NET_TICDIFF_RAVEN        (1 << 6)
-#define NET_TICDIFF_STRIFE       (1 << 7)
+#define NET_TICDIFF_FORWARD (1 << 0)
+#define NET_TICDIFF_SIDE (1 << 1)
+#define NET_TICDIFF_TURN (1 << 2)
+#define NET_TICDIFF_BUTTONS (1 << 3)
+#define NET_TICDIFF_CONSISTANCY (1 << 4)
+#define NET_TICDIFF_CHATCHAR (1 << 5)
+#define NET_TICDIFF_RAVEN (1 << 6)
+#define NET_TICDIFF_STRIFE (1 << 7)
 
-typedef struct
-{
+typedef struct {
     unsigned int diff;
     ticcmd_t cmd;
 } net_ticdiff_t;
 
 // Complete set of ticcmds from all players
 
-typedef struct
-{
+typedef struct {
     signed int latency;
     unsigned int seq;
     boolean playeringame[NET_MAXPLAYERS];
@@ -240,8 +230,7 @@ typedef struct
 
 // Data sent in response to server queries
 
-typedef struct
-{
+typedef struct {
     const char *version;
     int server_state;
     int num_players;
@@ -254,8 +243,7 @@ typedef struct
 
 // Data sent by the server while waiting for the game to start.
 
-typedef struct
-{
+typedef struct {
     int num_players;
     int num_drones;
     int ready_players;

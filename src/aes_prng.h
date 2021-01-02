@@ -25,4 +25,3 @@
 typedef byte prng_seed_t[16];
 
 #endif /* #ifndef __AES_PRNG_H__ */
-

@@ -162,4 +162,3 @@ void M_BindMenuControls(void);
 void M_BindChatControls(unsigned int num_players);
 
 #endif /* #ifndef __M_CONTROLS_H__ */
-

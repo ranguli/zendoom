@@ -29,7 +29,4 @@
 // Displays the text mode ending screen after the game quits
 //
 
-void I_Endoom()
-{
-}
-
+void I_Endoom() {}

@@ -19,10 +19,10 @@
 //	Functions to blit a block to the screen.
 //
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include "i_system.h"
 
@@ -57,40 +57,27 @@ static vpatchclipfunc_t patchclip_callback = NULL;
 //
 // V_MarkRect
 //
-void V_MarkRect(int x, int y, int width, int height)
-{
+void V_MarkRect(int x, int y, int width, int height) {
     // If we are temporarily using an alternate screen, do not
     // affect the update box.
 
-    if (dest_screen == I_VideoBuffer)
-    {
-        M_AddToBox (dirtybox, x, y);
-        M_AddToBox (dirtybox, x + width-1, y + height-1);
+    if (dest_screen == I_VideoBuffer) {
+        M_AddToBox(dirtybox, x, y);
+        M_AddToBox(dirtybox, x + width - 1, y + height - 1);
     }
 }
-
 
 //
 // V_CopyRect
 //
-void V_CopyRect(int srcx, int srcy, pixel_t *source,
-                int width, int height,
-                int destx, int desty)
-{
+void V_CopyRect(int srcx, int srcy, pixel_t *source, int width, int height, int destx, int desty) {
     pixel_t *src;
     pixel_t *dest;
 
 #ifdef RANGECHECK
-    if (srcx < 0
-     || srcx + width > SCREENWIDTH
-     || srcy < 0
-     || srcy + height > SCREENHEIGHT
-     || destx < 0
-     || destx + width > SCREENWIDTH
-     || desty < 0
-     || desty + height > SCREENHEIGHT)
-    {
-        I_Error ("Bad V_CopyRect");
+    if (srcx < 0 || srcx + width > SCREENWIDTH || srcy < 0 || srcy + height > SCREENHEIGHT || destx < 0 ||
+        destx + width > SCREENWIDTH || desty < 0 || desty + height > SCREENHEIGHT) {
+        I_Error("Bad V_CopyRect");
     }
 #endif
 
@@ -99,8 +86,7 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source,
     src = source + SCREENWIDTH * srcy + srcx;
     dest = dest_screen + SCREENWIDTH * desty + destx;
 
-    for ( ; height>0 ; height--)
-    {
+    for (; height > 0; height--) {
         memcpy(dest, src, width * sizeof(*dest));
         src += SCREENWIDTH;
         dest += SCREENWIDTH;
@@ -112,8 +98,7 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source,
 // Masks a column based masked pic to the screen.
 //
 
-void V_DrawPatch(int x, int y, patch_t *patch)
-{
+void V_DrawPatch(int x, int y, patch_t *patch) {
     int count;
     int col;
     column_t *column;
@@ -126,18 +111,13 @@ void V_DrawPatch(int x, int y, patch_t *patch)
     x -= SHORT(patch->leftoffset);
 
     // haleyjd 08/28/10: Strife needs silent error checking here.
-    if(patchclip_callback)
-    {
-        if(!patchclip_callback(patch, x, y))
+    if (patchclip_callback) {
+        if (!patchclip_callback(patch, x, y))
             return;
     }
 
 #ifdef RANGECHECK
-    if (x < 0
-     || x + SHORT(patch->width) > SCREENWIDTH
-     || y < 0
-     || y + SHORT(patch->height) > SCREENHEIGHT)
-    {
+    if (x < 0 || x + SHORT(patch->width) > SCREENWIDTH || y < 0 || y + SHORT(patch->height) > SCREENHEIGHT) {
         I_Error("Bad V_DrawPatch");
     }
 #endif
@@ -149,19 +129,16 @@ void V_DrawPatch(int x, int y, patch_t *patch)
 
     w = SHORT(patch->width);
 
-    for ( ; col<w ; x++, col++, desttop++)
-    {
+    for (; col < w; x++, col++, desttop++) {
         column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
 
         // step through the posts in a column
-        while (column->topdelta != 0xff)
-        {
+        while (column->topdelta != 0xff) {
             source = (byte *)column + 3;
-            dest = desttop + column->topdelta*SCREENWIDTH;
+            dest = desttop + column->topdelta * SCREENWIDTH;
             count = column->length;
 
-            while (count--)
-            {
+            while (count--) {
                 *dest = *source++;
                 dest += SCREENWIDTH;
             }
@@ -176,8 +153,7 @@ void V_DrawPatch(int x, int y, patch_t *patch)
 // Flips horizontally, e.g. to mirror face.
 //
 
-void V_DrawPatchFlipped(int x, int y, patch_t *patch)
-{
+void V_DrawPatchFlipped(int x, int y, patch_t *patch) {
     int count;
     int col;
     column_t *column;
@@ -190,42 +166,34 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch)
     x -= SHORT(patch->leftoffset);
 
     // haleyjd 08/28/10: Strife needs silent error checking here.
-    if(patchclip_callback)
-    {
-        if(!patchclip_callback(patch, x, y))
+    if (patchclip_callback) {
+        if (!patchclip_callback(patch, x, y))
             return;
     }
 
 #ifdef RANGECHECK
-    if (x < 0
-     || x + SHORT(patch->width) > SCREENWIDTH
-     || y < 0
-     || y + SHORT(patch->height) > SCREENHEIGHT)
-    {
+    if (x < 0 || x + SHORT(patch->width) > SCREENWIDTH || y < 0 || y + SHORT(patch->height) > SCREENHEIGHT) {
         I_Error("Bad V_DrawPatchFlipped");
     }
 #endif
 
-    V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height));
+    V_MarkRect(x, y, SHORT(patch->width), SHORT(patch->height));
 
     col = 0;
     desttop = dest_screen + y * SCREENWIDTH + x;
 
     w = SHORT(patch->width);
 
-    for ( ; col<w ; x++, col++, desttop++)
-    {
-        column = (column_t *)((byte *)patch + LONG(patch->columnofs[w-1-col]));
+    for (; col < w; x++, col++, desttop++) {
+        column = (column_t *)((byte *)patch + LONG(patch->columnofs[w - 1 - col]));
 
         // step through the posts in a column
-        while (column->topdelta != 0xff )
-        {
+        while (column->topdelta != 0xff) {
             source = (byte *)column + 3;
-            dest = desttop + column->topdelta*SCREENWIDTH;
+            dest = desttop + column->topdelta * SCREENWIDTH;
             count = column->length;
 
-            while (count--)
-            {
+            while (count--) {
                 *dest = *source++;
                 dest += SCREENWIDTH;
             }
@@ -234,62 +202,48 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch)
     }
 }
 
-
-
 //
 // V_DrawPatchDirect
 // Draws directly to the screen on the pc.
 //
 
-void V_DrawPatchDirect(int x, int y, patch_t *patch)
-{
-    V_DrawPatch(x, y, patch);
-}
+void V_DrawPatchDirect(int x, int y, patch_t *patch) { V_DrawPatch(x, y, patch); }
 
 //
 // V_DrawBlock
 // Draw a linear block of pixels into the view buffer.
 //
 
-void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
-{
+void V_DrawBlock(int x, int y, int width, int height, pixel_t *src) {
     pixel_t *dest;
 
 #ifdef RANGECHECK
-    if (x < 0
-     || x + width >SCREENWIDTH
-     || y < 0
-     || y + height > SCREENHEIGHT)
-    {
-	I_Error ("Bad V_DrawBlock");
+    if (x < 0 || x + width > SCREENWIDTH || y < 0 || y + height > SCREENHEIGHT) {
+        I_Error("Bad V_DrawBlock");
     }
 #endif
 
-    V_MarkRect (x, y, width, height);
+    V_MarkRect(x, y, width, height);
 
     dest = dest_screen + y * SCREENWIDTH + x;
 
-    while (height--)
-    {
-	memcpy (dest, src, width * sizeof(*dest));
-	src += width;
-	dest += SCREENWIDTH;
+    while (height--) {
+        memcpy(dest, src, width * sizeof(*dest));
+        src += width;
+        dest += SCREENWIDTH;
     }
 }
 
-void V_DrawFilledBox(int x, int y, int w, int h, int c)
-{
+void V_DrawFilledBox(int x, int y, int w, int h, int c) {
     pixel_t *buf, *buf1;
     int x1, y1;
 
     buf = I_VideoBuffer + SCREENWIDTH * y + x;
 
-    for (y1 = 0; y1 < h; ++y1)
-    {
+    for (y1 = 0; y1 < h; ++y1) {
         buf1 = buf;
 
-        for (x1 = 0; x1 < w; ++x1)
-        {
+        for (x1 = 0; x1 < w; ++x1) {
             *buf1++ = c;
         }
 
@@ -297,54 +251,43 @@ void V_DrawFilledBox(int x, int y, int w, int h, int c)
     }
 }
 
-void V_DrawHorizLine(int x, int y, int w, int c)
-{
+void V_DrawHorizLine(int x, int y, int w, int c) {
     pixel_t *buf;
     int x1;
 
     buf = I_VideoBuffer + SCREENWIDTH * y + x;
 
-    for (x1 = 0; x1 < w; ++x1)
-    {
+    for (x1 = 0; x1 < w; ++x1) {
         *buf++ = c;
     }
 }
 
-void V_DrawVertLine(int x, int y, int h, int c)
-{
+void V_DrawVertLine(int x, int y, int h, int c) {
     pixel_t *buf;
     int y1;
 
     buf = I_VideoBuffer + SCREENWIDTH * y + x;
 
-    for (y1 = 0; y1 < h; ++y1)
-    {
+    for (y1 = 0; y1 < h; ++y1) {
         *buf = c;
         buf += SCREENWIDTH;
     }
 }
 
-void V_DrawBox(int x, int y, int w, int h, int c)
-{
+void V_DrawBox(int x, int y, int w, int h, int c) {
     V_DrawHorizLine(x, y, w, c);
-    V_DrawHorizLine(x, y+h-1, w, c);
+    V_DrawHorizLine(x, y + h - 1, w, c);
     V_DrawVertLine(x, y, h, c);
-    V_DrawVertLine(x+w-1, y, h, c);
+    V_DrawVertLine(x + w - 1, y, h, c);
 }
 
-void V_UseBuffer(pixel_t *buffer)
-{
-    dest_screen = buffer;
-}
+void V_UseBuffer(pixel_t *buffer) { dest_screen = buffer; }
 
 // Restore screen buffer to the i_video screen buffer.
 
-void V_RestoreBuffer(void)
-{
-    dest_screen = I_VideoBuffer;
-}
+void V_RestoreBuffer(void) { dest_screen = I_VideoBuffer; }
 
-#define MOUSE_SPEED_BOX_WIDTH  120
+#define MOUSE_SPEED_BOX_WIDTH 120
 #define MOUSE_SPEED_BOX_HEIGHT 9
 #define MOUSE_SPEED_BOX_X (SCREENWIDTH - MOUSE_SPEED_BOX_WIDTH - 10)
 #define MOUSE_SPEED_BOX_Y 15
@@ -353,8 +296,7 @@ void V_RestoreBuffer(void)
 // V_DrawMouseSpeedBox
 //
 
-static void DrawAcceleratingBox(int speed)
-{
+static void DrawAcceleratingBox(int speed) {
     int red, white, yellow;
     int original_speed;
     int redline_x;
@@ -369,45 +311,34 @@ static void DrawAcceleratingBox(int speed)
 
     redline_x = MOUSE_SPEED_BOX_WIDTH / 3;
 
-    if (speed >= mouse_threshold)
-    {
+    if (speed >= mouse_threshold) {
         // Undo acceleration and get back the original mouse speed
         original_speed = speed - mouse_threshold;
-        original_speed = (int) (original_speed / mouse_acceleration);
+        original_speed = (int)(original_speed / mouse_acceleration);
         original_speed += mouse_threshold;
 
         linelen = (original_speed * redline_x) / mouse_threshold;
-    }
-    else
-    {
+    } else {
         linelen = (speed * redline_x) / mouse_threshold;
     }
 
     // Horizontal "thermometer"
-    if (linelen > MOUSE_SPEED_BOX_WIDTH - 1)
-    {
+    if (linelen > MOUSE_SPEED_BOX_WIDTH - 1) {
         linelen = MOUSE_SPEED_BOX_WIDTH - 1;
     }
 
-    if (linelen < redline_x)
-    {
-        V_DrawHorizLine(MOUSE_SPEED_BOX_X + 1,
-                        MOUSE_SPEED_BOX_Y + MOUSE_SPEED_BOX_HEIGHT / 2,
-                        linelen, white);
-    }
-    else
-    {
-        V_DrawHorizLine(MOUSE_SPEED_BOX_X + 1,
-                        MOUSE_SPEED_BOX_Y + MOUSE_SPEED_BOX_HEIGHT / 2,
-                        redline_x, white);
-        V_DrawHorizLine(MOUSE_SPEED_BOX_X + redline_x,
-                        MOUSE_SPEED_BOX_Y + MOUSE_SPEED_BOX_HEIGHT / 2,
+    if (linelen < redline_x) {
+        V_DrawHorizLine(MOUSE_SPEED_BOX_X + 1, MOUSE_SPEED_BOX_Y + MOUSE_SPEED_BOX_HEIGHT / 2, linelen,
+                        white);
+    } else {
+        V_DrawHorizLine(MOUSE_SPEED_BOX_X + 1, MOUSE_SPEED_BOX_Y + MOUSE_SPEED_BOX_HEIGHT / 2, redline_x,
+                        white);
+        V_DrawHorizLine(MOUSE_SPEED_BOX_X + redline_x, MOUSE_SPEED_BOX_Y + MOUSE_SPEED_BOX_HEIGHT / 2,
                         linelen - redline_x, yellow);
     }
 
     // Draw acceleration threshold line
-    V_DrawVertLine(MOUSE_SPEED_BOX_X + redline_x, MOUSE_SPEED_BOX_Y + 1,
-                   MOUSE_SPEED_BOX_HEIGHT - 2, red);
+    V_DrawVertLine(MOUSE_SPEED_BOX_X + redline_x, MOUSE_SPEED_BOX_Y + 1, MOUSE_SPEED_BOX_HEIGHT - 2, red);
 }
 
 // Highest seen mouse turn speed. We scale the range of the thermometer
@@ -415,34 +346,28 @@ static void DrawAcceleratingBox(int speed)
 // this is set to a 1:1 setting where 1 pixel = 1 unit of speed.
 static int max_seen_speed = MOUSE_SPEED_BOX_WIDTH - 1;
 
-static void DrawNonAcceleratingBox(int speed)
-{
+static void DrawNonAcceleratingBox(int speed) {
     int white;
     int linelen;
 
     white = I_GetPaletteIndex(0xff, 0xff, 0xff);
 
-    if (speed > max_seen_speed)
-    {
+    if (speed > max_seen_speed) {
         max_seen_speed = speed;
     }
 
     // Draw horizontal "thermometer":
     linelen = speed * (MOUSE_SPEED_BOX_WIDTH - 1) / max_seen_speed;
 
-    V_DrawHorizLine(MOUSE_SPEED_BOX_X + 1,
-                    MOUSE_SPEED_BOX_Y + MOUSE_SPEED_BOX_HEIGHT / 2,
-                    linelen, white);
+    V_DrawHorizLine(MOUSE_SPEED_BOX_X + 1, MOUSE_SPEED_BOX_Y + MOUSE_SPEED_BOX_HEIGHT / 2, linelen, white);
 }
 
-void V_DrawMouseSpeedBox(int speed)
-{
+void V_DrawMouseSpeedBox(int speed) {
     extern int usemouse;
     int bgcolor, bordercolor, black;
 
     // If the mouse is turned off, don't draw the box at all.
-    if (!usemouse)
-    {
+    if (!usemouse) {
         return;
     }
 
@@ -455,22 +380,17 @@ void V_DrawMouseSpeedBox(int speed)
 
     // Calculate box position
 
-    V_DrawFilledBox(MOUSE_SPEED_BOX_X, MOUSE_SPEED_BOX_Y,
-                    MOUSE_SPEED_BOX_WIDTH, MOUSE_SPEED_BOX_HEIGHT, bgcolor);
-    V_DrawBox(MOUSE_SPEED_BOX_X, MOUSE_SPEED_BOX_Y,
-              MOUSE_SPEED_BOX_WIDTH, MOUSE_SPEED_BOX_HEIGHT, bordercolor);
-    V_DrawHorizLine(MOUSE_SPEED_BOX_X + 1, MOUSE_SPEED_BOX_Y + 4,
-                    MOUSE_SPEED_BOX_WIDTH - 2, black);
+    V_DrawFilledBox(MOUSE_SPEED_BOX_X, MOUSE_SPEED_BOX_Y, MOUSE_SPEED_BOX_WIDTH, MOUSE_SPEED_BOX_HEIGHT,
+                    bgcolor);
+    V_DrawBox(MOUSE_SPEED_BOX_X, MOUSE_SPEED_BOX_Y, MOUSE_SPEED_BOX_WIDTH, MOUSE_SPEED_BOX_HEIGHT,
+              bordercolor);
+    V_DrawHorizLine(MOUSE_SPEED_BOX_X + 1, MOUSE_SPEED_BOX_Y + 4, MOUSE_SPEED_BOX_WIDTH - 2, black);
 
     // If acceleration is used, draw a box that helps to calibrate the
     // threshold point.
-    if (mouse_threshold > 0 && fabs(mouse_acceleration - 1) > 0.01)
-    {
+    if (mouse_threshold > 0 && fabs(mouse_acceleration - 1) > 0.01) {
         DrawAcceleratingBox(speed);
-    }
-    else
-    {
+    } else {
         DrawNonAcceleratingBox(speed);
     }
 }
-

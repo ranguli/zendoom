@@ -16,11 +16,10 @@
 //	System interface for music.
 //
 
-
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "SDL.h"
 #include "SDL_mixer.h"
@@ -30,8 +29,8 @@
 
 #include "deh_str.h"
 #include "i_sound.h"
-#include "i_system.h"
 #include "i_swap.h"
+#include "i_system.h"
 #include "m_argv.h"
 #include "m_config.h"
 #include "m_misc.h"
@@ -53,15 +52,12 @@ static int current_music_volume;
 
 // Shutdown music
 
-static void I_SDL_ShutdownMusic(void)
-{
-    if (music_initialized)
-    {
+static void I_SDL_ShutdownMusic(void) {
+    if (music_initialized) {
         Mix_HaltMusic();
         music_initialized = false;
 
-        if (sdl_was_initialized)
-        {
+        if (sdl_was_initialized) {
             Mix_CloseAudio();
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
             sdl_was_initialized = false;
@@ -69,8 +65,7 @@ static void I_SDL_ShutdownMusic(void)
     }
 }
 
-static boolean SDLIsInitialized(void)
-{
+static boolean SDLIsInitialized(void) {
     int freq, channels;
     Uint16 format;
 
@@ -78,29 +73,20 @@ static boolean SDLIsInitialized(void)
 }
 
 // Initialize music subsystem
-static boolean I_SDL_InitMusic(void)
-{
+static boolean I_SDL_InitMusic(void) {
     // If SDL_mixer is not initialized, we have to initialize it
     // and have the responsibility to shut it down later on.
 
-    if (SDLIsInitialized())
-    {
+    if (SDLIsInitialized()) {
         music_initialized = true;
-    }
-    else
-    {
-        if (SDL_Init(SDL_INIT_AUDIO) < 0)
-        {
+    } else {
+        if (SDL_Init(SDL_INIT_AUDIO) < 0) {
             fprintf(stderr, "Unable to set up sound.\n");
-        }
-        else if (Mix_OpenAudioDevice(snd_samplerate, AUDIO_S16SYS, 2, 1024, NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0)
-        {
-            fprintf(stderr, "Error initializing SDL_mixer: %s\n",
-                    Mix_GetError());
+        } else if (Mix_OpenAudioDevice(snd_samplerate, AUDIO_S16SYS, 2, 1024, NULL,
+                                       SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0) {
+            fprintf(stderr, "Error initializing SDL_mixer: %s\n", Mix_GetError());
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
-        }
-        else
-        {
+        } else {
             SDL_PauseAudio(0);
 
             sdl_was_initialized = true;
@@ -119,16 +105,12 @@ static boolean I_SDL_InitMusic(void)
 // As a workaround, set the volume to 0 when paused.
 //
 
-static void UpdateMusicVolume(void)
-{
+static void UpdateMusicVolume(void) {
     int vol;
 
-    if (musicpaused)
-    {
+    if (musicpaused) {
         vol = 0;
-    }
-    else
-    {
+    } else {
         vol = (current_music_volume * MIX_MAX_VOLUME) / 127;
     }
 
@@ -137,8 +119,7 @@ static void UpdateMusicVolume(void)
 
 // Set music volume (0 - 127)
 
-static void I_SDL_SetMusicVolume(int volume)
-{
+static void I_SDL_SetMusicVolume(int volume) {
     // Internal state variable.
     current_music_volume = volume;
 
@@ -147,31 +128,24 @@ static void I_SDL_SetMusicVolume(int volume)
 
 // Start playing a mid
 
-static void I_SDL_PlaySong(void *handle, boolean looping)
-{
+static void I_SDL_PlaySong(void *handle, boolean looping) {
     int loops;
 
-    if (!music_initialized)
-    {
+    if (!music_initialized) {
         return;
     }
 
-    if (looping)
-    {
+    if (looping) {
         loops = -1;
-    }
-    else
-    {
+    } else {
         loops = 1;
     }
 
-    Mix_PlayMusic((Mix_Music *) handle, loops);
+    Mix_PlayMusic((Mix_Music *)handle, loops);
 }
 
-static void I_SDL_PauseSong(void)
-{
-    if (!music_initialized)
-    {
+static void I_SDL_PauseSong(void) {
+    if (!music_initialized) {
         return;
     }
 
@@ -180,10 +154,8 @@ static void I_SDL_PauseSong(void)
     UpdateMusicVolume();
 }
 
-static void I_SDL_ResumeSong(void)
-{
-    if (!music_initialized)
-    {
+static void I_SDL_ResumeSong(void) {
+    if (!music_initialized) {
         return;
     }
 
@@ -192,38 +164,31 @@ static void I_SDL_ResumeSong(void)
     UpdateMusicVolume();
 }
 
-static void I_SDL_StopSong(void)
-{
-    if (!music_initialized)
-    {
+static void I_SDL_StopSong(void) {
+    if (!music_initialized) {
         return;
     }
 
     Mix_HaltMusic();
 }
 
-static void I_SDL_UnRegisterSong(void *handle)
-{
-    Mix_Music *music = (Mix_Music *) handle;
+static void I_SDL_UnRegisterSong(void *handle) {
+    Mix_Music *music = (Mix_Music *)handle;
 
-    if (!music_initialized)
-    {
+    if (!music_initialized) {
         return;
     }
 
-    if (handle != NULL)
-    {
+    if (handle != NULL) {
         Mix_FreeMusic(music);
     }
 }
 
-static void *I_SDL_RegisterSong(void *data, int len)
-{
+static void *I_SDL_RegisterSong(void *data, int len) {
     char *filename;
     Mix_Music *music;
 
-    if (!music_initialized)
-    {
+    if (!music_initialized) {
         return NULL;
     }
 
@@ -234,23 +199,17 @@ static void *I_SDL_RegisterSong(void *data, int len)
 }
 
 // Is the song playing?
-static boolean I_SDL_MusicIsPlaying(void)
-{
-    if (!music_initialized)
-    {
+static boolean I_SDL_MusicIsPlaying(void) {
+    if (!music_initialized) {
         return false;
     }
 
     return Mix_PlayingMusic();
 }
 
-static snddevice_t music_sdl_devices[] =
-{
-    SNDDEVICE_GENMIDI
-};
+static snddevice_t music_sdl_devices[] = {SNDDEVICE_GENMIDI};
 
-music_module_t music_sdl_module =
-{
+music_module_t music_sdl_module = {
     music_sdl_devices,
     arrlen(music_sdl_devices),
     I_SDL_InitMusic,
@@ -263,6 +222,5 @@ music_module_t music_sdl_module =
     I_SDL_PlaySong,
     I_SDL_StopSong,
     I_SDL_MusicIsPlaying,
-    NULL,  // Poll
+    NULL, // Poll
 };
-

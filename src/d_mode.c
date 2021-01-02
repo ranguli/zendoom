@@ -17,34 +17,26 @@
 //   mode.
 //
 
-#include "doomtype.h"
 #include "d_mode.h"
+#include "doomtype.h"
 
 // Valid game mode/mission combinations, with the number of
 // episodes/maps for each.
 
-static struct
-{
+static struct {
     GameMission_t mission;
     GameMode_t mode;
     int episode;
     int map;
-} valid_modes[] = {
-    { doom,      shareware,  1, 9 },
-    { doom,      registered, 3, 9 },
-    { doom,      retail,     4, 9 }
-};
+} valid_modes[] = {{doom, shareware, 1, 9}, {doom, registered, 3, 9}, {doom, retail, 4, 9}};
 
 // Check that a gamemode+gamemission received over the network is valid.
 
-boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)
-{
+boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode) {
     int i;
 
-    for (i=0; i<arrlen(valid_modes); ++i)
-    {
-        if (valid_modes[i].mode == mode && valid_modes[i].mission == mission)
-        {
+    for (i = 0; i < arrlen(valid_modes); ++i) {
+        if (valid_modes[i].mode == mode && valid_modes[i].mission == mission) {
             return true;
         }
     }
@@ -52,20 +44,14 @@ boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)
     return false;
 }
 
-boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
-                          int episode, int map)
-{
+boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, int map) {
     int i;
 
     // Find the table entry for this mission/mode combination.
 
-    for (i=0; i<arrlen(valid_modes); ++i)
-    {
-        if (mission == valid_modes[i].mission
-         && mode == valid_modes[i].mode)
-        {
-            return episode >= 1 && episode <= valid_modes[i].episode
-                && map >= 1 && map <= valid_modes[i].map;
+    for (i = 0; i < arrlen(valid_modes); ++i) {
+        if (mission == valid_modes[i].mission && mode == valid_modes[i].mode) {
+            return episode >= 1 && episode <= valid_modes[i].episode && map >= 1 && map <= valid_modes[i].map;
         }
     }
 
@@ -79,24 +65,14 @@ boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
 static struct {
     GameMission_t mission;
     GameVersion_t version;
-} valid_versions[] = {
-    { doom,     exe_doom_1_2 },
-    { doom,     exe_doom_1_666 },
-    { doom,     exe_doom_1_7 },
-    { doom,     exe_doom_1_8 },
-    { doom,     exe_doom_1_9 },
-    { doom,     exe_ultimate }
-};
+} valid_versions[] = {{doom, exe_doom_1_2}, {doom, exe_doom_1_666}, {doom, exe_doom_1_7},
+                      {doom, exe_doom_1_8}, {doom, exe_doom_1_9},   {doom, exe_ultimate}};
 
-boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
-{
+boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version) {
     int i;
 
-    for (i=0; i<arrlen(valid_versions); ++i)
-    {
-        if (valid_versions[i].mission == mission
-         && valid_versions[i].version == version)
-        {
+    for (i = 0; i < arrlen(valid_versions); ++i) {
+        if (valid_versions[i].mission == mission && valid_versions[i].version == version) {
             return true;
         }
     }
@@ -104,31 +80,26 @@ boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
     return false;
 }
 
-const char *D_GameMissionString(GameMission_t mission)
-{
-    switch (mission)
-    {
-        case none:
-        default:
-            return "none";
-        case doom:
-            return "doom";
+const char *D_GameMissionString(GameMission_t mission) {
+    switch (mission) {
+    case none:
+    default:
+        return "none";
+    case doom:
+        return "doom";
     }
 }
 
-const char *D_GameModeString(GameMode_t mode)
-{
-    switch (mode)
-    {
-        case shareware:
-            return "shareware";
-        case registered:
-            return "registered";
-        case retail:
-            return "retail";
-        case indetermined:
-        default:
-            return "unknown";
+const char *D_GameModeString(GameMode_t mode) {
+    switch (mode) {
+    case shareware:
+        return "shareware";
+    case registered:
+        return "registered";
+    case retail:
+        return "retail";
+    case indetermined:
+    default:
+        return "unknown";
     }
 }
-
