@@ -235,12 +235,13 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src) {
 }
 
 void V_DrawFilledBox(int x, int y, int w, int h, int c) {
-    pixel_t *buf, *buf1;
+    pixel_t *buf;
     int x1, y1;
 
     buf = I_VideoBuffer + SCREENWIDTH * y + x;
 
     for (y1 = 0; y1 < h; ++y1) {
+        pixel_t *buf1;
         buf1 = buf;
 
         for (x1 = 0; x1 < w; ++x1) {
@@ -298,7 +299,6 @@ void V_RestoreBuffer(void) { dest_screen = I_VideoBuffer; }
 
 static void DrawAcceleratingBox(int speed) {
     int red, white, yellow;
-    int original_speed;
     int redline_x;
     int linelen;
 
@@ -312,6 +312,8 @@ static void DrawAcceleratingBox(int speed) {
     redline_x = MOUSE_SPEED_BOX_WIDTH / 3;
 
     if (speed >= mouse_threshold) {
+        int original_speed;
+
         // Undo acceleration and get back the original mouse speed
         original_speed = speed - mouse_threshold;
         original_speed = (int)(original_speed / mouse_acceleration);

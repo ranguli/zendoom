@@ -186,7 +186,6 @@ static void I_SDL_UnRegisterSong(void *handle) {
 
 static void *I_SDL_RegisterSong(void *data, int len) {
     char *filename;
-    Mix_Music *music;
 
     if (!music_initialized) {
         return NULL;

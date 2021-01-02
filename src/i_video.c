@@ -594,9 +594,6 @@ static void CreateUpscaledTexture(boolean force) {
 // I_FinishUpdate
 //
 void I_FinishUpdate(void) {
-    static int lasttic;
-    int tics;
-    int i;
 
     if (!initialized)
         return;
@@ -640,9 +637,9 @@ void I_FinishUpdate(void) {
     // draws little dots on the bottom of the screen
 
     if (display_fps_dots) {
-        i = I_GetTime();
-        tics = i - lasttic;
-        lasttic = i;
+        int i = I_GetTime();
+        int tics = i;
+
         if (tics > 20)
             tics = 20;
 
@@ -724,14 +721,14 @@ void I_SetPalette(byte *doompalette) {
 // Given an RGB value, find the closest matching palette index.
 
 int I_GetPaletteIndex(int r, int g, int b) {
-    int best, best_diff, diff;
+    int best, best_diff;
     int i;
 
     best = 0;
     best_diff = INT_MAX;
 
     for (i = 0; i < 256; ++i) {
-        diff = (r - palette[i].r) * (r - palette[i].r) + (g - palette[i].g) * (g - palette[i].g) +
+        int diff = (r - palette[i].r) * (r - palette[i].r) + (g - palette[i].g) * (g - palette[i].g) +
                (b - palette[i].b) * (b - palette[i].b);
 
         if (diff < best_diff) {

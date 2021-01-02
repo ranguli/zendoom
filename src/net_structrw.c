@@ -382,7 +382,6 @@ void NET_WriteWaitData(net_packet_t *packet, net_waitdata_t *data) {
 
 boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data) {
     int i;
-    char *s;
 
     if (!NET_ReadInt8(packet, (unsigned int *)&data->num_players) ||
         !NET_ReadInt8(packet, (unsigned int *)&data->num_drones) ||
@@ -394,6 +393,7 @@ boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data) {
     }
 
     for (i = 0; i < data->num_players && i < NET_MAXPLAYERS; ++i) {
+        char *s;
         s = NET_ReadString(packet);
 
         if (s == NULL || strlen(s) >= MAXPLAYERNAME) {

@@ -78,7 +78,7 @@ static int FindInList(searchlist_t *list, const char *name) {
 
 static boolean SetupList(searchlist_t *list, searchlist_t *src_list, const char *startname,
                          const char *endname, const char *startname2, const char *endname2) {
-    int startlump, endlump;
+    int startlump;
 
     list->numlumps = 0;
     startlump = FindInList(src_list, startname);
@@ -88,6 +88,7 @@ static boolean SetupList(searchlist_t *list, searchlist_t *src_list, const char 
     }
 
     if (startlump >= 0) {
+        int endlump;
         endlump = FindInList(src_list, endname);
 
         if (endname2 != NULL && endlump < 0) {

@@ -156,9 +156,10 @@ void I_EndGlob(glob_t *glob) {
 }
 
 static boolean MatchesGlob(const char *name, const char *glob, int flags) {
-    int n, g;
 
     while (*glob != '\0') {
+        int n, g;
+
         n = *name;
         g = *glob;
 

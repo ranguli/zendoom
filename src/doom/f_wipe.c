@@ -99,7 +99,6 @@ int wipe_exitColorXForm(int width, int height, int ticks) { return 0; }
 static int *y;
 
 int wipe_initMelt(int width, int height, int ticks) {
-    int i, r;
 
     // copy start screen to main screen
     memcpy(wipe_scr, wipe_scr_start, width * height * sizeof(*wipe_scr));
@@ -113,8 +112,8 @@ int wipe_initMelt(int width, int height, int ticks) {
     // (y<0 => not ready to scroll yet)
     y = (int *)Z_Malloc(width * sizeof(int), PU_STATIC, 0);
     y[0] = -(M_Random() % 16);
-    for (i = 1; i < width; i++) {
-        r = (M_Random() % 3) - 1;
+    for (int i = 1; i < width; i++) {
+        int r = (M_Random() % 3) - 1;
         y[i] = y[i - 1] + r;
         if (y[i] > 0)
             y[i] = 0;

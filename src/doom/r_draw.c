@@ -285,7 +285,6 @@ void R_DrawFuzzColumn(void) {
 
     // Looks familiar.
     fracstep = dc_iscale;
-    frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
     // Looks like an attempt at dithering,
     //  using the colormap #6 (of 0-31, a bit
@@ -303,7 +302,6 @@ void R_DrawFuzzColumn(void) {
 
         dest += SCREENWIDTH;
 
-        frac += fracstep;
     } while (count--);
 }
 
@@ -346,7 +344,6 @@ void R_DrawFuzzColumnLow(void) {
 
     // Looks familiar.
     fracstep = dc_iscale;
-    frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
     // Looks like an attempt at dithering,
     //  using the colormap #6 (of 0-31, a bit
@@ -366,7 +363,6 @@ void R_DrawFuzzColumnLow(void) {
         dest += SCREENWIDTH;
         dest2 += SCREENWIDTH;
 
-        frac += fracstep;
     } while (count--);
 }
 
@@ -526,7 +522,6 @@ void R_DrawSpan(void) {
     pixel_t *dest;
     int count;
     int spot;
-    unsigned int xtemp, ytemp;
 
 #ifdef RANGECHECK
     if (ds_x2 < ds_x1 || ds_x1 < 0 || ds_x2 >= SCREENWIDTH || (unsigned)ds_y > SCREENHEIGHT) {
@@ -550,8 +545,9 @@ void R_DrawSpan(void) {
 
     do {
         // Calculate current texture index in u,v.
-        ytemp = (position >> 4) & 0x0fc0;
-        xtemp = (position >> 26);
+        unsigned int xtemp = (position >> 26);
+        unsigned int ytemp = (position >> 4) & 0x0fc0;
+
         spot = xtemp | ytemp;
 
         // Lookup pixel from flat texture tile,
@@ -640,7 +636,6 @@ void R_DrawSpan (void)
 //
 void R_DrawSpanLow(void) {
     unsigned int position, step;
-    unsigned int xtemp, ytemp;
     pixel_t *dest;
     int count;
     int spot;
@@ -665,8 +660,9 @@ void R_DrawSpanLow(void) {
 
     do {
         // Calculate current texture index in u,v.
-        ytemp = (position >> 4) & 0x0fc0;
-        xtemp = (position >> 26);
+        unsigned int ytemp = (position >> 4) & 0x0fc0;
+        unsigned int xtemp = (position >> 26);
+
         spot = xtemp | ytemp;
 
         // Lowres/blocky mode does it twice,
@@ -724,10 +720,6 @@ void R_FillBackScreen(void) {
 
     // DOOM border patch.
     const char *name1 = DEH_String("FLOOR7_2");
-
-    // DOOM II border patch.
-    const char *name2 = DEH_String("GRNROCK");
-
     const char *name;
 
     // If we are running full screen, there is no need to do any of this,

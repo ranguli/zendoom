@@ -518,7 +518,6 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
     char *player_name;
     char *client_version;
     int num_players;
-    int i;
 
     NET_Log("server: processing SYN packet");
 
@@ -636,6 +635,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
 
     // Allocate a client slot if there isn't one already
     if (client == NULL) {
+        int i;
         // find a slot, or return if none found
 
         for (i = 0; i < MAXNETNODES; ++i) {
@@ -862,7 +862,6 @@ static void NET_SV_SendResendRequest(net_client_t *client, int start, int end) {
     net_client_recv_t *recvobj;
     int i;
     unsigned int nowtime;
-    int index;
 
     NET_Log("server: send resend to %s for tics %d-%d", NET_AddrToString(client->addr), start, end);
 
@@ -880,7 +879,7 @@ static void NET_SV_SendResendRequest(net_client_t *client, int start, int end) {
     nowtime = I_GetTimeMS();
 
     for (i = start; i <= end; ++i) {
-        index = i - recvwindow_start;
+        int index = i - recvwindow_start;
 
         if (index >= BACKUPTICS) {
             // Outside the range
@@ -1454,7 +1453,6 @@ static void NET_SV_PumpSendQueue(net_client_t *client) {
 
 void NET_SV_CheckDeadlock(net_client_t *client) {
     int nowtime;
-    int i;
 
     // Don't expect game data from clients.
 
@@ -1467,6 +1465,7 @@ void NET_SV_CheckDeadlock(net_client_t *client) {
     // If we haven't received anything for a long time, it may be a deadlock.
 
     if (nowtime - client->last_gamedata_time > 1000) {
+        int i;
         NET_Log("server: no gamedata from %s since %d - deadlock?", NET_AddrToString(client->addr),
                 client->last_gamedata_time);
 

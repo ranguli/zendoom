@@ -259,7 +259,6 @@ static void DEH_ParseContext(deh_context_t *context) {
     char section_name[20];
     void *tag = NULL;
     boolean extended;
-    char *line;
 
     // Read the header and check it matches the signature
 
@@ -272,6 +271,7 @@ static void DEH_ParseContext(deh_context_t *context) {
     while (!DEH_HadError(context)) {
         // Read the next line. We only allow the special extended parsing
         // for the BEX [STRINGS] section.
+        char *line;
         extended = current_section != NULL && !strcasecmp(current_section->name, "[STRINGS]");
         line = DEH_ReadLine(context, extended);
 
@@ -363,11 +363,11 @@ int DEH_LoadFile(const char *filename) {
 
 // Load all dehacked patches from the given directory.
 void DEH_AutoLoadPatches(const char *path) {
-    const char *filename;
     glob_t *glob;
 
     glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.deh", "*.hhe", "*.seh", NULL);
     for (;;) {
+        const char *filename;
         filename = I_NextGlob(glob);
         if (filename == NULL) {
             break;
@@ -429,7 +429,6 @@ int DEH_LoadLumpByName(const char *name, boolean allow_long, boolean allow_error
 
 // Check the command line for -deh argument, and others.
 void DEH_ParseCommandLine(void) {
-    char *filename;
     int p;
 
     //!
@@ -445,6 +444,7 @@ void DEH_ParseCommandLine(void) {
         ++p;
 
         while (p < myargc && myargv[p][0] != '-') {
+            char *filename;
             filename = D_TryFindWADByName(myargv[p]);
             DEH_LoadFile(filename);
             free(filename);

@@ -125,7 +125,6 @@ boolean F_Responder(event_t *event) {
 // F_Ticker
 //
 void F_Ticker(void) {
-    size_t i;
 
     // advance animation
     finalecount++;
@@ -158,7 +157,6 @@ void F_TextWrite(void) {
     int x, y, w;
     signed int count;
     const char *ch;
-    int c;
     int cx;
     int cy;
 
@@ -188,7 +186,7 @@ void F_TextWrite(void) {
     if (count < 0)
         count = 0;
     for (; count; count--) {
-        c = *ch++;
+        int c = *ch++;
         if (!c)
             break;
         if (c == '\n') {
@@ -495,19 +493,19 @@ void F_CastDrawer(void) {
 //
 void F_DrawPatchCol(int x, patch_t *patch, int col) {
     column_t *column;
-    byte *source;
-    pixel_t *dest;
     pixel_t *desttop;
-    int count;
 
     column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
     desttop = I_VideoBuffer + x;
 
     // step through the posts in a column
     while (column->topdelta != 0xff) {
+        byte *source;
+        pixel_t *dest;
+        int count = column->length;
+
         source = (byte *)column + 3;
         dest = desttop + column->topdelta * SCREENWIDTH;
-        count = column->length;
 
         while (count--) {
             *dest = *source++;
@@ -569,11 +567,12 @@ void F_BunnyScroll(void) {
 }
 
 static void F_ArtScreenDrawer(void) {
-    const char *lumpname;
 
     if (gameepisode == 3) {
         F_BunnyScroll();
     } else {
+        const char *lumpname;
+
         switch (gameepisode) {
         case 1:
             if (gameversion >= exe_ultimate) {

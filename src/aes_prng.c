@@ -88,13 +88,3 @@
 #define AES_BLOCK_SIZE 16
 #define AES_MAX_KEYLENGTH (15 * 16)
 #define AES_MAX_KEYLENGTH_U32 (AES_MAX_KEYLENGTH / sizeof(uint32_t))
-
-/*
- * Please ensure that the first two fields are 16-byte aligned
- * relative to the start of the structure, i.e., don't move them!
- */
-typedef struct {
-    uint32_t key_enc[AES_MAX_KEYLENGTH_U32];
-    uint32_t key_dec[AES_MAX_KEYLENGTH_U32];
-    uint32_t key_length;
-} aes_context_t;

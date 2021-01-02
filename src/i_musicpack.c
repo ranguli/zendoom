@@ -204,8 +204,7 @@ static void ParseVorbisComment(file_metadata_t *metadata, char *comment) {
 // Parse a vorbis comments structure, reading from the given file.
 static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs) {
     uint32_t buf;
-    unsigned int num_comments, i, comment_len;
-    char *comment;
+    unsigned int num_comments, i;
 
     // We must have read the sample rate already from an earlier header.
     if (metadata->samplerate_hz == 0) {
@@ -228,6 +227,9 @@ static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs) {
 
     // Read each individual comment.
     for (i = 0; i < num_comments; ++i) {
+        unsigned int comment_len;
+        char *comment;
+
         // Read length of comment.
         if (fread(&buf, 4, 1, fs) < 1) {
             return;
@@ -266,12 +268,12 @@ static void ParseFlacStreaminfo(file_metadata_t *metadata, FILE *fs) {
 
 static void ParseFlacFile(file_metadata_t *metadata, FILE *fs) {
     byte header[4];
-    unsigned int block_type;
-    size_t block_len;
     boolean last_block;
 
     for (;;) {
         long pos = -1;
+        size_t block_len;
+        unsigned int block_type;
 
         // Read METADATA_BLOCK_HEADER:
         if (fread(header, 4, 1, fs) < 1) {
@@ -465,7 +467,6 @@ static char *GetFullPath(const char *musicdir, const char *path) {
 // GetFullPath().
 static char *ExpandFileExtension(const char *musicdir, const char *filename) {
     static const char *extns[] = {".flac", ".ogg", ".mp3"};
-    char *replaced, *result;
     int i;
 
     if (!M_StringEndsWith(filename, ".{ext}")) {
@@ -473,6 +474,8 @@ static char *ExpandFileExtension(const char *musicdir, const char *filename) {
     }
 
     for (i = 0; i < arrlen(extns); ++i) {
+        char *replaced, *result;
+
         replaced = M_StringReplace(filename, ".{ext}", extns[i]);
         result = GetFullPath(musicdir, replaced);
         free(replaced);
@@ -647,7 +650,6 @@ static boolean ReadSubstituteConfig(char *musicdir, const char *filename) {
 static void LoadSubstituteConfigs(void) {
     glob_t *glob;
     char *musicdir;
-    const char *path;
     unsigned int old_music_len;
     unsigned int i;
 
@@ -665,6 +667,7 @@ static void LoadSubstituteConfigs(void) {
     // Load all music packs, by searching for .cfg files.
     glob = I_StartGlob(musicdir, "*.cfg", GLOB_FLAG_SORTED | GLOB_FLAG_NOCASE);
     for (;;) {
+        const char *path;
         path = I_NextGlob(glob);
         if (path == NULL) {
             break;

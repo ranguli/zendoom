@@ -114,7 +114,6 @@ size_t W_POSIX_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t b
     posix_wad_file_t *posix_wad;
     byte *byte_buffer;
     size_t bytes_read;
-    int result;
 
     posix_wad = (posix_wad_file_t *)wad;
 
@@ -128,7 +127,7 @@ size_t W_POSIX_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t b
     byte_buffer = buffer;
 
     while (buffer_len > 0) {
-        result = read(posix_wad->handle, byte_buffer, buffer_len);
+        int result = read(posix_wad->handle, byte_buffer, buffer_len);
 
         if (result < 0) {
             perror("W_POSIX_Read");

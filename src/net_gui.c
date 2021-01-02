@@ -206,10 +206,9 @@ static void ParseCommandLineArgs(void) {
 }
 
 static void CheckAutoLaunch(void) {
-    int nodes;
 
     if (net_client_received_wait_data && net_client_wait_data.is_controller && expected_nodes > 0) {
-        nodes = net_client_wait_data.num_players + net_client_wait_data.num_drones;
+        int nodes = net_client_wait_data.num_players + net_client_wait_data.num_drones;
 
         if (nodes >= expected_nodes) {
             expected_nodes = 0;

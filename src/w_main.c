@@ -191,10 +191,11 @@ boolean W_ParseCommandLine(void) {
 // Load all WAD files from the given directory.
 void W_AutoLoadWADs(const char *path) {
     glob_t *glob;
-    const char *filename;
 
     glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.wad", "*.lmp", NULL);
     for (;;) {
+        const char *filename;
+
         filename = I_NextGlob(glob);
         if (filename == NULL) {
             break;

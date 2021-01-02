@@ -96,7 +96,6 @@ wad_file_t *W_AddFile(const char *filename) {
     wadinfo_t header;
     lumpindex_t i;
     wad_file_t *wad_file;
-    int length;
     int startlump;
     filelump_t *fileinfo;
     filelump_t *filerover;
@@ -146,6 +145,8 @@ wad_file_t *W_AddFile(const char *filename) {
         M_ExtractFileBase(filename, fileinfo->name);
         numfilelumps = 1;
     } else {
+        int length;
+
         // WAD file
         W_Read(wad_file, 0, &header, sizeof(header));
 
@@ -460,8 +461,6 @@ void W_Profile (void)
 // Generate a hash table for fast lookups
 
 void W_GenerateHashTable(void) {
-    lumpindex_t i;
-
     // Free the old hash table, if there is one:
     if (lumphash != NULL) {
         Z_Free(lumphash);
@@ -469,6 +468,7 @@ void W_GenerateHashTable(void) {
 
     // Generate hash table
     if (numlumps > 0) {
+        lumpindex_t i;
         lumphash = Z_Malloc(sizeof(lumpindex_t) * numlumps, PU_STATIC, NULL);
 
         for (i = 0; i < numlumps; ++i) {

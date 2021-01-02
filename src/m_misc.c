@@ -215,12 +215,13 @@ boolean M_StrToInt(const char *str, int *result) {
 // the string "." is returned. In either case, the result is newly allocated
 // and must be freed by the caller after use.
 char *M_DirName(const char *path) {
-    char *p, *result;
+    char *p;
 
     p = strrchr(path, DIR_SEPARATOR);
     if (p == NULL) {
         return M_StringDuplicate(".");
     } else {
+        char *result;
         result = M_StringDuplicate(path);
         result[p - path] = '\0';
         return result;

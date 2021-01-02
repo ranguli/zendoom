@@ -908,11 +908,10 @@ boolean G_CheckSpot(int playernum, mapthing_t *mthing) {
     fixed_t y;
     subsector_t *ss;
     mobj_t *mo;
-    int i;
 
     if (!players[playernum].mo) {
         // first spawn of level, before corpses
-        for (i = 0; i < playernum; i++)
+        for (int i = 0; i < playernum; i++)
             if (players[i].mo->x == mthing->x << FRACBITS && players[i].mo->y == mthing->y << FRACBITS)
                 return false;
         return true;
@@ -1002,15 +1001,14 @@ boolean G_CheckSpot(int playernum, mapthing_t *mthing) {
 // called at level load and each death
 //
 void G_DeathMatchSpawnPlayer(int playernum) {
-    int i, j;
     int selections;
 
     selections = deathmatch_p - deathmatchstarts;
     if (selections < 4)
         I_Error("Only %i deathmatch spots, 4 required", selections);
 
-    for (j = 0; j < 20; j++) {
-        i = P_Random() % selections;
+    for (int j = 0; j < 20; j++) {
+        int i = P_Random() % selections;
         if (G_CheckSpot(playernum, &deathmatchstarts[i])) {
             deathmatchstarts[i].type = playernum + 1;
             P_SpawnPlayer(&deathmatchstarts[i]);
@@ -1026,7 +1024,6 @@ void G_DeathMatchSpawnPlayer(int playernum) {
 // G_DoReborn
 //
 void G_DoReborn(int playernum) {
-    int i;
 
     if (!netgame) {
         // reload the level from scratch
@@ -1049,7 +1046,7 @@ void G_DoReborn(int playernum) {
         }
 
         // try to spawn at one of the other players spots
-        for (i = 0; i < MAXPLAYERS; i++) {
+        for (int i = 0; i < MAXPLAYERS; i++) {
             if (G_CheckSpot(playernum, &playerstarts[i])) {
                 playerstarts[i].type = playernum + 1; // fake as other player
                 P_SpawnPlayer(&playerstarts[i]);
@@ -1693,8 +1690,6 @@ void G_DeferedPlayDemo(const char *name) {
 // Generate a string describing a demo version
 
 static const char *DemoVersionDescription(int version) {
-    static char resultbuf[16];
-
     switch (version) {
     case 104:
         return "v1.4";
@@ -1720,7 +1715,9 @@ static const char *DemoVersionDescription(int version) {
     if (version >= 0 && version <= 4) {
         return "v1.0/v1.1/v1.2";
     } else {
+        static char resultbuf[16];
         M_snprintf(resultbuf, sizeof(resultbuf), "%i.%i (unknown)", version / 100, version % 100);
+
         return resultbuf;
     }
 }
@@ -1828,9 +1825,9 @@ void G_TimeDemo(char *name) {
 */
 
 boolean G_CheckDemoStatus(void) {
-    int endtime;
 
     if (timingdemo) {
+        int endtime;
         float fps;
         int realtics;
 

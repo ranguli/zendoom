@@ -309,8 +309,6 @@ static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet, net_
 static void NET_Query_ParseMasterResponse(net_addr_t *master_addr, net_packet_t *packet) {
     unsigned int packet_type;
     query_target_t *target;
-    char *addr_str;
-    net_addr_t *addr;
 
     // Read the header.  We are only interested in query responses.
 
@@ -322,6 +320,9 @@ static void NET_Query_ParseMasterResponse(net_addr_t *master_addr, net_packet_t 
     // that the master knows about.
 
     for (;;) {
+        char *addr_str;
+        net_addr_t *addr;
+
         addr_str = NET_ReadString(packet);
 
         if (addr_str == NULL) {

@@ -105,12 +105,12 @@ void Z_Init(void) {
 static void ScanForBlock(void *start, void *end) {
     memblock_t *block;
     void **mem;
-    int i, len, tag;
+    int i, len;
 
     block = mainzone->blocklist.next;
 
     while (block->next != &mainzone->blocklist) {
-        tag = block->tag;
+        int tag = block->tag;
 
         if (tag == PU_STATIC || tag == PU_LEVEL || tag == PU_LEVSPEC) {
             // Scan for pointers on the assumption that pointers are aligned

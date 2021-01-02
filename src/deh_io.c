@@ -205,12 +205,11 @@ static void IncreaseReadBuffer(deh_context_t *context) {
 // Read a whole line
 
 char *DEH_ReadLine(deh_context_t *context, boolean extended) {
-    int c;
     int pos;
     boolean escaped = false;
 
     for (pos = 0;;) {
-        c = DEH_GetChar(context);
+        int c = DEH_GetChar(context);
 
         if (c < 0 && pos == 0) {
             // end of file

@@ -164,7 +164,6 @@ boolean D_Display(void) {
     static boolean fullscreen = false;
     static gamestate_t oldgamestate = -1;
     static int borderdrawcount;
-    int y;
     boolean wipe;
     boolean redrawsbar;
 
@@ -258,6 +257,7 @@ boolean D_Display(void) {
 
     // draw pause pic
     if (paused) {
+        int y;
         if (automapactive)
             y = 4;
         else
@@ -274,9 +274,9 @@ boolean D_Display(void) {
 }
 
 static void EnableLoadingDisk(void) {
-    const char *disk_lump_name;
 
     if (show_diskicon) {
+        const char *disk_lump_name;
         if (M_CheckParm("-cdrom") > 0) {
             disk_lump_name = DEH_String("STCDROM");
         } else {
@@ -365,12 +365,12 @@ boolean D_GrabMouseCallback(void) {
 //  D_RunFrame
 //
 void D_RunFrame() {
-    int nowtime;
-    int tics;
     static int wipestart;
     static boolean wipe;
 
     if (wipe) {
+        int tics;
+        int nowtime;
         do {
             nowtime = I_GetTime();
             tics = nowtime - wipestart;
@@ -1194,10 +1194,6 @@ void D_DoomMain(void) {
     if (modifiedgame && (gamevariant != freedoom)) {
         // These are the lumps that will be checked in IWAD,
         // if any one is not present, execution will be aborted.
-        char name[23][8] = {"e2m1", "e2m2", "e2m3",   "e2m4",   "e2m5",   "e2m6",   "e2m7",    "e2m8",
-                            "e2m9", "e3m1", "e3m3",   "e3m3",   "e3m4",   "e3m5",   "e3m6",    "e3m7",
-                            "e3m8", "e3m9", "dphoof", "bfgga0", "heada1", "cybra1", "spida1d1"};
-        int i;
 
         if (gamemode == shareware)
             I_Error(DEH_String("\nYou cannot -file with the shareware "
@@ -1206,9 +1202,13 @@ void D_DoomMain(void) {
         // Check for fake IWAD with right name,
         // but w/o all the lumps of the registered version.
         if (gamemode == registered)
-            for (i = 0; i < 23; i++)
+            for (int i = 0; i < 23; i++) {
+                char name[23][8] = {"e2m1", "e2m2", "e2m3",   "e2m4",   "e2m5",   "e2m6",   "e2m7",    "e2m8",
+                                    "e2m9", "e3m1", "e3m3",   "e3m3",   "e3m4",   "e3m5",   "e3m6",    "e3m7",
+                                    "e3m8", "e3m9", "dphoof", "bfgga0", "heada1", "cybra1", "spida1d1"};
                 if (W_CheckNumForName(name[i]) < 0)
                     I_Error(DEH_String("\nThis is not the registered version."));
+            }
     }
 
     if (W_CheckNumForName("SS_START") >= 0 || W_CheckNumForName("FF_END") >= 0) {
