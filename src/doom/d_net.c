@@ -32,8 +32,6 @@
 #include "w_checksum.h"
 #include "w_wad.h"
 
-#include "deh_main.h"
-
 #include "d_loop.h"
 
 ticcmd_t *netcmds;
@@ -49,7 +47,7 @@ static void PlayerQuitGame(player_t *player) {
     // Do this the same way as Vanilla Doom does, to allow dehacked
     // replacements of this message
 
-    M_StringCopy(exitmsg, DEH_String("Player 1 left the game"), sizeof(exitmsg));
+    M_StringCopy(exitmsg, "Player 1 left the game", sizeof(exitmsg));
 
     exitmsg[7] += player_num;
 
@@ -232,10 +230,10 @@ void D_CheckNetGame(void) {
     D_StartNetGame(&settings, NULL);
     LoadGameSettings(&settings);
 
-    DEH_printf("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n", startskill, deathmatch,
+    printf("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n", startskill, deathmatch,
                startmap, startepisode);
 
-    DEH_printf("player %i of %i (%i nodes)\n", consoleplayer + 1, settings.num_players, settings.num_players);
+    printf("player %i of %i (%i nodes)\n", consoleplayer + 1, settings.num_players, settings.num_players);
 
     // Show players here; the server might have specified a time limit
 
@@ -243,10 +241,10 @@ void D_CheckNetGame(void) {
         // Gross hack to work like Vanilla:
 
         if (timelimit == 20 && M_CheckParm("-avg")) {
-            DEH_printf("Austin Virtual Gaming: Levels will end "
+            printf("Austin Virtual Gaming: Levels will end "
                        "after 20 minutes\n");
         } else {
-            DEH_printf("Levels will end after %d minute", timelimit);
+            printf("Levels will end after %d minute", timelimit);
             if (timelimit > 1)
                 printf("s");
             printf(".\n");

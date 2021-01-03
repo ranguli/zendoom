@@ -20,8 +20,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "deh_misc.h"
-
 #include "i_system.h"
 #include "m_bbox.h"
 #include "m_random.h"
@@ -299,11 +297,7 @@ boolean PIT_CheckThing(mobj_t *thing) {
             if (thing == tmthing->target)
                 return true;
 
-            // sdh: Add deh_species_infighting here.  We can override the
-            // "monsters of the same species cant hurt each other" behavior
-            // through dehacked patches
-
-            if (thing->type != MT_PLAYER && !deh_species_infighting) {
+            if (thing->type != MT_PLAYER) {
                 // Explode, but do no damage.
                 // Let players missile other players.
                 return false;

@@ -20,8 +20,6 @@
 #include "d_event.h"
 #include "doomdef.h"
 
-#include "deh_misc.h"
-
 #include "m_random.h"
 #include "p_local.h"
 #include "s_sound.h"
@@ -39,6 +37,8 @@
 
 #define WEAPONBOTTOM 128 * FRACUNIT
 #define WEAPONTOP 32 * FRACUNIT
+
+#define BFGCELLS 40
 
 //
 // P_SetPsprite
@@ -116,7 +116,7 @@ boolean P_CheckAmmo(player_t *player) {
 
     // Minimal amount for one shot varies.
     if (player->readyweapon == wp_bfg)
-        count = deh_bfg_cells_per_shot;
+        count = BFGCELLS;
     else if (player->readyweapon == wp_supershotgun)
         count = 2; // Double barrel.
     else
@@ -408,7 +408,7 @@ void A_FireMissile(player_t *player, pspdef_t *psp) {
 // A_FireBFG
 //
 void A_FireBFG(player_t *player, pspdef_t *psp) {
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, deh_bfg_cells_per_shot);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, BFGCELLS);
     P_SpawnPlayerMissile(player->mo, MT_BFG);
 }
 

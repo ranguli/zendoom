@@ -26,6 +26,7 @@
 #define FLOATSPEED (FRACUNIT * 4)
 
 #define MAXHEALTH 100
+#define MAXARMOR 200
 #define VIEWHEIGHT (41 * FRACUNIT)
 
 // mapblocks are used to check movement

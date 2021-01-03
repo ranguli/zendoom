@@ -22,7 +22,6 @@
 #include <string.h>
 
 #include "d_iwad.h"
-#include "deh_str.h"
 #include "doomkeys.h"
 #include "i_system.h"
 #include "m_argv.h"
@@ -108,7 +107,7 @@ static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mi
             continue;
         }
 
-        filename = CheckDirectoryHasIWAD(dir, DEH_String(iwads[i].name));
+        filename = CheckDirectoryHasIWAD(dir, iwads[i].name);
 
         if (filename != NULL) {
             *mission = iwads[i].mission;

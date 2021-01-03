@@ -23,9 +23,6 @@
 #include "doomkeys.h"
 #include "doomstat.h"
 
-#include "deh_main.h"
-#include "deh_misc.h"
-
 #include "f_finale.h"
 #include "i_input.h"
 #include "i_swap.h"
@@ -506,7 +503,7 @@ void G_DoLoadLevel(void) {
     //  we look for an actual index, instead of simply
     //  setting one.
 
-    skyflatnum = R_FlatNumForName(DEH_String(SKYFLATNAME));
+    skyflatnum = R_FlatNumForName(SKYFLATNAME);
 
     levelstarttic = gametic; // for time calculation
 
@@ -885,11 +882,11 @@ void G_PlayerReborn(int player) {
 
     p->usedown = p->attackdown = true; // don't do anything immediately
     p->playerstate = PST_LIVE;
-    p->health = deh_initial_health; // Use dehacked value
+    p->health =  MAXHEALTH; // Use dehacked value
     p->readyweapon = p->pendingweapon = wp_pistol;
     p->weaponowned[wp_fist] = true;
     p->weaponowned[wp_pistol] = true;
-    p->ammo[am_clip] = deh_initial_bullets;
+    p->ammo[am_clip] = 50;
 
     for (i = 0; i < NUMAMMO; i++)
         p->maxammo[i] = maxammo[i];
@@ -1329,7 +1326,7 @@ void G_DoSaveGame(void) {
     gameaction = ga_nothing;
     M_StringCopy(savedescription, "", sizeof(savedescription));
 
-    players[consoleplayer].message = DEH_String(GGSAVED);
+    players[consoleplayer].message = GGSAVED;
 
     // draw the pattern into the back screen
     R_FillBackScreen();
@@ -1489,7 +1486,7 @@ void G_InitNew(skill_t skill, int episode, int map) {
         skytexturename = "SKY4";
         break;
     }
-    skytexturename = DEH_String(skytexturename);
+    skytexturename = skytexturename;
     skytexture = R_TextureNumForName(skytexturename);
 
     G_DoLoadLevel();

@@ -16,7 +16,6 @@ set(DEDSERV_FILES
     d_dedicated.c
     d_iwad.c            d_iwad.h
     d_mode.c            d_mode.h
-    deh_str.c           deh_str.h
     i_timer.c           i_timer.h
     m_config.c          m_config.h
     net_common.c        net_common.h
@@ -37,7 +36,6 @@ target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2main SDL2::net)
 # Source files used by the game binaries (chocolate-doom, etc.)
 
 set(GAME_SOURCE_FILES
-    aes_prng.c          aes_prng.h
     d_event.c           d_event.h
                         doomkeys.h
                         doomtype.h
@@ -45,7 +43,6 @@ set(GAME_SOURCE_FILES
     d_loop.c            d_loop.h
     d_mode.c            d_mode.h
                         d_ticcmd.h
-    deh_str.c           deh_str.h
     i_endoom.c          i_endoom.h
     i_glob.c            i_glob.h
     i_input.c           i_input.h
@@ -91,17 +88,7 @@ set(GAME_SOURCE_FILES
 
 set(GAME_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../")
 
-set(DEHACKED_SOURCE_FILES
-    deh_defs.h
-    deh_io.c            deh_io.h
-    deh_main.c          deh_main.h
-    deh_mapping.c       deh_mapping.h
-    deh_text.c)
-
-# Some games support dehacked patches, some don't:
-
 set(SOURCE_FILES ${COMMON_SOURCE_FILES} ${GAME_SOURCE_FILES})
-set(SOURCE_FILES_WITH_DEH ${SOURCE_FILES} ${DEHACKED_SOURCE_FILES})
 
 set(EXTRA_LIBS SDL2::SDL2main SDL2::SDL2 SDL2::mixer SDL2::net)
 
@@ -109,7 +96,7 @@ if(PNG_FOUND)
     list(APPEND EXTRA_LIBS PNG::PNG)
 endif()
 
-add_executable("${PROGRAM_PREFIX}doom" ${SOURCE_FILES_WITH_DEH})
+add_executable("${PROGRAM_PREFIX}doom" ${SOURCE_FILES})
 
 target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ${GAME_INCLUDE_DIRS})
 target_link_libraries("${PROGRAM_PREFIX}doom" doom ${EXTRA_LIBS})

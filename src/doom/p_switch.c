@@ -19,7 +19,6 @@
 
 #include <stdio.h>
 
-#include "deh_main.h"
 #include "doomdef.h"
 #include "i_system.h"
 #include "p_local.h"
@@ -114,8 +113,8 @@ void P_InitSwitchList(void) {
 
     for (i = 0; i < arrlen(alphSwitchList); i++) {
         if (alphSwitchList[i].episode <= episode) {
-            switchlist[slindex++] = R_TextureNumForName(DEH_String(alphSwitchList[i].name1));
-            switchlist[slindex++] = R_TextureNumForName(DEH_String(alphSwitchList[i].name2));
+            switchlist[slindex++] = R_TextureNumForName(alphSwitchList[i].name1);
+            switchlist[slindex++] = R_TextureNumForName(alphSwitchList[i].name2);
         }
     }
 

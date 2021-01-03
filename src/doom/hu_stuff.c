@@ -23,7 +23,6 @@
 
 #include "z_zone.h"
 
-#include "deh_main.h"
 #include "i_input.h"
 #include "i_swap.h"
 #include "i_video.h"
@@ -113,7 +112,7 @@ void HU_Init(void) {
     // load the heads-up font
     j = HU_FONTSTART;
     for (i = 0; i < HU_FONTSIZE; i++) {
-        DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
+        snprintf(buffer, 9, "STCFN%.3d", j++);
         hu_font[i] = (patch_t *)W_CacheLumpName(buffer, PU_STATIC);
     }
 }
@@ -150,8 +149,6 @@ void HU_Start(void) {
     }
 
     // dehacked substitution to get modified level name
-
-    s = DEH_String(s);
 
     while (*s)
         HUlib_addCharToTextLine(&w_title, *(s++));
@@ -219,7 +216,7 @@ void HU_Ticker(void) {
                     if (rc && c == KEY_ENTER) {
                         if (w_inputbuffer[i].l.len &&
                             (chat_dest[i] == consoleplayer + 1 || chat_dest[i] == HU_BROADCAST)) {
-                            HUlib_addMessageToSText(&w_message, DEH_String(player_names[i]),
+                            HUlib_addMessageToSText(&w_message, player_names[i],
                                                     w_inputbuffer[i].l.l);
 
                             message_nottobefuckedwith = true;
@@ -244,7 +241,7 @@ static int tail = 0;
 
 void HU_queueChatChar(char c) {
     if (((head + 1) & (QUEUESIZE - 1)) == tail) {
-        plr->message = DEH_String(HUSTR_MSGU);
+        plr->message = HUSTR_MSGU;
     } else {
         chatchars[head] = c;
         head = (head + 1) & (QUEUESIZE - 1);
@@ -321,15 +318,15 @@ boolean HU_Responder(event_t *ev) {
                     } else if (i == consoleplayer) {
                         num_nobrainers++;
                         if (num_nobrainers < 3)
-                            plr->message = DEH_String(HUSTR_TALKTOSELF1);
+                            plr->message = HUSTR_TALKTOSELF1;
                         else if (num_nobrainers < 6)
-                            plr->message = DEH_String(HUSTR_TALKTOSELF2);
+                            plr->message = HUSTR_TALKTOSELF2;
                         else if (num_nobrainers < 9)
-                            plr->message = DEH_String(HUSTR_TALKTOSELF3);
+                            plr->message = HUSTR_TALKTOSELF3;
                         else if (num_nobrainers < 32)
-                            plr->message = DEH_String(HUSTR_TALKTOSELF4);
+                            plr->message = HUSTR_TALKTOSELF4;
                         else
-                            plr->message = DEH_String(HUSTR_TALKTOSELF5);
+                            plr->message = HUSTR_TALKTOSELF5;
                     }
                 }
             }

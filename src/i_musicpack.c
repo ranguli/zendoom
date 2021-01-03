@@ -29,7 +29,6 @@
 #include "config.h"
 #include "doomtype.h"
 
-#include "deh_str.h"
 #include "i_sound.h"
 #include "i_swap.h"
 #include "i_system.h"

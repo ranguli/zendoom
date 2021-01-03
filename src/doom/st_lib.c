@@ -19,7 +19,6 @@
 #include <ctype.h>
 #include <stdio.h>
 
-#include "deh_main.h"
 #include "doomdef.h"
 
 #include "v_video.h"
@@ -44,8 +43,8 @@ extern boolean automapactive;
 patch_t *sttminus;
 
 void STlib_init(void) {
-    if (W_CheckNumForName(DEH_String("STTMINUS")) >= 0)
-        sttminus = (patch_t *)W_CacheLumpName(DEH_String("STTMINUS"), PU_STATIC);
+    if (W_CheckNumForName("STTMINUS") >= 0)
+        sttminus = (patch_t *)W_CacheLumpName("STTMINUS", PU_STATIC);
     else
         sttminus = NULL;
 }

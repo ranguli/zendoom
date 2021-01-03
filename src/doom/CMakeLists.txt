@@ -1,15 +1,5 @@
 add_library(doom STATIC
             am_map.c        am_map.h
-            deh_ammo.c
-            deh_bexstr.c
-            deh_cheat.c
-            deh_doom.c
-            deh_frame.c
-            deh_misc.c      deh_misc.h
-            deh_ptr.c
-            deh_sound.c
-            deh_thing.c
-            deh_weapon.c
                             d_englsh.h
             d_items.c       d_items.h
             d_main.c        d_main.h
