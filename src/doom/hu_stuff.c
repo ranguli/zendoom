@@ -85,7 +85,7 @@ static boolean headsupactive = false;
 // The actual names can be found in DStrings.h.
 //
 
-const char *mapnames[] = // DOOM shareware/registered/retail (Ultimate) names.
+const char *mapnames[] = // DOOM shareware/registered names.
     {
 
         HUSTR_E1M1, HUSTR_E1M2, HUSTR_E1M3, HUSTR_E1M4, HUSTR_E1M5,
@@ -96,9 +96,6 @@ const char *mapnames[] = // DOOM shareware/registered/retail (Ultimate) names.
 
         HUSTR_E3M1, HUSTR_E3M2, HUSTR_E3M3, HUSTR_E3M4, HUSTR_E3M5,
         HUSTR_E3M6, HUSTR_E3M7, HUSTR_E3M8, HUSTR_E3M9,
-
-        HUSTR_E4M1, HUSTR_E4M2, HUSTR_E4M3, HUSTR_E4M4, HUSTR_E4M5,
-        HUSTR_E4M6, HUSTR_E4M7, HUSTR_E4M8, HUSTR_E4M9,
 
         "NEWLEVEL", "NEWLEVEL", "NEWLEVEL", "NEWLEVEL", "NEWLEVEL",
         "NEWLEVEL", "NEWLEVEL", "NEWLEVEL", "NEWLEVEL"};

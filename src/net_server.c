@@ -108,11 +108,6 @@ typedef struct {
     // SHA1 hash sums of the client's WAD directory and dehacked data
 
     sha1_digest_t wad_sha1sum;
-    sha1_digest_t deh_sha1sum;
-
-    // Is this client is playing with the Freedoom IWAD?
-
-    unsigned int is_freedoom;
 
 } net_client_t;
 
@@ -365,8 +360,6 @@ static void NET_SV_SendWaitingData(net_client_t *client) {
     }
 
     memcpy(&wait_data.wad_sha1sum, &controller->wad_sha1sum, sizeof(sha1_digest_t));
-    memcpy(&wait_data.deh_sha1sum, &controller->deh_sha1sum, sizeof(sha1_digest_t));
-    wait_data.is_freedoom = controller->is_freedoom;
 
     // set name and address of each player:
 
@@ -668,8 +661,6 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
 
     // Save the SHA1 checksums and other details.
     memcpy(client->wad_sha1sum, data.wad_sha1sum, sizeof(sha1_digest_t));
-    memcpy(client->deh_sha1sum, data.deh_sha1sum, sizeof(sha1_digest_t));
-    client->is_freedoom = data.is_freedoom;
     client->max_players = data.max_players;
     client->name = M_StringDuplicate(player_name);
     client->recording_lowres = data.lowres_turn;

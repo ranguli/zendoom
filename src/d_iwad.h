@@ -32,7 +32,7 @@ typedef struct {
 char *D_FindWADByName(const char *filename);
 char *D_TryFindWADByName(const char *filename);
 char *D_FindIWAD(int mask, GameMission_t *mission);
-const char *D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant);
+const char *D_SaveGameIWADName(GameMission_t gamemission);
 const char *D_SuggestGameName(GameMission_t mission, GameMode_t mode);
 void D_CheckCorrectIWAD(GameMission_t mission);
 

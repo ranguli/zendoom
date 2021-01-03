@@ -103,11 +103,6 @@ void F_StartFinale(void) {
         }
     }
 
-    // Do dehacked substitutions of strings
-
-    finaletext = finaletext;
-    finaleflat = finaleflat;
-
     finalestage = F_STAGE_TEXT;
     finalecount = 0;
 }
@@ -557,11 +552,7 @@ static void F_ArtScreenDrawer(void) {
 
         switch (gameepisode) {
         case 1:
-            if (gameversion >= exe_ultimate) {
-                lumpname = "CREDIT";
-            } else {
-                lumpname = "HELP2";
-            }
+            lumpname = "HELP2";
             break;
         case 2:
             lumpname = "VICTORY2";

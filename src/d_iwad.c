@@ -31,9 +31,8 @@
 #include "z_zone.h"
 
 static const iwad_t iwads[] = {
-    {"doom.wad", doom, retail, "Doom"},
-    {"doom1.wad", doom, shareware, "Doom Shareware"},
-    {"freedoom1.wad", doom, retail, "Freedoom: Phase 1"},
+    {"doom.wad", doom, registered, "Doom"},
+    {"doom1.wad", doom, shareware, "Doom Shareware"}
 };
 
 // Array of locations to search for IWAD files
@@ -332,9 +331,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission) {
 // Get the IWAD name used for savegames.
 //
 
-const char *D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant) {
-    size_t i;
-
+const char *D_SaveGameIWADName(GameMission_t gamemission) {
     // Determine the IWAD name to use for savegames.
     // This determines the directory the savegame files get put into.
     //
@@ -342,13 +339,7 @@ const char *D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevari
     // This ensures that doom1.wad and doom.wad saves are stored
     // in the same place.
 
-    if (gamevariant == freedoom) {
-        if (gamemission == doom) {
-            return "freedoom1.wad";
-        }
-    }
-
-    for (i = 0; i < arrlen(iwads); ++i) {
+    for (size_t i = 0; i < arrlen(iwads); ++i) {
         if (gamemission == iwads[i].mission) {
             return iwads[i].name;
         }

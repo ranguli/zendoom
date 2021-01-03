@@ -20,10 +20,10 @@
 
 #include "doomstat.h"
 
-// Game Mode - identify IWAD as shareware, retail etc.
+// Game Mode - identify IWAD as shareware, registered, etc.
 GameMode_t gamemode = indetermined;
 GameMission_t gamemission = doom;
-GameVersion_t gameversion = exe_final2;
+GameVersion_t gameversion = exe_doom_1_9;
 GameVariant_t gamevariant = vanilla;
 
 // Set if homebrew PWAD stuff has been added.

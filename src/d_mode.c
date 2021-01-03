@@ -28,7 +28,7 @@ static struct {
     GameMode_t mode;
     int episode;
     int map;
-} valid_modes[] = {{doom, shareware, 1, 9}, {doom, registered, 3, 9}, {doom, retail, 4, 9}};
+} valid_modes[] = {{doom, shareware, 1, 9}, {doom, registered, 3, 9}};
 
 // Check that a gamemode+gamemission received over the network is valid.
 
@@ -65,8 +65,7 @@ boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, i
 static struct {
     GameMission_t mission;
     GameVersion_t version;
-} valid_versions[] = {{doom, exe_doom_1_2}, {doom, exe_doom_1_666}, {doom, exe_doom_1_7},
-                      {doom, exe_doom_1_8}, {doom, exe_doom_1_9},   {doom, exe_ultimate}};
+} valid_versions[] = {{doom, exe_doom_1_9}};
 
 boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version) {
     int i;
@@ -96,8 +95,6 @@ const char *D_GameModeString(GameMode_t mode) {
         return "shareware";
     case registered:
         return "registered";
-    case retail:
-        return "retail";
     case indetermined:
     default:
         return "unknown";

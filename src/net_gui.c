@@ -126,62 +126,19 @@ static void PrintSHA1Digest(const char *s, const byte *digest) {
 }
 
 static void CheckSHA1Sums(void) {
-    boolean correct_wad, correct_deh;
-    boolean same_freedoom;
 
     if (!net_client_received_wait_data || had_warning) {
         return;
     }
 
-    correct_wad = memcmp(net_local_wad_sha1sum, net_client_wait_data.wad_sha1sum, sizeof(sha1_digest_t)) == 0;
-    correct_deh = memcmp(net_local_deh_sha1sum, net_client_wait_data.deh_sha1sum, sizeof(sha1_digest_t)) == 0;
-    same_freedoom = net_client_wait_data.is_freedoom == net_local_is_freedoom;
+    boolean correct_wad = memcmp(net_local_wad_sha1sum, net_client_wait_data.wad_sha1sum, sizeof(sha1_digest_t)) == 0;
 
-    if (correct_wad && correct_deh && same_freedoom) {
+    if (correct_wad) {
         return;
-    }
-
-    if (!correct_wad) {
+    } else if (!correct_wad) {
         printf("Warning: WAD SHA1 does not match server:\n");
         PrintSHA1Digest("Local", net_local_wad_sha1sum);
         PrintSHA1Digest("Server", net_client_wait_data.wad_sha1sum);
-    }
-
-    if (!same_freedoom) {
-        printf("Warning: Mixing Freedoom with non-Freedoom\n");
-        printf("Local: %u  Server: %i\n", net_local_is_freedoom, net_client_wait_data.is_freedoom);
-    }
-
-    if (!correct_deh) {
-        printf("Warning: Dehacked SHA1 does not match server:\n");
-        PrintSHA1Digest("Local", net_local_deh_sha1sum);
-        PrintSHA1Digest("Server", net_client_wait_data.deh_sha1sum);
-    }
-
-    if (!same_freedoom) {
-        // If Freedoom and Doom IWADs are mixed, the WAD directory
-        // will be wrong, but this is not neccessarily a problem.
-        // Display a different message to the WAD directory message.
-
-        if (net_local_is_freedoom) {
-            printf("You are using the Freedoom IWAD to play with players\n"
-                   "using an official Doom IWAD.  Make sure that you are\n"
-                   "playing the same levels as other players.\n");
-        } else {
-            printf("You are using an official IWAD to play with players\n"
-                   "using the Freedoom IWAD.  Make sure that you are\n"
-                   "playing the same levels as other players.\n");
-        }
-    } else if (!correct_wad) {
-        printf("Your WAD directory does not match other players in the game.\n"
-               "Check that you have loaded the exact same WAD files as other\n"
-               "players.\n");
-    }
-
-    if (!correct_deh) {
-        printf("Your dehacked signature does not match other players in the\n"
-               "game.  Check that you have loaded the same dehacked patches\n"
-               "as other players.\n");
     }
 
     printf("If you continue, this may cause your game to desync.");

@@ -70,19 +70,6 @@ switchlist_t alphSwitchList[] = {
     {"SW1SKIN", "SW2SKIN", 2},
     {"SW1VINE", "SW2VINE", 2},
     {"SW1WOOD", "SW2WOOD", 2},
-
-    // Doom II switches
-    {"SW1PANEL", "SW2PANEL", 3},
-    {"SW1ROCK", "SW2ROCK", 3},
-    {"SW1MET2", "SW2MET2", 3},
-    {"SW1WDMET", "SW2WDMET", 3},
-    {"SW1BRIK", "SW2BRIK", 3},
-    {"SW1MOD1", "SW2MOD1", 3},
-    {"SW1ZIM", "SW2ZIM", 3},
-    {"SW1STON6", "SW2STON6", 3},
-    {"SW1TEK", "SW2TEK", 3},
-    {"SW1MARB", "SW2MARB", 3},
-    {"SW1SKULL", "SW2SKULL", 3},
 };
 
 int switchlist[MAXSWITCHES * 2];
@@ -101,7 +88,6 @@ void P_InitSwitchList(void) {
     // we support more switch textures.
     switch (gamemode) {
     case registered:
-    case retail:
         episode = 2;
         break;
     default:

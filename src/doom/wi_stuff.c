@@ -486,7 +486,6 @@ int WI_drawNum(int x, int y, int n, int digits) {
     int neg;
 
     if (digits < 0) {
-        int temp;
 
         if (!n) {
             // make variable-length zeros 1 digit long
@@ -494,7 +493,7 @@ int WI_drawNum(int x, int y, int n, int digits) {
         } else {
             // figure out # of digits in #
             digits = 0;
-            temp = n;
+            int temp = n;
 
             while (temp) {
                 temp /= 10;
@@ -1422,9 +1421,8 @@ void WI_initVariables(wbstartstruct_t *wbstartstruct) {
     if (!wbs->maxsecret)
         wbs->maxsecret = 1;
 
-    if (gameversion < exe_ultimate)
-        if (wbs->epsd > 2)
-            wbs->epsd -= 3;
+    if (wbs->epsd > 2)
+        wbs->epsd -= 3;
 }
 
 void WI_Start(wbstartstruct_t *wbstartstruct) {

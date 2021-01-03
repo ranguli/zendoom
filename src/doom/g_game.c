@@ -882,7 +882,7 @@ void G_PlayerReborn(int player) {
 
     p->usedown = p->attackdown = true; // don't do anything immediately
     p->playerstate = PST_LIVE;
-    p->health =  MAXHEALTH; // Use dehacked value
+    p->health =  MAXHEALTH;
     p->readyweapon = p->pendingweapon = wp_pistol;
     p->weaponowned[wp_fist] = true;
     p->weaponowned[wp_pistol] = true;
@@ -1363,50 +1363,14 @@ void G_InitNew(skill_t skill, int episode, int map) {
         S_ResumeSound();
     }
 
-    /*
-    // Note: This commented-out block of code was added at some point
-    // between the DOS version(s) and the Doom source release. It isn't
-    // found in disassemblies of the DOS version and causes IDCLEV and
-    // the -warp command line parameter to behave differently.
-    // This is left here for posterity.
-
-    // This was quite messy with SPECIAL and commented parts.
-    // Supposedly hacks to make the latest edition work.
-    // It might not work properly.
-    if (episode < 1)
-      episode = 1;
-
-    if ( gamemode == retail )
-    {
-      if (episode > 4)
-        episode = 4;
-    }
-    else if ( gamemode == shareware )
-    {
-      if (episode > 1)
-           episode = 1;	// only start episode 1 on shareware
-    }
-    else
-    {
-      if (episode > 3)
-        episode = 3;
-    }
-    */
-
     if (skill > sk_nightmare)
         skill = sk_nightmare;
 
-    if (gameversion >= exe_ultimate) {
-        if (episode == 0) {
-            episode = 4;
-        }
-    } else {
-        if (episode < 1) {
-            episode = 1;
-        }
-        if (episode > 3) {
-            episode = 3;
-        }
+    if (episode < 1) {
+        episode = 1;
+    }
+    if (episode > 3) {
+        episode = 3;
     }
 
     if (episode > 1 && gamemode == shareware) {
@@ -1638,7 +1602,7 @@ void G_BeginRecording(void) {
     *demo_p++ = gameskill;
     *demo_p++ = gameepisode;
     *demo_p++ = gamemap;
-    if (longtics || gameversion > exe_doom_1_2) {
+    if (longtics) {
         *demo_p++ = deathmatch;
         *demo_p++ = respawnparm;
         *demo_p++ = fastparm;

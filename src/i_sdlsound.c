@@ -247,7 +247,7 @@ static allocated_sound_t *GetAllocatedSoundBySfxInfoAndPitch(sfxinfo_t *sfxinfo,
 
 static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch) {
     allocated_sound_t *outsnd;
-    Sint16 *inp, *outp;
+    Sint16 *outp;
     Sint16 *srcbuf, *dstbuf;
     Uint32 srclen, dstlen;
 

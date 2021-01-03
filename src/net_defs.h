@@ -171,9 +171,7 @@ typedef struct {
     int lowres_turn;
     int drone;
     int max_players;
-    int is_freedoom;
     sha1_digest_t wad_sha1sum;
-    sha1_digest_t deh_sha1sum;
     int player_class;
 } net_connect_data_t;
 
@@ -253,8 +251,6 @@ typedef struct {
     char player_names[NET_MAXPLAYERS][MAXPLAYERNAME];
     char player_addrs[NET_MAXPLAYERS][MAXPLAYERNAME];
     sha1_digest_t wad_sha1sum;
-    sha1_digest_t deh_sha1sum;
-    int is_freedoom;
 } net_waitdata_t;
 
 #endif /* #ifndef NET_DEFS_H */

@@ -166,11 +166,11 @@ static void M_LoadGame(int choice);
 static void M_SaveGame(int choice);
 static void M_Options(int choice);
 static void M_EndGame(int choice);
-static void M_ReadThis(int choice);
-static void M_ReadThis2(int choice);
-static void M_QuitDOOM(int choice);
+static void M_ReadThis();
+static void M_ReadThis2();
+static void M_QuitDOOM(choice);
 
-static void M_ChangeMessages(int choice);
+static void M_ChangeMessages();
 static void M_ChangeSensitivity(int choice);
 static void M_SfxVol(int choice);
 static void M_MusicVol(int choice);
@@ -178,7 +178,7 @@ static void M_ChangeDetail(int choice);
 static void M_SizeDisplay(int choice);
 static void M_Sound(int choice);
 
-static void M_FinishReadThis(int choice);
+static void M_FinishReadThis();
 static void M_LoadSelect(int choice);
 static void M_SaveSelect(int choice);
 static void M_ReadSaveStrings(void);
@@ -576,9 +576,6 @@ void M_DrawReadThis1(void) {
 void M_DrawReadThis2(void) {
     inhelpscreens = true;
 
-    // We only ever draw the second page if this is
-    // gameversion == exe_doom_1_9 and gamemode == registered
-
     V_DrawPatchDirect(0, 0, W_CacheLumpName("HELP1", PU_CACHE));
 }
 
@@ -714,9 +711,7 @@ void M_Options(int choice) { M_SetupNextMenu(&OptionsDef); }
 //
 //      Toggle messages on/off
 //
-void M_ChangeMessages(int choice) {
-    // warning: unused parameter `int choice'
-    choice = 0;
+void M_ChangeMessages() {
     showMessages = 1 - showMessages;
 
     if (!showMessages)
@@ -757,18 +752,15 @@ void M_EndGame(int choice) {
 //
 // M_ReadThis
 //
-void M_ReadThis(int choice) {
-    choice = 0;
+void M_ReadThis() {
     M_SetupNextMenu(&ReadDef1);
 }
 
-void M_ReadThis2(int choice) {
-    choice = 0;
+void M_ReadThis2() {
     M_SetupNextMenu(&ReadDef2);
 }
 
-void M_FinishReadThis(int choice) {
-    choice = 0;
+void M_FinishReadThis() {
     M_SetupNextMenu(&MainDef);
 }
 
@@ -1207,10 +1199,7 @@ boolean M_Responder(event_t *ev) {
         {
             M_StartControlPanel();
 
-            if (gameversion >= exe_ultimate)
-                currentMenu = &ReadDef2;
-            else
-                currentMenu = &ReadDef1;
+            currentMenu = &ReadDef1;
 
             itemOn = 0;
             S_StartSound(NULL, sfx_swtchn);
@@ -1251,7 +1240,7 @@ boolean M_Responder(event_t *ev) {
             return true;
         } else if (key == key_menu_messages) // Toggle messages
         {
-            M_ChangeMessages(0);
+            M_ChangeMessages();
             S_StartSound(NULL, sfx_swtchn);
             return true;
         } else if (key == key_menu_qload) // Quickload
@@ -1514,26 +1503,9 @@ void M_Init(void) {
     messageLastMenuActive = menuactive;
     quickSaveSlot = -1;
 
-    // Here we could catch other version dependencies,
-    //  like HELP1/2, and four episodes.
-
-    // The same hacks were used in the original Doom EXEs.
-
-    if (gameversion >= exe_ultimate) {
-        MainMenu[readthis].routine = M_ReadThis2;
-        ReadDef2.prevMenu = NULL;
-    }
-
-    if (gameversion >= exe_final && gameversion <= exe_final2) {
-        ReadDef2.routine = M_DrawReadThisCommercial;
-    }
-
     // Versions of doom.exe before the Ultimate Doom release only had
     // three episodes; if we're emulating one of those then don't try
     // to show episode four. If we are, then do show episode four
     // (should crash if missing).
-    if (gameversion < exe_ultimate) {
-        EpiDef.numitems--;
-    }
-    opldev = M_CheckParm("-opldev") > 0;
+    EpiDef.numitems--;
 }

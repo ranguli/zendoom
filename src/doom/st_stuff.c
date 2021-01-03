@@ -914,14 +914,10 @@ typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);
 
 static void ST_loadUnloadGraphics(load_callback_t callback) {
 
-    int i;
-    int j;
-    int facenum;
-
     char namebuf[9];
 
     // Load the numbers, tall and short
-    for (i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++) {
         snprintf(namebuf, 9, "STTNUM%d", i);
         callback(namebuf, &tallnum[i]);
 
@@ -935,7 +931,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback) {
     callback("STTPRCNT", &tallpercent);
 
     // key cards
-    for (i = 0; i < NUMCARDS; i++) {
+    for (int i = 0; i < NUMCARDS; i++) {
         snprintf(namebuf, 9, "STKEYS%d", i);
         callback(namebuf, &keys[i]);
     }
@@ -944,7 +940,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback) {
     callback("STARMS", &armsbg);
 
     // arms ownership widgets
-    for (i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
         snprintf(namebuf, 9, "STGNUM%d", i + 2);
 
         // gray #
@@ -968,9 +964,9 @@ static void ST_loadUnloadGraphics(load_callback_t callback) {
     }
 
     // face states
-    facenum = 0;
-    for (i = 0; i < ST_NUMPAINFACES; i++) {
-        for (j = 0; j < ST_NUMSTRAIGHTFACES; j++) {
+    int facenum = 0;
+    for (int i = 0; i < ST_NUMPAINFACES; i++) {
+        for (int j = 0; j < ST_NUMSTRAIGHTFACES; j++) {
             snprintf(namebuf, 9, "STFST%d%d", i, j);
             callback(namebuf, &faces[facenum]);
             ++facenum;

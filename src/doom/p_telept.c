@@ -79,13 +79,7 @@ int EV_Teleport(line_t *line, int side, mobj_t *thing) {
                 if (!P_TeleportMove(thing, m->x, m->y))
                     return 0;
 
-                // The first Final Doom executable does not set thing->z
-                // when teleporting. This quirk is unique to this
-                // particular version; the later version included in
-                // some versions of the Id Anthology fixed this.
-
-                if (gameversion != exe_final)
-                    thing->z = thing->floorz;
+                thing->z = thing->floorz;
 
                 if (thing->player)
                     thing->player->viewz = thing->z + thing->player->viewheight;

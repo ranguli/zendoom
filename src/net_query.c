@@ -614,8 +614,6 @@ static const char *GameDescription(GameMode_t mode, GameMission_t mission) {
             return "swdoom";
         else if (mode == registered)
             return "regdoom";
-        else if (mode == retail)
-            return "ultdoom";
         else
             return "doom";
     default:
