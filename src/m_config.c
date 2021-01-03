@@ -41,15 +41,13 @@
 // DEFAULTS
 //
 
-// Location where all configuration data is stored -
-// default.cfg, savegames, etc.
-
+//! Location where all configuration data is stored -
+//! default.cfg, savegames, etc.
 const char *configdir;
 
 static char *autoload_path = "";
 
-// Default filenames for configuration files.
-
+//! Default filenames for configuration files.
 static const char *default_main_config;
 static const char *default_extra_config;
 
@@ -62,32 +60,35 @@ typedef enum {
 } default_type_t;
 
 typedef struct {
-    // Name of the variable
+    //! Name of the variables
     const char *name;
 
-    // Pointer to the location in memory of the variable
     union {
         int *i;
         char **s;
         float *f;
-    } location;
+    } location; /*!< Pointer to the location in memory of the variable */
 
-    // Type of the variable
+    //! Type of the variable
     default_type_t type;
 
-    // If this is a key value, the original integer scancode we read from
-    // the config file before translating it to the internal key value.
-    // If zero, we didn't read this value from a config file.
+    /**
+     * If this is a key value, the original integer scancode we read from
+     * the config file before translating it to the internal key value.
+     * If zero, we didn't read this value from a config file.
+     */
     int untranslated;
 
-    // The value we translated the scancode into when we read the
-    // config file on startup.  If the variable value is different from
-    // this, it has been changed and needs to be converted; otherwise,
-    // use the 'untranslated' value.
+    /**
+     * The value we translated the scancode into when we read the
+     * config file on startup.  If the variable value is different from
+     * this, it has been changed and needs to be converted; otherwise,
+     * use the 'untranslated' value.
+     */
     int original_translated;
 
-    // If true, this config variable has been bound to a variable
-    // and is being used.
+    //! If true, this config variable has been bound to a variable
+    //! and is being used.
     boolean bound;
 } default_t;
 
@@ -106,30 +107,24 @@ typedef struct {
 #define CONFIG_VARIABLE_FLOAT(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_FLOAT)
 #define CONFIG_VARIABLE_STRING(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_STRING)
 
-//! @begin_config_file default
-
+/**
+ * List of configuration file defaults
+ */
 static default_t doom_defaults_list[] = {
-    //!
-    // Mouse sensitivity.  This value is used to multiply input mouse
-    // movement to control the effect of moving the mouse.
-    //
-    // The "normal" maximum value available for this through the
-    // in-game options menu is 9. A value of 31 or greater will cause
-    // the game to crash when entering the options menu.
-    //
+    /**
+     * Mouse sensitivity.  This value is used to multiply input mouse
+     * movement to control the effect of moving the mouse.
+     * The "normal" maximum value available for this through the
+     * in-game options menu is 9. A value of 31 or greater will cause
+     * the game to crash when entering the options menu.
+    */
 
     CONFIG_VARIABLE_INT(mouse_sensitivity),
 
-    //!
-    // Volume of sound effects, range 0-15.
-    //
-
+    //! Volume of sound effects, range 0-15.
     CONFIG_VARIABLE_INT(sfx_volume),
 
-    //!
-    // Volume of in-game music, range 0-15.
-    //
-
+    //! Volume of in-game music, range 0-15.
     CONFIG_VARIABLE_INT(music_volume),
 
     //!
@@ -142,28 +137,16 @@ static default_t doom_defaults_list[] = {
 
     CONFIG_VARIABLE_INT(show_messages),
 
-    //!
-    // Keyboard key to turn right.
-    //
-
+    //! Keyboard key to turn right.
     CONFIG_VARIABLE_KEY(key_right),
 
-    //!
-    // Keyboard key to turn left.
-    //
-
+    //! Keyboard key to turn left.
     CONFIG_VARIABLE_KEY(key_left),
 
-    //!
-    // Keyboard key to move forward.
-    //
-
+    //! Keyboard key to move forward.
     CONFIG_VARIABLE_KEY(key_up),
 
-    //!
-    // Keyboard key to move backward.
-    //
-
+    //! Keyboard key to move backward.
     CONFIG_VARIABLE_KEY(key_down),
 
     //!
@@ -1805,10 +1788,10 @@ char *M_GetSaveGameDir(const char *iwadname) {
     return savegamedir;
 }
 
-//
-// Calculate the path to the directory for autoloaded WADs.
-// Creates the directory as necessary.
-//
+/**
+ * Calculate the path to the directory for autoloaded WADs.
+ * Creates the directory as necessary.
+**/
 char *M_GetAutoloadDir(const char *iwadname) {
     char *result;
 

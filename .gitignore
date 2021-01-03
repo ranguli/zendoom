@@ -1,50 +1,15 @@
-CMDLINE
-INSTALL
 Makefile
 TAGS
-bin
-config.h
-config.hin
-config.log
-config.status
-configure
-lib
-obj
-rpm.spec
-stamp-h
-stamp-h.in
-stamp-h1
 tags
-\#*\#
-
-src/midiread
-src/mus2mid
-stderr.txt
-
+docs
 
 # CMake-specific ignores
-/.vs
-/build*
-/CMakeSettings.json
-/out
+build
 CMakeFiles
 cmake_install.cmake
 CMakeCache.txt
 
-# These are the default patterns globally ignored by Subversion:
-*.o
-*.lo
-*.la
-*.al
-.libs
-*.so
-*.so.[0-9]*
-*.a
-*.pyc
-*.pyo
-*.rej
 *~
-.#*
 .*.swp
 .DS_store
 

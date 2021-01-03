@@ -565,8 +565,7 @@ static char *GetGameName(const char *gamename) {
             if (deh_gamename == NULL) {
                 I_Error("GetGameName: Failed to allocate new string");
             }
-            version = G_VanillaVersionCode();
-            snprintf(deh_gamename, gamename_size, banners[i], version / 100, version % 100);
+            snprintf(deh_gamename, gamename_size, banners[i], DOOM_VERSION / 100, DOOM_VERSION % 100);
 
             while (deh_gamename[0] != '\0' && isspace(deh_gamename[0])) {
                 memmove(deh_gamename, deh_gamename + 1, gamename_size - 1);
@@ -787,11 +786,6 @@ static void InitGameVersion(void) {
         } else if (gamemode == retail) {
             gameversion = exe_ultimate;
         }
-    }
-
-    // Deathmatch 2.0 did not exist until Doom v1.4
-    if (gameversion <= exe_doom_1_2 && deathmatch == 2) {
-        deathmatch = 1;
     }
 
     // The original exe does not support retail - 4th episode not supported

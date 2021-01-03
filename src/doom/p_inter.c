@@ -397,8 +397,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher) {
         if (!P_GivePower(player, pw_invulnerability))
             return;
         player->message = GOTINVUL;
-        if (gameversion > exe_doom_1_2)
-            sound = sfx_getpow;
+        sound = sfx_getpow;
         break;
 
     case SPR_PSTR:
@@ -407,40 +406,35 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher) {
         player->message = GOTBERSERK;
         if (player->readyweapon != wp_fist)
             player->pendingweapon = wp_fist;
-        if (gameversion > exe_doom_1_2)
-            sound = sfx_getpow;
+        sound = sfx_getpow;
         break;
 
     case SPR_PINS:
         if (!P_GivePower(player, pw_invisibility))
             return;
         player->message = GOTINVIS;
-        if (gameversion > exe_doom_1_2)
-            sound = sfx_getpow;
+        sound = sfx_getpow;
         break;
 
     case SPR_SUIT:
         if (!P_GivePower(player, pw_ironfeet))
             return;
         player->message = GOTSUIT;
-        if (gameversion > exe_doom_1_2)
-            sound = sfx_getpow;
+        sound = sfx_getpow;
         break;
 
     case SPR_PMAP:
         if (!P_GivePower(player, pw_allmap))
             return;
         player->message = GOTMAP;
-        if (gameversion > exe_doom_1_2)
-            sound = sfx_getpow;
+        sound = sfx_getpow;
         break;
 
     case SPR_PVIS:
         if (!P_GivePower(player, pw_infrared))
             return;
         player->message = GOTVISOR;
-        if (gameversion > exe_doom_1_2)
-            sound = sfx_getpow;
+        sound = sfx_getpow;
         break;
 
         // ammo
