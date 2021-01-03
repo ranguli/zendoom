@@ -1806,7 +1806,7 @@ char *M_GetSaveGameDir(const char *iwadname) {
 }
 
 //
-// Calculate the path to the directory for autoloaded WADs/DEHs.
+// Calculate the path to the directory for autoloaded WADs.
 // Creates the directory as necessary.
 //
 char *M_GetAutoloadDir(const char *iwadname) {

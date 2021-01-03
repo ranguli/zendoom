@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "deh_main.h"
 #include "dstrings.h"
 #include "i_system.h"
 #include "p_local.h"
@@ -62,7 +61,7 @@ char *P_SaveGameFile(int slot) {
         filename = malloc(filename_size);
     }
 
-    DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);
+    snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);
     M_snprintf(filename, filename_size, "%s%s", savegamedir, basename);
 
     return filename;
