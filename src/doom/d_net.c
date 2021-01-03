@@ -190,7 +190,6 @@ static void InitConnectData(net_connect_data_t *connect_data) {
     // Read checksums of our WAD directory and dehacked information
 
     W_Checksum(connect_data->wad_sha1sum);
-    DEH_Checksum(connect_data->deh_sha1sum);
 
     // Are we playing with the Freedoom IWAD?
 

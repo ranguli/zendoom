@@ -9,7 +9,7 @@ It accomplishes this by doing the following:
   - Removes packaging support for Win32 and macOS
 - Remove requiring Python 3 in the build system
 - Remove documentation, icons, (generation)
-- Remove the `setup` application, opting to manually edit `.cfg` files  
+- Remove the `setup` application, opting to manually edit `.cfg` files
 - Remove support for MUS and MIDI as well as emulation support for PC speaker, OPL, PAS and GUS.
   - Remove support for reading 'in-WAD' music (due to removing MUS support). Music playback is done only through SDL via [music packs](https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs).
 - Remove GNU `autotools` build support, relying only on `cmake`.

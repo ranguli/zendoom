@@ -693,29 +693,6 @@ static const char *copyright_banners[] = {
     "=========================================================================="
     "=\n"};
 
-// Prints a message only if it has been modified by dehacked.
-
-void PrintDehackedBanners(void) {
-    size_t i;
-
-    for (i = 0; i < arrlen(copyright_banners); ++i) {
-        const char *deh_s;
-
-        deh_s = DEH_String(copyright_banners[i]);
-
-        if (deh_s != copyright_banners[i]) {
-            printf("%s", deh_s);
-
-            // Make sure the modified banner always ends in a newline character.
-            // If it doesn't, add a newline.  This fixes av.wad.
-
-            if (deh_s[strlen(deh_s) - 1] != '\n') {
-                printf("\n");
-            }
-        }
-    }
-}
-
 static struct {
     const char *description;
     const char *cmdline;
@@ -841,17 +818,6 @@ static void D_Endoom(void) {
     endoom = W_CacheLumpName(DEH_String("ENDOOM"), PU_STATIC);
 
     I_Endoom(endoom);
-}
-
-// Load dehacked patches needed for certain IWADs.
-static void LoadIwadDeh(void) {
-    // The Freedoom IWADs have DEHACKED lumps that must be loaded.
-    if (gamevariant == freedoom) {
-        // Old versions of Freedoom (before 2014-09) did not have technically
-        // valid DEHACKED lumps, so ignore errors and just continue if this
-        // is an old IWAD.
-        DEH_LoadLumpByName("DEHACKED", false, true);
-    }
 }
 
 static void G_CheckDemoStatusAtExit(void) { G_CheckDemoStatus(); }
@@ -1060,53 +1026,25 @@ void D_DoomMain(void) {
     if (W_CheckNumForName("FREEDOOM") >= 0) {
         gamevariant = freedoom;
     }
-    //!
-    // @category mod
-    //
-    // Disable automatic loading of Dehacked patches for certain
-    // IWAD files.
-    //
-    if (!M_ParmExists("-nodeh")) {
-        // Some IWADs have dehacked patches that need to be loaded for
-        // them to be played properly.
-        LoadIwadDeh();
-    }
 
-    //!
-    // @category mod
-    //
-    // Disable auto-loading of .wad and .deh files.
-    //
     if (!M_ParmExists("-noautoload") && gamemode != shareware) {
         char *autoload_dir;
 
         // common auto-loaded files for all Doom flavors
 
         autoload_dir = M_GetAutoloadDir("doom-all");
-        DEH_AutoLoadPatches(autoload_dir);
         W_AutoLoadWADs(autoload_dir);
         free(autoload_dir);
 
         // auto-loaded files per IWAD
         autoload_dir = M_GetAutoloadDir(D_SaveGameIWADName(gamemission, gamevariant));
-        DEH_AutoLoadPatches(autoload_dir);
         W_AutoLoadWADs(autoload_dir);
         free(autoload_dir);
     }
 
-    // Load Dehacked patches specified on the command line with -deh.
-    // Note that there's a very careful and deliberate ordering to how
-    // Dehacked patches are loaded. The order we use is:
-    //  1. IWAD dehacked patches.
-    //  2. Command line dehacked patches specified with -deh.
-    //  3. PWAD dehacked patches in DEHACKED lumps.
-    DEH_ParseCommandLine();
 
     // Load PWAD files.
     modifiedgame = W_ParseCommandLine();
-
-    // Debug:
-    //    W_PrintDirectory();
 
     //!
     // @arg <demo>
@@ -1162,28 +1100,6 @@ void D_DoomMain(void) {
     // Generate the WAD hash table.  Speed things up a bit.
     W_GenerateHashTable();
 
-    // Load DEHACKED lumps from WAD files - but only if we give the right
-    // command line parameter.
-
-    //!
-    // @category mod
-    //
-    // Load Dehacked patches from DEHACKED lumps contained in one of the
-    // loaded PWAD files.
-    //
-    if (M_ParmExists("-dehlump")) {
-        int i, loaded = 0;
-
-        for (i = numiwadlumps; i < numlumps; ++i) {
-            if (!strncmp(lumpinfo[i]->name, "DEHACKED", 8)) {
-                DEH_LoadLump(i, false, false);
-                loaded++;
-            }
-        }
-
-        printf("  loaded %i DEHACKED lumps from PWAD files.\n", loaded);
-    }
-
     // Set the gamedescription string. This is only possible now that
     // we've finished loading Dehacked patches.
     D_SetGameDescription();
@@ -1219,7 +1135,6 @@ void D_DoomMain(void) {
     }
 
     I_PrintStartupBanner(gamedescription);
-    PrintDehackedBanners();
 
     DEH_printf("I_Init: Setting up machine state.\n");
     I_CheckIsScreensaver();
