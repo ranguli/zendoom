@@ -70,7 +70,6 @@ static textscreen_t textscreens[] = {{doom, 1, 8, "FLOOR4_8", E1TEXT},
 const char *finaletext;
 const char *finaleflat;
 
-void F_StartCast(void);
 void F_CastTicker(void);
 boolean F_CastResponder(event_t *ev);
 void F_CastDrawer(void);
@@ -245,22 +244,6 @@ boolean castdeath;
 int castframes;
 int castonmelee;
 boolean castattacking;
-
-//
-// F_StartCast
-//
-void F_StartCast(void) {
-    wipegamestate = -1; // force a screen wipe
-    castnum = 0;
-    caststate = &states[mobjinfo[castorder[castnum].type].seestate];
-    casttics = caststate->tics;
-    castdeath = false;
-    finalestage = F_STAGE_CAST;
-    castframes = 0;
-    castonmelee = 0;
-    castattacking = false;
-    S_ChangeMusic(mus_evil, true);
-}
 
 //
 // F_CastTicker

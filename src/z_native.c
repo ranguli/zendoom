@@ -43,41 +43,6 @@ struct memblock_s {
 
 static memblock_t *allocated_blocks[PU_NUM_TAGS];
 
-#ifdef TESTING
-
-static int test_malloced = 0;
-
-void *test_malloc(size_t size) {
-    int *result;
-
-    if (test_malloced + size > 2 * 1024 * 1024) {
-        return NULL;
-    }
-
-    test_malloced += size;
-
-    result = malloc(size + sizeof(int));
-
-    *result = size;
-
-    return result + 1;
-}
-
-void test_free(void *data) {
-    int *i;
-
-    i = ((int *)data) - 1;
-
-    test_malloced -= *i;
-
-    free(i);
-}
-
-#define malloc test_malloc
-#define free test_free
-
-#endif /* #ifdef TESTING */
-
 // Add a block into the linked list for its type.
 
 static void Z_InsertBlock(memblock_t *block) {
