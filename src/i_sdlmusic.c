@@ -183,7 +183,7 @@ static void I_SDL_UnRegisterSong(void *handle) {
     }
 }
 
-static void *I_SDL_RegisterSong(void *data, int len) {
+static void *I_SDL_RegisterSong() {
     char *filename;
 
     if (!music_initialized) {

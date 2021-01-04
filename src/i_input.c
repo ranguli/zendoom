@@ -253,7 +253,7 @@ void I_HandleKeyboardEvent(SDL_Event *sdlevent) {
     }
 }
 
-void I_StartTextInput(int x1, int y1, int x2, int y2) {
+void I_StartTextInput() {
     text_input_enabled = true;
 
     if (!vanilla_keyboard_mapping) {

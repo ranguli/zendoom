@@ -12,7 +12,6 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// DESCRIPTION:
 //
 
 #include <ctype.h>
@@ -25,19 +24,18 @@
 #include "d_iwad.h"
 #include "doomtype.h"
 #include "i_system.h"
-#include "m_argv.h" // haleyjd 20110212: warning fix
+#include "m_argv.h"
 #include "m_misc.h"
 
 int myargc;
 char **myargv;
 
-//
-// M_CheckParm
-// Checks for the given parameter
-// in the program's command line arguments.
-// Returns the argument number (1 to argc-1)
-// or 0 if not present
-//
+/**
+ * Checks for the given parameter
+ * in the program's command line arguments.
+ * Returns the argument number (1 to argc-1)
+ * or 0 if not present
+ */
 
 int M_CheckParmWithArgs(const char *check, int num_args) {
     int i;
@@ -50,16 +48,18 @@ int M_CheckParmWithArgs(const char *check, int num_args) {
     return 0;
 }
 
-//
-// M_ParmExists
-//
-// Returns true if the given parameter exists in the program's command
-// line arguments, false if not.
-//
+/**
+ * Returns true if the given parameter exists in the program's command
+ * line arguments, false if not.
+ */
 
-boolean M_ParmExists(const char *check) { return M_CheckParm(check) != 0; }
+boolean M_ParmExists(const char *check) {
+    return M_CheckParm(check) != 0;
+}
 
-int M_CheckParm(const char *check) { return M_CheckParmWithArgs(check, 0); }
+int M_CheckParm(const char *check) {
+    return M_CheckParmWithArgs(check, 0);
+}
 
 #define MAXARGVS 100
 
@@ -182,24 +182,11 @@ static void LoadResponseFile(int argv_index, const char *filename) {
 
     myargv = newargv;
     myargc = newargc;
-
-#if 0
-    // Disabled - Vanilla Doom does not do this.
-    // Display arguments
-
-    printf("%d command-line args:\n", myargc);
-
-    for (k=1; k<myargc; k++)
-    {
-        printf("'%s'\n", myargv[k]);
-    }
-#endif
 }
 
-//
-// Find a Response File
-//
-
+/**
+ * Find a Response File
+ */
 void M_FindResponseFile(void) {
     int i;
 

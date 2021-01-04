@@ -258,7 +258,7 @@ char HU_dequeueChatChar(void) {
     return c;
 }
 
-static void StartChatInput(int dest) {
+static void StartChatInput() {
     chat_on = true;
     HUlib_resetIText(&w_chat);
     HU_queueChatChar(HU_BROADCAST);
@@ -304,13 +304,13 @@ boolean HU_Responder(event_t *ev) {
             eatkey = true;
         } else if (netgame && ev->data2 == key_multi_msg) {
             eatkey = true;
-            StartChatInput(HU_BROADCAST);
+            StartChatInput();
         } else if (netgame && numplayers > 2) {
             for (i = 0; i < MAXPLAYERS; i++) {
                 if (ev->data2 == key_multi_msgplayer[i]) {
                     if (playeringame[i] && i != consoleplayer) {
                         eatkey = true;
-                        StartChatInput(i + 1);
+                        StartChatInput();
                         break;
                     } else if (i == consoleplayer) {
                         num_nobrainers++;

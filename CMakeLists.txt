@@ -1,7 +1,7 @@
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 cmake_minimum_required(VERSION 3.7.2)
-project("Chocolate Doom" VERSION 3.0.0 LANGUAGES C)
+project("Smol Doom" VERSION 3.0.0 LANGUAGES C)
 
 # Autotools variables
 #set(top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
@@ -9,10 +9,9 @@ project("Chocolate Doom" VERSION 3.0.0 LANGUAGES C)
 
 # AC_INIT variables
 set(PACKAGE_NAME "${PROJECT_NAME}")
-set(PACKAGE_TARNAME "chocolate-doom")
+set(PACKAGE_TARNAME "smol-doom")
 set(PACKAGE_VERSION "${PROJECT_VERSION}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
-set(PACKAGE_BUGREPORT "chocolate-doom-dev-list@chocolate-doom.org")
 
 string(REGEX REPLACE " Doom$" "" PACKAGE_SHORTNAME "${PACKAGE_NAME}")
 set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2017")

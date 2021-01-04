@@ -133,13 +133,12 @@ static void CheckSHA1Sums(void) {
 
     boolean correct_wad = memcmp(net_local_wad_sha1sum, net_client_wait_data.wad_sha1sum, sizeof(sha1_digest_t)) == 0;
 
-    if (correct_wad) {
+    if (correct_wad)
         return;
-    } else if (!correct_wad) {
-        printf("Warning: WAD SHA1 does not match server:\n");
-        PrintSHA1Digest("Local", net_local_wad_sha1sum);
-        PrintSHA1Digest("Server", net_client_wait_data.wad_sha1sum);
-    }
+
+    printf("Warning: WAD SHA1 does not match server:\n");
+    PrintSHA1Digest("Local", net_local_wad_sha1sum);
+    PrintSHA1Digest("Server", net_client_wait_data.wad_sha1sum);
 
     printf("If you continue, this may cause your game to desync.");
 

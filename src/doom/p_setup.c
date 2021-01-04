@@ -685,7 +685,7 @@ lumpinfo_t *maplumpinfo;
 //
 // P_SetupLevel
 //
-void P_SetupLevel(int episode, int map, int playermask, skill_t skill) {
+void P_SetupLevel(int episode, int map) {
     int i;
     char lumpname[9];
     int lumpnum;

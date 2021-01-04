@@ -45,9 +45,7 @@ typedef PACKED_STRUCT({
     char name[8];
 }) filelump_t;
 
-//
 // GLOBALS
-//
 
 // Location of each lump on disk.
 lumpinfo_t **lumpinfo;
@@ -83,14 +81,14 @@ unsigned int W_LumpNameHash(const char *s) {
 // LUMP BASED ROUTINES.
 //
 
-//
-// W_AddFile
-// All files are optional, but at least one file must be
-//  found (PWAD, if all required lumps are present).
-// Files with a .wad extension are wadlink files
-//  with multiple lumps.
-// Other files are single lumps with the base filename
-//  for the lump name.
+/**
+ * All files are optional, but at least one file must be
+ * found (PWAD, if all required lumps are present).
+ * Files with a .wad extension are wadlink files
+ * with multiple lumps.
+ * Other files are single lumps with the base filename
+ * for the lump name.
+ */
 
 wad_file_t *W_AddFile(const char *filename) {
     wadinfo_t header;
@@ -130,10 +128,12 @@ wad_file_t *W_AddFile(const char *filename) {
     if (strcasecmp(filename + strlen(filename) - 3, "wad")) {
         // single lump file
 
-        // fraggle: Swap the filepos and size here.  The WAD directory
-        // parsing code expects a little-endian directory, so will swap
-        // them back.  Effectively we're constructing a "fake WAD directory"
-        // here, as it would appear on disk.
+        /*
+         * Swap the filepos and size here. The WAD directory
+         * parsing code expects a little-endian directory, so will swap
+         * them back. Effectively we're constructing a "fake WAD directory"
+         * here, as it would appear on disk.
+         */
 
         fileinfo = Z_Malloc(sizeof(filelump_t), PU_STATIC, 0);
         fileinfo->filepos = LONG(0);
@@ -277,10 +277,7 @@ lumpindex_t W_GetNumForName(const char *name) {
     return i;
 }
 
-//
-// W_LumpLength
-// Returns the buffer size needed to load the given lump.
-//
+/** Returns the buffer size needed to load the given lump. */
 int W_LumpLength(lumpindex_t lump) {
     if (lump >= numlumps) {
         I_Error("W_LumpLength: %i >= numlumps", lump);
@@ -289,11 +286,10 @@ int W_LumpLength(lumpindex_t lump) {
     return lumpinfo[lump]->size;
 }
 
-//
-// W_ReadLump
-// Loads the lump into the given buffer,
-//  which must be >= W_LumpLength().
-//
+/**
+ * Loads the lump into the given buffer,
+ * which must be >= W_LumpLength().
+ */
 void W_ReadLump(lumpindex_t lump, void *dest) {
     int c;
     lumpinfo_t *l;
@@ -313,17 +309,14 @@ void W_ReadLump(lumpindex_t lump, void *dest) {
     }
 }
 
-//
-// W_CacheLumpNum
-//
-// Load a lump into memory and return a pointer to a buffer containing
-// the lump data.
-//
-// 'tag' is the type of zone memory buffer to allocate for the lump
-// (usually PU_STATIC or PU_CACHE).  If the lump is loaded as
-// PU_STATIC, it should be released back using W_ReleaseLumpNum
-// when no longer needed (do not use Z_ChangeTag).
-//
+/**
+ * Load a lump into memory and return a pointer to a buffer containing
+ * the lump data.
+ * 'tag' is the type of zone memory buffer to allocate for the lump
+ * (usually PU_STATIC or PU_CACHE).  If the lump is loaded as
+ * PU_STATIC, it should be released back using W_ReleaseLumpNum
+ * when no longer needed (do not use Z_ChangeTag).
+ */
 
 void *W_CacheLumpNum(lumpindex_t lumpnum, int tag) {
     byte *result;
@@ -335,10 +328,11 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag) {
 
     lump = lumpinfo[lumpnum];
 
-    // Get the pointer to return.  If the lump is in a memory-mapped
-    // file, we can just return a pointer to within the memory-mapped
-    // region.  If the lump is in an ordinary file, we may already
-    // have it cached; otherwise, load it into memory.
+    /* Get the pointer to return.  If the lump is in a memory-mapped
+     * file, we can just return a pointer to within the memory-mapped
+     * region.  If the lump is in an ordinary file, we may already
+     * have it cached; otherwise, load it into memory.
+     */
 
     if (lump->wad_file->mapped != NULL) {
         // Memory mapped file, return from the mmapped region.
@@ -365,15 +359,14 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag) {
 //
 void *W_CacheLumpName(const char *name, int tag) { return W_CacheLumpNum(W_GetNumForName(name), tag); }
 
-//
-// Release a lump back to the cache, so that it can be reused later
-// without having to read from disk again, or alternatively, discarded
-// if we run out of memory.
-//
-// Back in Vanilla Doom, this was just done using Z_ChangeTag
-// directly, but now that we have WAD mmap, things are a bit more
-// complicated ...
-//
+/**
+ * Release a lump back to the cache, so that it can be reused later
+ * without having to read from disk again, or alternatively, discarded
+ * if we run out of memory.
+ * Back in Vanilla Doom, this was just done using Z_ChangeTag
+ * directly, but now that we have WAD mmap, things are a bit more
+ * complicated ...
+ */
 
 void W_ReleaseLumpNum(lumpindex_t lumpnum) {
     lumpinfo_t *lump;
@@ -392,71 +385,6 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum) {
 }
 
 void W_ReleaseLumpName(const char *name) { W_ReleaseLumpNum(W_GetNumForName(name)); }
-
-#if 0
-
-//
-// W_Profile
-//
-int		info[2500][10];
-int		profilecount;
-
-void W_Profile (void)
-{
-    int		i;
-    memblock_t*	block;
-    void*	ptr;
-    char	ch;
-    FILE*	f;
-    int		j;
-    char	name[9];
-
-
-    for (i=0 ; i<numlumps ; i++)
-    {
-	ptr = lumpinfo[i].cache;
-	if (!ptr)
-	{
-	    ch = ' ';
-	    continue;
-	}
-	else
-	{
-	    block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
-	    if (block->tag < PU_PURGELEVEL)
-		ch = 'S';
-	    else
-		ch = 'P';
-	}
-	info[i][profilecount] = ch;
-    }
-    profilecount++;
-
-    f = fopen ("waddump.txt","w");
-    name[8] = 0;
-
-    for (i=0 ; i<numlumps ; i++)
-    {
-	memcpy (name,lumpinfo[i].name,8);
-
-	for (j=0 ; j<8 ; j++)
-	    if (!name[j])
-		break;
-
-	for ( ; j<8 ; j++)
-	    name[j] = ' ';
-
-	fprintf (f,"%s ",name);
-
-	for (j=0 ; j<profilecount ; j++)
-	    fprintf (f,"    %c",info[i][j]);
-
-	fprintf (f,"\n");
-    }
-    fclose (f);
-}
-
-#endif
 
 // Generate a hash table for fast lookups
 
@@ -490,12 +418,14 @@ void W_GenerateHashTable(void) {
     // All done!
 }
 
-// The Doom reload hack. The idea here is that if you give a WAD file to -file
-// prefixed with the ~ hack, that WAD file will be reloaded each time a new
-// level is loaded. This lets you use a level editor in parallel and make
-// incremental changes to the level you're working on without having to restart
-// the game after every change.
-// But: the reload feature is a fragile hack...
+/**
+ * The Doom reload hack. The idea here is that if you give a WAD file to -file
+ * prefixed with the ~ hack, that WAD file will be reloaded each time a new
+ * level is loaded. This lets you use a level editor in parallel and make
+ * incremental changes to the level you're working on without having to restart
+ * the game after every change.
+ * But: the reload feature is a fragile hack...
+ */
 void W_Reload(void) {
     char *filename;
     lumpindex_t i;

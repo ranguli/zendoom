@@ -30,19 +30,6 @@
 #include "dstrings.h"
 #include "sounds.h"
 
-#if 0
-//
-// Sliding door frame information
-//
-slidename_t	slideFrameNames[MAXSLIDEDOORS] =
-{
-    {"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
-     "GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	// back
-
-    {"\0","\0","\0","\0"}
-};
-#endif
-
 //
 // VERTICAL DOORS
 //
@@ -471,7 +458,7 @@ void P_SpawnDoorCloseIn30(sector_t *sec) {
 //
 // Spawn a door that opens after 5 minutes
 //
-void P_SpawnDoorRaiseIn5Mins(sector_t *sec, int secnum) {
+void P_SpawnDoorRaiseIn5Mins(sector_t *sec) {
     vldoor_t *door;
 
     door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);

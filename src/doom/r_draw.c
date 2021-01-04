@@ -257,8 +257,6 @@ int fuzzpos = 0;
 void R_DrawFuzzColumn(void) {
     int count;
     pixel_t *dest;
-    fixed_t frac;
-    fixed_t fracstep;
 
     // Adjust borders. Low...
     if (!dc_yl)
@@ -283,7 +281,6 @@ void R_DrawFuzzColumn(void) {
     dest = ylookup[dc_yl] + columnofs[dc_x];
 
     // Looks familiar.
-    fracstep = dc_iscale;
 
     // Looks like an attempt at dithering,
     //  using the colormap #6 (of 0-31, a bit
@@ -310,8 +307,6 @@ void R_DrawFuzzColumnLow(void) {
     int count;
     pixel_t *dest;
     pixel_t *dest2;
-    fixed_t frac;
-    fixed_t fracstep;
     int x;
 
     // Adjust borders. Low...
@@ -342,7 +337,6 @@ void R_DrawFuzzColumnLow(void) {
     dest2 = ylookup[dc_yl] + columnofs[x + 1];
 
     // Looks familiar.
-    fracstep = dc_iscale;
 
     // Looks like an attempt at dithering,
     //  using the colormap #6 (of 0-31, a bit

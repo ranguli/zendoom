@@ -377,7 +377,7 @@ void D_RunFrame() {
         } while (tics <= 0);
 
         wipestart = nowtime;
-        wipe = !wipe_ScreenWipe(wipe_Melt, 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
+        wipe = !wipe_ScreenWipe(wipe_Melt, SCREENWIDTH, SCREENHEIGHT, tics);
         I_UpdateNoBlit();
         M_Drawer();       // menu is drawn even on top of wipes
         I_FinishUpdate(); // page flip or blit buffer
@@ -514,63 +514,7 @@ void D_StartTitle(void) {
     D_AdvanceDemo();
 }
 
-static const char *banners[] = {
-    // doom1.wad
-    "                            "
-    "DOOM Shareware Startup v%i.%i"
-    "                           ",
-    // doom.wad
-    "                            "
-    "DOOM Registered Startup v%i.%i"
-    "                           "};
-
-//
-// Get game name: if the startup banner has been replaced, use that.
-// Otherwise, use the name given
-//
-
-static char *GetGameName(const char *gamename) {
-    size_t i;
-
-    for (i = 0; i < arrlen(banners); ++i) {
-        const char *deh_sub;
-        // Has the banner been replaced?
-
-        deh_sub = banners[i];
-
-        if (deh_sub != banners[i]) {
-            size_t gamename_size;
-            char *deh_gamename;
-
-            // Has been replaced.
-            // We need to expand via printf to include the Doom version number
-            // We also need to cut off spaces to get the basic name
-
-            gamename_size = strlen(deh_sub) + 10;
-            deh_gamename = malloc(gamename_size);
-            if (deh_gamename == NULL) {
-                I_Error("GetGameName: Failed to allocate new string");
-            }
-            snprintf(deh_gamename, gamename_size, banners[i], DOOM_VERSION / 100, DOOM_VERSION % 100);
-
-            while (deh_gamename[0] != '\0' && isspace(deh_gamename[0])) {
-                memmove(deh_gamename, deh_gamename + 1, gamename_size - 1);
-            }
-
-            while (deh_gamename[0] != '\0' && isspace(deh_gamename[strlen(deh_gamename) - 1])) {
-                deh_gamename[strlen(deh_gamename) - 1] = '\0';
-            }
-
-            return deh_gamename;
-        }
-    }
-
-    return M_StringDuplicate(gamename);
-}
-
-//
-// Find out what version of Doom is playing.
-//
+/** Find out what version of Doom is playing. **/
 
 void D_IdentifyVersion(void) {
     // gamemission is set up by the D_FindIWAD function.  But if
@@ -635,43 +579,6 @@ static boolean D_AddFile(char *filename) {
     return handle != NULL;
 }
 
-// Copyright message banners
-// Some dehacked mods replace these.  These are only displayed if they are
-// replaced by dehacked.
-
-static const char *copyright_banners[] = {
-    "=========================================================================="
-    "=\n"
-    "ATTENTION:  This version of DOOM has been modified.  If you would like "
-    "to\n"
-    "get a copy of the original game, call 1-800-IDGAMES or see the readme "
-    "file.\n"
-    "        You will not receive technical support for modified games.\n"
-    "                      press enter to continue\n"
-    "=========================================================================="
-    "=\n",
-
-    "=========================================================================="
-    "=\n"
-    "                 Commercial product - do not distribute!\n"
-    "         Please report software piracy to the SPA: 1-800-388-PIR8\n"
-    "=========================================================================="
-    "=\n",
-
-    "=========================================================================="
-    "=\n"
-    "                                Shareware!\n"
-    "=========================================================================="
-    "=\n"};
-
-static struct {
-    const char *description;
-    const char *cmdline;
-    GameVersion_t version;
-} gameversions[] = {
-    {"Doom 1.9", "1.9", exe_doom_1_9}
-};
-
 // Initialize the game version
 
 static void InitGameVersion(void) {
@@ -710,9 +617,6 @@ void D_DoomMain(void) {
 
     I_AtExit(D_Endoom, false);
 
-    // print banner
-
-    I_PrintBanner(PACKAGE_STRING);
 
     printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init();

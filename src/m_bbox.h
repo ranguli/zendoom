@@ -20,7 +20,6 @@
 #define __M_BBOX__
 
 #include <limits.h>
-
 #include "m_fixed.h"
 
 // Bounding box coordinate storage.

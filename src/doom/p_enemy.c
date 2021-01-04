@@ -1435,9 +1435,13 @@ void A_BabyMetal(mobj_t *mo) {
     A_Chase(mo);
 }
 
-void A_OpenShotgun2(player_t *player, pspdef_t *psp) { S_StartSound(player->mo, sfx_dbopn); }
+void A_OpenShotgun2(player_t *player) {
+    S_StartSound(player->mo, sfx_dbopn);
+}
 
-void A_LoadShotgun2(player_t *player, pspdef_t *psp) { S_StartSound(player->mo, sfx_dbload); }
+void A_LoadShotgun2(player_t *player) {
+    S_StartSound(player->mo, sfx_dbload);
+}
 
 void A_ReFire(player_t *player, pspdef_t *psp);
 
@@ -1450,7 +1454,7 @@ mobj_t *braintargets[32];
 int numbraintargets;
 int braintargeton = 0;
 
-void A_BrainAwake(mobj_t *mo) {
+void A_BrainAwake() {
     thinker_t *thinker;
     mobj_t *m;
 
@@ -1473,7 +1477,9 @@ void A_BrainAwake(mobj_t *mo) {
     S_StartSound(NULL, sfx_bossit);
 }
 
-void A_BrainPain(mobj_t *mo) { S_StartSound(NULL, sfx_bospn); }
+void A_BrainPain() {
+    S_StartSound(NULL, sfx_bospn);
+}
 
 void A_BrainScream(mobj_t *mo) {
     int x;
@@ -1516,7 +1522,9 @@ void A_BrainExplode(mobj_t *mo) {
         th->tics = 1;
 }
 
-void A_BrainDie(mobj_t *mo) { G_ExitLevel(); }
+void A_BrainDie() {
+    G_ExitLevel();
+}
 
 void A_BrainSpit(mobj_t *mo) {
     mobj_t *targ;

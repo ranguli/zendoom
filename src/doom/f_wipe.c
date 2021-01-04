@@ -54,51 +54,9 @@ void wipe_shittyColMajorXform(dpixel_t *array, int width, int height) {
     Z_Free(dest);
 }
 
-int wipe_initColorXForm(int width, int height, int ticks) {
-    memcpy(wipe_scr, wipe_scr_start, width * height * sizeof(*wipe_scr));
-    return 0;
-}
-
-int wipe_doColorXForm(int width, int height, int ticks) {
-    boolean changed;
-    pixel_t *w;
-    pixel_t *e;
-    int newval;
-
-    changed = false;
-    w = wipe_scr;
-    e = wipe_scr_end;
-
-    while (w != wipe_scr + width * height) {
-        if (*w != *e) {
-            if (*w > *e) {
-                newval = *w - ticks;
-                if (newval < *e)
-                    *w = *e;
-                else
-                    *w = newval;
-                changed = true;
-            } else if (*w < *e) {
-                newval = *w + ticks;
-                if (newval > *e)
-                    *w = *e;
-                else
-                    *w = newval;
-                changed = true;
-            }
-        }
-        w++;
-        e++;
-    }
-
-    return !changed;
-}
-
-int wipe_exitColorXForm(int width, int height, int ticks) { return 0; }
-
 static int *y;
 
-int wipe_initMelt(int width, int height, int ticks) {
+int wipe_initMelt(int width, int height) {
 
     // copy start screen to main screen
     memcpy(wipe_scr, wipe_scr_start, width * height * sizeof(*wipe_scr));
@@ -168,14 +126,14 @@ int wipe_doMelt(int width, int height, int ticks) {
     return done;
 }
 
-int wipe_exitMelt(int width, int height, int ticks) {
+int wipe_exitMelt() {
     Z_Free(y);
     Z_Free(wipe_scr_start);
     Z_Free(wipe_scr_end);
     return 0;
 }
 
-int wipe_StartScreen(int x, int y, int width, int height) {
+int wipe_StartScreen() {
     wipe_scr_start = Z_Malloc(SCREENWIDTH * SCREENHEIGHT * sizeof(*wipe_scr_start), PU_STATIC, NULL);
     I_ReadScreen(wipe_scr_start);
     return 0;
@@ -188,10 +146,9 @@ int wipe_EndScreen(int x, int y, int width, int height) {
     return 0;
 }
 
-int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height, int ticks) {
+int wipe_ScreenWipe(int wipeno, int width, int height, int ticks) {
     int rc;
-    static int (*wipes[])(int, int, int) = {wipe_initColorXForm, wipe_doColorXForm, wipe_exitColorXForm,
-                                            wipe_initMelt,       wipe_doMelt,       wipe_exitMelt};
+    static int (*wipes[])(int, int, int) = {wipe_initMelt,       wipe_doMelt,       wipe_exitMelt};
 
     // initial stuff
     if (!go) {

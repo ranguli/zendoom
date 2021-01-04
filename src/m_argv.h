@@ -12,8 +12,6 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// DESCRIPTION:
-//  Nil.
 //
 
 #ifndef __M_ARGV__
@@ -21,9 +19,6 @@
 
 #include "doomtype.h"
 
-//
-// MISC
-//
 extern int myargc;
 extern char **myargv;
 

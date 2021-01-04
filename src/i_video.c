@@ -21,8 +21,6 @@
 #include "SDL.h"
 #include "SDL_opengl.h"
 
-#include "icon.c"
-
 #include "config.h"
 #include "d_loop.h"
 #include "doomtype.h"
@@ -762,18 +760,6 @@ void I_InitWindowTitle(void) {
     free(buf);
 }
 
-// Set the application icon
-
-void I_InitWindowIcon(void) {
-    SDL_Surface *surface;
-
-    surface = SDL_CreateRGBSurfaceFrom((void *)icon_data, icon_w, icon_h, 32, icon_w * 4, 0xff << 24,
-                                       0xff << 16, 0xff << 8, 0xff << 0);
-
-    SDL_SetWindowIcon(screen, surface);
-    SDL_FreeSurface(surface);
-}
-
 // Set video size to a particular scale factor (1x, 2x, 3x, etc.)
 
 static void SetScaleFactor(int factor) {
@@ -1052,7 +1038,6 @@ static void SetVideoMode(void) {
         SDL_SetWindowMinimumSize(screen, SCREENWIDTH, actualheight);
 
         I_InitWindowTitle();
-        I_InitWindowIcon();
     }
 
     // The SDL_RENDERER_TARGETTEXTURE flag is required to render the
