@@ -1,0 +1,14 @@
+Makefile
+Makefile.in
+.deps
+*.rc
+chocolate-doom
+chocolate-server
+*.cfg
+*.exe
+*.desktop
+*.txt
+!CMakeLists.txt
+*.metainfo.xml
+tags
+TAGS
