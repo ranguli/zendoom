@@ -4,6 +4,7 @@ tags
 docs
 
 # Binaries and objects
+smol-doom
 src/smol-doom
 src/smol-server
 src/doom/libdoom.a
