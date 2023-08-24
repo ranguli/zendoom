@@ -122,12 +122,8 @@ void W_CheckCorrectIWAD(GameMission_t mission) {
             lumpnum = W_CheckNumForName(unique_lumps[i].lumpname);
 
             if (lumpnum >= 0) {
-                error("\nYou are trying to use a %s IWAD file with "
-                        "the %s%s binary.\nThis isn't going to work.\n"
-                        "You probably want to use the %s%s binary.",
-                        D_SuggestGameName(unique_lumps[i].mission, indetermined), PROGRAM_PREFIX,
-                        D_GameMissionString(mission), PROGRAM_PREFIX,
-                        D_GameMissionString(unique_lumps[i].mission));
+                error("\nYou are trying to use a %s IWAD file not compatible"
+                        "with zendoom.\nThis isn't going to work.\n");
             }
         }
     }

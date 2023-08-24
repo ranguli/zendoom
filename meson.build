@@ -1,4 +1,4 @@
-project('smoldoom', 'c',
+project('zendoom', 'c',
        default_options: 'default_library=static')
 
 sdl2 = dependency('SDL2')
@@ -110,4 +110,5 @@ game_source_files = files(
     'src/renderer/things.c',
 )
 
-executable('smoldoom', common_source_files, game_source_files, dependencies: deps)
+executable('zendoom', common_source_files, game_source_files, dependencies:
+  deps)

@@ -1,8 +1,7 @@
-#define PACKAGE_NAME "Smol Doom"
-#define PACKAGE_TARNAME "smol-doom"
-#define PACKAGE_VERSION "3.0.0"
-#define PACKAGE_STRING "Smol Doom 3.0.0"
-#define PROGRAM_PREFIX "smol-"
+#define PACKAGE_NAME "zendoom"
+#define PACKAGE_TARNAME "zendoom"
+#define PACKAGE_VERSION "0.0.1"
+#define PACKAGE_STRING "zendoom-0.0.1"
 
 /* #undef HAVE_LIBSAMPLERATE */
 /* #undef HAVE_LIBPNG */
