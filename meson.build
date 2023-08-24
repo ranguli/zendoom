@@ -110,5 +110,10 @@ game_source_files = files(
     'src/renderer/things.c',
 )
 
+# Run targets we can use for linting and formatting code
+run_target('cppcheck', command: 'scripts/cppcheck.sh')
+run_target('clangformat', command: 'scripts/clangformat.sh')
+run_target('clangtidy', command: 'scripts/clangtidy.sh')
+
 executable('zendoom', common_source_files, game_source_files, dependencies:
   deps)

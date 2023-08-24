@@ -32,19 +32,32 @@ These things are _amazing_ for recreating the original feel of Doom, but they do
 
 The only features it _adds_ are to change the default controls to utilize the `WASD` key cluster, with `E` for interaction. Because anything else would not be Zen.
 
+### Zen in code quality
+-A lofty but noble goal is to try and clean up as many compiler and linter warnings as possible, with the primary goal of improving code readability, and secondarily the quality of the code being read overall. This is accomplished using `clang-tidy`, `clang-format`, and `cppcheck`.
+
+
 ## Building
 
 ```bash
 git clone https://github.com/zendoom/doom
 cd doom
-meson build
-cd build
-ninja build
+CFLAGS="-Wall -O2" meson setup build
+ninja -C build
 ```
 
 ### Dependencies
 
 The only dependency _you_ need is `git`, and Nix. All the dependencies that _Doom_ needs are taken care of. 
+
+## Development
+From within the `build` directory, extra Meson run targets are available for running `cppcheck`, `clang-tidy`, and `clang-format`. For example:
+
+```
+cd build
+meson compile cppcheck    # Will run cppcheck
+meson compile clangformat # Will run clang-format 
+meson compile clangtidy   # Will run clang-format 
+```
 
 
 ## Compability
