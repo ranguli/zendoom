@@ -4,6 +4,7 @@ Doom source port (forked from Chocolate Doom) with the goal of creating the simp
 
 It accomplishes this by doing the following:
 
+- One binary for client and server (use `-dedicated`) to start a server.
 - Remove DOOM II, Strife, Heretic, and Hexen support
 - Remove Windows/macOS/BSD support (Linux only).
   - Removes packaging support for Win32 and macOS
@@ -12,7 +13,7 @@ It accomplishes this by doing the following:
 - Remove the `setup` application, opting to manually edit `.cfg` files
 - Remove support for MUS and MIDI as well as emulation support for PC speaker, OPL, PAS and GUS.
   - Remove support for reading 'in-WAD' music (due to removing MUS support). Music playback is done only through SDL via [music packs](https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs).
-- Remove GNU `autotools` build support, relying only on `cmake`.
+- Remove GNU `autotools` and `cmake` build support, relying only on `meson` and `ninja`.
 - Remove `.desktop`, `.metainfo.xml`, `.rc`, and `.manifext.xml` files
 - Remove bash completions and man pages
 
