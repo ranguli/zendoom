@@ -31,41 +31,41 @@
 #include "def.h"
 #include "stat.h"
 
-#include "strings.h"
 #include "../sound/sounds.h"
+#include "strings.h"
 
 #include "../wad/iwad.h"
 
+#include "../mem/zone.h"
 #include "../sound/sound.h"
 #include "../video/diskicon.h"
 #include "../video/video.h"
 #include "../wad/main.h"
 #include "../wad/wad.h"
-#include "../mem/zone.h"
 
 #include "finale.h"
 #include "wipe.h"
 
 #include "../lib/argv.h"
-#include "../misc/config.h"
-#include "controls.h"
 #include "../menu/menu.h"
+#include "../misc/config.h"
 #include "../misc/misc.h"
 #include "../player/savegame.h"
+#include "controls.h"
 
 #include "../impl/endoom.h"
 #include "../impl/input.h"
 #include "../impl/joystick.h"
+#include "../impl/sound.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../impl/video.h"
-#include "../impl/sound.h"
 
 #include "../automap/automap.h"
 #include "../hud/stuff.h"
 #include "../net/client.h"
-#include "../net/server.h"
 #include "../net/query.h"
+#include "../net/server.h"
 #include "../status/stuff.h"
 #include "../window/stuff.h"
 

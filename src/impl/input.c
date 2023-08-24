@@ -21,9 +21,9 @@
 
 #include "../game/event.h"
 #include "../game/keys.h"
-#include "../lib/type.h"
 #include "../impl/input.h"
 #include "../lib/argv.h"
+#include "../lib/type.h"
 #include "../misc/config.h"
 
 static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;

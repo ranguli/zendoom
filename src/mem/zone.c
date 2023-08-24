@@ -18,9 +18,9 @@
 
 #include <string.h>
 
-#include "../lib/type.h"
 #include "../impl/system.h"
 #include "../lib/argv.h"
+#include "../lib/type.h"
 
 #include "zone.h"
 

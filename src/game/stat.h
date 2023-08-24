@@ -26,8 +26,8 @@
 
 // We need globally shared data structures,
 //  for defining the global state variables.
-#include "loop.h"
 #include "data.h"
+#include "loop.h"
 
 // We need the playr data structure as well.
 #include "../player/player.h"

@@ -21,8 +21,8 @@
 #include <string.h>
 
 #include "../misc/config.h"
-#include "glob.h"
 #include "../misc/misc.h"
+#include "glob.h"
 
 #if defined(HAVE_DIRENT_H)
 #include <dirent.h>

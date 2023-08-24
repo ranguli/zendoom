@@ -23,9 +23,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "gamemode.h"
-#include "../lib/type.h"
 #include "../impl/timer.h"
+#include "../lib/type.h"
+#include "gamemode.h"
 
 //
 // Global parameters/defines.

@@ -27,11 +27,11 @@
 #include "../impl/swap.h"
 #include "../impl/video.h"
 
-#include "lib.h"
-#include "stuff.h"
 #include "../game/controls.h"
 #include "../misc/misc.h"
 #include "../wad/wad.h"
+#include "lib.h"
+#include "stuff.h"
 
 #include "../sound/sound.h"
 

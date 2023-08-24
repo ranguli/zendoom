@@ -18,9 +18,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../misc/config.h"
-#include "../lib/type.h"
 #include "../impl/video.h"
+#include "../lib/type.h"
+#include "../misc/config.h"
 
 #define ENDOOM_W 80
 #define ENDOOM_H 25

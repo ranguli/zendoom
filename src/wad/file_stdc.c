@@ -18,9 +18,9 @@
 
 #include <stdio.h>
 
+#include "../mem/zone.h"
 #include "../misc/misc.h"
 #include "file.h"
-#include "../mem/zone.h"
 
 typedef struct {
     wad_file_t wad;

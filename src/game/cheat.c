@@ -18,8 +18,8 @@
 
 #include <string.h>
 
-#include "../lib/type.h"
 #include "../game/cheat.h"
+#include "../lib/type.h"
 
 //
 // CHEAT SEQUENCE PACKAGE

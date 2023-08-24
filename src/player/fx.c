@@ -27,13 +27,13 @@
 
 #include "../impl/system.h"
 #include "../lib/argv.h"
-#include "../misc/misc.h"
 #include "../lib/random.h"
-#include "../wad/wad.h"
 #include "../mem/zone.h"
+#include "../misc/misc.h"
+#include "../wad/wad.h"
 
-#include "local.h"
 #include "../renderer/local.h"
+#include "local.h"
 
 #include "../game/game.h"
 

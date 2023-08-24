@@ -31,10 +31,10 @@
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../impl/video.h"
+#include "../mem/zone.h"
 #include "../misc/misc.h"
 #include "../video/video.h"
 #include "../wad/wad.h"
-#include "../mem/zone.h"
 
 #include "../renderer/local.h"
 
@@ -42,8 +42,8 @@
 
 #include "../game/game.h"
 
-#include "../lib/argv.h"
 #include "../game/controls.h"
+#include "../lib/argv.h"
 #include "../player/savegame.h"
 #include "../player/setup.h"
 

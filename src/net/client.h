@@ -18,9 +18,9 @@
 #define NET_CLIENT_H
 
 #include "../game/ticcmd.h"
+#include "../lib/sha1.h"
 #include "../lib/type.h"
 #include "defs.h"
-#include "../lib/sha1.h"
 
 boolean NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data);
 void NET_CL_Disconnect(void);

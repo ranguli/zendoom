@@ -18,8 +18,8 @@
 
 #include "stdlib.h"
 
-#include "../lib/type.h"
 #include "../impl/system.h"
+#include "../lib/type.h"
 
 #include "fixed.h"
 

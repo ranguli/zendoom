@@ -203,3 +203,4 @@ Over the years a lot of configuration options have been added to various source 
 - Remove DOS emulation of null Read Access Violation (system.c:300)
 - (Gradually) replace bespoke file I/O with posix ones
 - Remove gamma correction feature
+- Remove DOOM II cast sequence code

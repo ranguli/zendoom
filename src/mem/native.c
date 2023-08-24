@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../lib/type.h"
 #include "../impl/system.h"
+#include "../lib/type.h"
 #include "zone.h"
 
 #define ZONEID 0x1d4a11

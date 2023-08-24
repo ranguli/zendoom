@@ -23,8 +23,8 @@
 #include "../mem/zone.h"
 
 #include "../game/def.h"
-#include "local.h"
 #include "../sound/sounds.h"
+#include "local.h"
 
 #include "../hud/stuff.h"
 #include "../status/stuff.h"

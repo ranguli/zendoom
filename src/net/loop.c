@@ -18,8 +18,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../lib/type.h"
 #include "../impl/system.h"
+#include "../lib/type.h"
 #include "../misc/misc.h"
 #include "defs.h"
 #include "loop.h"

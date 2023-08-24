@@ -21,11 +21,11 @@
 
 #include "SDL_stdinc.h"
 
-#include "../wad/iwad.h"
-#include "../lib/type.h"
 #include "../impl/system.h"
 #include "../lib/argv.h"
+#include "../lib/type.h"
 #include "../misc/misc.h"
+#include "../wad/iwad.h"
 
 int myargc;
 char **myargv;

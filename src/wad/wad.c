@@ -26,9 +26,9 @@
 #include "../impl/swap.h"
 #include "../impl/system.h"
 #include "../impl/video.h"
+#include "../mem/zone.h"
 #include "../misc/misc.h"
 #include "../video/diskicon.h"
-#include "../mem/zone.h"
 
 #include "wad.h"
 

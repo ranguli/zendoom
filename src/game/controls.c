@@ -16,8 +16,8 @@
 
 #include <stdio.h>
 
-#include "keys.h"
 #include "../lib/type.h"
+#include "keys.h"
 
 #include "../misc/config.h"
 #include "../misc/misc.h"

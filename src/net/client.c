@@ -19,13 +19,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../misc/config.h"
-#include "../lib/type.h"
+#include "../../config.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../lib/argv.h"
-#include "../../config.h"
 #include "../lib/fixed.h"
+#include "../lib/type.h"
+#include "../misc/config.h"
 #include "../misc/misc.h"
 
 #include "client.h"

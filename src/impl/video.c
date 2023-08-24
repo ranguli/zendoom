@@ -23,20 +23,20 @@
 
 #include "../../config.h"
 #include "../game/loop.h"
+#include "../game/tables.h"
+#include "../lib/argv.h"
 #include "../lib/type.h"
+#include "../mem/zone.h"
+#include "../misc/config.h"
+#include "../misc/misc.h"
+#include "../video/diskicon.h"
+#include "../video/video.h"
+#include "../wad/wad.h"
 #include "input.h"
 #include "joystick.h"
 #include "system.h"
 #include "timer.h"
 #include "video.h"
-#include "../lib/argv.h"
-#include "../misc/config.h"
-#include "../misc/misc.h"
-#include "../game/tables.h"
-#include "../video/diskicon.h"
-#include "../video/video.h"
-#include "../wad/wad.h"
-#include "../mem/zone.h"
 
 // These are (1) the window (or the full screen) that our game is rendered to
 // and (2) the renderer that scales the texture (see below) into this window.

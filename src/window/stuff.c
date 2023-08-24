@@ -20,8 +20,8 @@
 
 #include "../mem/zone.h"
 
-#include "../misc/misc.h"
 #include "../lib/random.h"
+#include "../misc/misc.h"
 
 #include "../impl/swap.h"
 #include "../impl/system.h"

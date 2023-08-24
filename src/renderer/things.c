@@ -23,8 +23,8 @@
 
 #include "../impl/swap.h"
 #include "../impl/system.h"
-#include "../wad/wad.h"
 #include "../mem/zone.h"
+#include "../wad/wad.h"
 
 #include "local.h"
 

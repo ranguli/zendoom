@@ -20,8 +20,8 @@
 
 #include "../impl/video.h"
 #include "../lib/random.h"
-#include "../video/video.h"
 #include "../mem/zone.h"
+#include "../video/video.h"
 
 #include "../lib/type.h"
 

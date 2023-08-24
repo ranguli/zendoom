@@ -23,8 +23,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../misc/config.h"
 #include "../game/keys.h"
+#include "../misc/config.h"
 
 #include "../impl/system.h"
 #include "../impl/timer.h"

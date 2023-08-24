@@ -19,9 +19,9 @@
 #ifndef __G_GAME__
 #define __G_GAME__
 
+#include "def.h"
 #include "event.h"
 #include "ticcmd.h"
-#include "def.h"
 
 //
 // GAME

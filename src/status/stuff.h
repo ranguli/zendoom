@@ -21,9 +21,9 @@
 #ifndef __STSTUFF_H__
 #define __STSTUFF_H__
 
+#include "../game/cheat.h"
 #include "../game/event.h"
 #include "../lib/type.h"
-#include "../game/cheat.h"
 
 // Size of statusbar.
 // Now sensitive for scaling.

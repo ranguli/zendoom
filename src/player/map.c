@@ -21,8 +21,8 @@
 #include <stdlib.h>
 
 #include "../impl/system.h"
-#include "../misc/bbox.h"
 #include "../lib/random.h"
+#include "../misc/bbox.h"
 
 #include "../game/def.h"
 #include "../lib/argv.h"

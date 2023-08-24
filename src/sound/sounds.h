@@ -20,8 +20,8 @@
 #ifndef __SOUNDS__
 #define __SOUNDS__
 
-#include "sound.h"
 #include "../impl/sound.h"
+#include "sound.h"
 
 // the complete set of sound effects
 extern sfxinfo_t S_sfx[];

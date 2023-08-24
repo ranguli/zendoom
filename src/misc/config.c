@@ -28,11 +28,11 @@
 
 #include "config.h"
 
+#include "../../config.h"
 #include "../game/keys.h"
-#include "../lib/type.h"
 #include "../impl/system.h"
 #include "../lib/argv.h"
-#include "../../config.h"
+#include "../lib/type.h"
 #include "../misc/misc.h"
 
 #include "../mem/zone.h"

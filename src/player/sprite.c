@@ -17,12 +17,12 @@
 //	Action functions for weapons.
 //
 
-#include "../game/event.h"
 #include "../game/def.h"
+#include "../game/event.h"
 
 #include "../lib/random.h"
-#include "local.h"
 #include "../sound/sound.h"
+#include "local.h"
 
 // State.
 #include "../game/stat.h"

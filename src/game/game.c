@@ -23,18 +23,18 @@
 #include "keys.h"
 #include "stat.h"
 
-#include "finale.h"
 #include "../impl/input.h"
 #include "../impl/swap.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../impl/video.h"
 #include "../lib/argv.h"
-#include "controls.h"
-#include "../menu/menu.h"
-#include "../misc/misc.h"
 #include "../lib/random.h"
 #include "../mem/zone.h"
+#include "../menu/menu.h"
+#include "../misc/misc.h"
+#include "controls.h"
+#include "finale.h"
 
 #include "../player/savegame.h"
 #include "../player/setup.h"
@@ -54,12 +54,12 @@
 #include "../sound/sound.h"
 
 // Data.
-#include "strings.h"
 #include "../sound/sounds.h"
+#include "strings.h"
 
 // SKY handling - still the wrong place.
-#include "data.h"
 #include "../renderer/sky.h"
+#include "data.h"
 
 #include "game.h"
 

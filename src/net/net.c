@@ -19,10 +19,10 @@
 
 #include <stdlib.h>
 
-#include "../game/main.h"
 #include "../game/def.h"
-#include "../game/stat.h"
 #include "../game/game.h"
+#include "../game/main.h"
+#include "../game/stat.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../impl/video.h"

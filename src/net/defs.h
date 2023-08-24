@@ -21,8 +21,8 @@
 #include <stdio.h>
 
 #include "../game/ticcmd.h"
-#include "../lib/type.h"
 #include "../lib/sha1.h"
+#include "../lib/type.h"
 
 // Absolute maximum number of "nodes" in the game.  This is different to
 // NET_MAXPLAYERS, as there may be observers that are not participating
