@@ -110,20 +110,4 @@ game_source_files = files(
     'src/renderer/things.c',
 )
 
-dedicated_server_files = files(
-
-    'src/wad/iwad.c',
-    'src/game/gamemode.c',
-    'src/impl/timer.c',
-    'src/misc/config.c',
-    'src/net/common.c',
-    'src/net/io.c',
-    'src/net/packet.c',
-    'src/net/sdl.c',
-    'src/net/query.c',
-    'src/net/server.c',
-    'src/net/structrw.c',
-    'src/mem/native.c',
-)
-
 executable('smoldoom', common_source_files, game_source_files, dependencies: deps)
