@@ -18,7 +18,6 @@
 #ifndef W_MAIN_H
 #define W_MAIN_H
 
-
 #include "../game/gamemode.h"
 
 boolean W_ParseCommandLine(void);

@@ -18,8 +18,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../lib/type.h"
 #include "../impl/system.h"
+#include "../lib/type.h"
 #include "../misc/misc.h"
 #include "defs.h"
 #include "loop.h"
@@ -83,7 +83,7 @@ static boolean NET_CL_InitClient(void) {
 
 static boolean NET_CL_InitServer(void) {
     error("NET_CL_InitServer: attempted to initialize client pipe end as a "
-            "server!");
+          "server!");
     return false;
 }
 
@@ -132,7 +132,7 @@ net_module_t net_loop_client_module = {
 
 static boolean net_server_InitClient(void) {
     error("net_server_InitClient: attempted to initialize server pipe end as a "
-            "client!");
+          "client!");
     return false;
 }
 
@@ -170,5 +170,6 @@ static net_addr_t *net_server_ResolveAddress(const char *address) {
 }
 
 net_module_t net_loop_server_module = {
-    net_server_InitClient, net_server_InitServer, net_server_SendPacket, net_server_RecvPacket, net_server_ResolveAddress,
+    net_server_InitClient, net_server_InitServer,     net_server_SendPacket,
+    net_server_RecvPacket, net_server_ResolveAddress,
 };

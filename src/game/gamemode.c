@@ -51,7 +51,8 @@ boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, i
 
     for (i = 0; i < arrlen(validoom_modes); ++i) {
         if (mission == validoom_modes[i].mission && mode == validoom_modes[i].mode) {
-            return episode >= 1 && episode <= validoom_modes[i].episode && map >= 1 && map <= validoom_modes[i].map;
+            return episode >= 1 && episode <= validoom_modes[i].episode && map >= 1 &&
+                   map <= validoom_modes[i].map;
         }
     }
 

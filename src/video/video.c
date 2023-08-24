@@ -31,11 +31,11 @@
 #include "../impl/input.h"
 #include "../impl/swap.h"
 #include "../impl/video.h"
+#include "../mem/zone.h"
 #include "../misc/bbox.h"
 #include "../misc/misc.h"
-#include "video.h"
 #include "../wad/wad.h"
-#include "../mem/zone.h"
+#include "video.h"
 
 #include "../misc/config.h"
 

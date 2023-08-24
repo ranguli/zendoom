@@ -23,12 +23,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../lib/type.h"
 #include "../impl/system.h"
+#include "../lib/type.h"
+#include "../mem/zone.h"
 #include "../misc/misc.h"
 #include "merge.h"
 #include "wad.h"
-#include "../mem/zone.h"
 
 typedef enum {
     SECTION_NORMAL,

@@ -23,18 +23,18 @@
 #include "keys.h"
 #include "stat.h"
 
-#include "finale.h"
 #include "../impl/input.h"
 #include "../impl/swap.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../impl/video.h"
 #include "../lib/argv.h"
-#include "controls.h"
-#include "../menu/menu.h"
-#include "../misc/misc.h"
 #include "../lib/random.h"
 #include "../mem/zone.h"
+#include "../menu/menu.h"
+#include "../misc/misc.h"
+#include "controls.h"
+#include "finale.h"
 
 #include "../player/savegame.h"
 #include "../player/setup.h"
@@ -54,12 +54,12 @@
 #include "../sound/sound.h"
 
 // Data.
-#include "strings.h"
 #include "../sound/sounds.h"
+#include "strings.h"
 
 // SKY handling - still the wrong place.
-#include "data.h"
 #include "../renderer/sky.h"
+#include "data.h"
 
 #include "game.h"
 
@@ -882,7 +882,7 @@ void G_PlayerReborn(int player) {
 
     p->usedown = p->attackdown = true; // don't do anything immediately
     p->playerstate = PST_LIVE;
-    p->health =  MAXHEALTH;
+    p->health = MAXHEALTH;
     p->readyweapon = p->pendingweapon = wp_pistol;
     p->weaponowned[wp_fist] = true;
     p->weaponowned[wp_pistol] = true;
@@ -1146,7 +1146,7 @@ void G_DoCompleted(void) {
     wminfo.maxsecret = totalsecret;
     wminfo.maxfrags = 0;
 
-    wminfo.partime = TICRATE*pars[gameepisode][gamemap];
+    wminfo.partime = TICRATE * pars[gameepisode][gamemap];
 
     wminfo.pnum = consoleplayer;
 
@@ -1274,7 +1274,7 @@ void G_DoSaveGame(void) {
         save_stream = fopen(recovery_savegame_file, "wb");
         if (save_stream == NULL) {
             error("Failed to open either '%s' or '%s' to write savegame.", temp_savegame_file,
-                    recovery_savegame_file);
+                  recovery_savegame_file);
         }
     }
 
@@ -1305,8 +1305,8 @@ void G_DoSaveGame(void) {
         // recovery file to the temp directory. Now we can bomb out
         // with an error.
         error("Failed to open savegame file '%s' for writing.\n"
-                "But your game has been saved to '%s' for recovery.",
-                temp_savegame_file, recovery_savegame_file);
+              "But your game has been saved to '%s' for recovery.",
+              temp_savegame_file, recovery_savegame_file);
     }
 
     // Now rename the temporary savegame file to the actual savegame

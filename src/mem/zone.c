@@ -18,9 +18,9 @@
 
 #include <string.h>
 
-#include "../lib/type.h"
 #include "../impl/system.h"
 #include "../lib/argv.h"
+#include "../lib/type.h"
 
 #include "zone.h"
 
@@ -343,8 +343,8 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line) {
 
     if (tag >= PU_PURGELEVEL && block->user == NULL)
         error("%s:%i: Z_ChangeTag: an owner is required "
-                "for purgable blocks",
-                file, line);
+              "for purgable blocks",
+              file, line);
 
     block->tag = tag;
 }

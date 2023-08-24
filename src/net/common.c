@@ -20,10 +20,10 @@
 #include <string.h>
 
 #include "../game/gamemode.h"
-#include "../lib/type.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../lib/argv.h"
+#include "../lib/type.h"
 
 #include "common.h"
 #include "io.h"

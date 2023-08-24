@@ -16,8 +16,8 @@
 //
 
 #include "../game/def.h"
-#include "local.h"
 #include "../mem/zone.h"
+#include "local.h"
 
 #include "../sound/sound.h"
 

@@ -20,8 +20,8 @@
 #ifndef __F_FINALE__
 #define __F_FINALE__
 
-#include "event.h"
 #include "../lib/type.h"
+#include "event.h"
 
 // Called by main loop.
 boolean F_Responder(event_t *ev);

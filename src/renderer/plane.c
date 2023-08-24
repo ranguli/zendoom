@@ -22,8 +22,8 @@
 #include <stdlib.h>
 
 #include "../impl/system.h"
-#include "../wad/wad.h"
 #include "../mem/zone.h"
+#include "../wad/wad.h"
 
 #include "../game/def.h"
 #include "../game/stat.h"

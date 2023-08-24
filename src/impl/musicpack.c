@@ -26,18 +26,18 @@
 
 #include "glob.h"
 
-#include "../misc/config.h"
 #include "../lib/type.h"
+#include "../misc/config.h"
 
+#include "../../config.h"
+#include "../lib/argv.h"
+#include "../lib/sha1.h"
+#include "../mem/zone.h"
+#include "../misc/misc.h"
+#include "../wad/wad.h"
 #include "sound.h"
 #include "swap.h"
 #include "system.h"
-#include "../lib/argv.h"
-#include "../../config.h"
-#include "../misc/misc.h"
-#include "../lib/sha1.h"
-#include "../wad/wad.h"
-#include "../mem/zone.h"
 
 #define MID_HEADER_MAGIC "MThd"
 #define MUS_HEADER_MAGIC "MUS\x1a"

@@ -27,13 +27,13 @@
 
 #include "../impl/system.h"
 #include "../lib/argv.h"
-#include "../misc/misc.h"
 #include "../lib/random.h"
-#include "../wad/wad.h"
 #include "../mem/zone.h"
+#include "../misc/misc.h"
+#include "../wad/wad.h"
 
-#include "local.h"
 #include "../renderer/local.h"
+#include "local.h"
 
 #include "../game/game.h"
 
@@ -291,7 +291,7 @@ fixed_t P_FindNextHighestFloor(sector_t *sec, int currentheight) {
             } else if (h == MAX_ADJOINING_SECTORS + 2) {
                 // Fatal overflow: game crashes at 22 sectors
                 error("Sector with more than 22 adjoining sectors. "
-                        "Vanilla will crash here");
+                      "Vanilla will crash here");
             }
 
             heightlist[h++] = other->floorheight;
@@ -958,8 +958,8 @@ void P_PlayerInSpecialSector(player_t *player) {
 
     default:
         error("P_PlayerInSpecialSector: "
-                "unknown special %i",
-                sector->special);
+              "unknown special %i",
+              sector->special);
         break;
     };
 }
@@ -1312,8 +1312,8 @@ void P_SpawnSpecials(void) {
         case 48:
             if (numlinespecials >= MAXLINEANIMS) {
                 error("Too many scrolling wall linedefs (%d)! "
-                        "(Vanilla limit is 64)",
-                        NumScrollers());
+                      "(Vanilla limit is 64)",
+                      NumScrollers());
             }
             // EFFECT FIRSTCOL SCROLL+
             linespeciallist[numlinespecials] = &lines[i];

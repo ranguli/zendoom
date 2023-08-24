@@ -17,8 +17,8 @@
 //	Thinker, Ticker.
 //
 
-#include "local.h"
 #include "../mem/zone.h"
+#include "local.h"
 
 #include "../game/stat.h"
 

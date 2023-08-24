@@ -21,8 +21,8 @@
 #include "../game/def.h"
 
 #include "../impl/system.h"
-#include "../wad/wad.h"
 #include "../mem/zone.h"
+#include "../wad/wad.h"
 
 #include "local.h"
 
@@ -775,8 +775,7 @@ void R_FillBackScreen(void) {
     // Draw beveled edge.
     V_DrawPatch(viewwindowx - 8, viewwindowy - 8, W_CacheLumpName("brdr_tl", PU_CACHE));
 
-    V_DrawPatch(viewwindowx + scaledviewwidth, viewwindowy - 8,
-                W_CacheLumpName("brdr_tr", PU_CACHE));
+    V_DrawPatch(viewwindowx + scaledviewwidth, viewwindowy - 8, W_CacheLumpName("brdr_tr", PU_CACHE));
 
     V_DrawPatch(viewwindowx - 8, viewwindowy + viewheight, W_CacheLumpName("brdr_bl", PU_CACHE));
 

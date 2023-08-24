@@ -18,8 +18,8 @@
 //	Pending weapon.
 //
 
-#include "../game/event.h"
 #include "../game/def.h"
+#include "../game/event.h"
 
 #include "local.h"
 

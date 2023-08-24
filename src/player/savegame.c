@@ -21,13 +21,13 @@
 
 #include "../game/strings.h"
 #include "../impl/system.h"
+#include "../mem/zone.h"
 #include "local.h"
 #include "savegame.h"
-#include "../mem/zone.h"
 
 // State.
-#include "../game/stat.h"
 #include "../game/game.h"
+#include "../game/stat.h"
 #include "../misc/misc.h"
 #include "../renderer/state.h"
 
@@ -1734,8 +1734,8 @@ void P_UnArchiveSpecials(void) {
 
         default:
             error("P_UnarchiveSpecials:Unknown tclass %i "
-                    "in savegame",
-                    tclass);
+                  "in savegame",
+                  tclass);
         }
     }
 }

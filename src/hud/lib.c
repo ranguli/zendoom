@@ -23,9 +23,9 @@
 #include "../impl/swap.h"
 #include "../video/video.h"
 
-#include "lib.h"
 #include "../renderer/draw.h"
 #include "../renderer/local.h"
+#include "lib.h"
 
 // boolean : whether the screen is always erased
 #define noterased viewwindowx

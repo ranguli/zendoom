@@ -27,10 +27,10 @@
 #include "../../config.h"
 
 #include "../game/gamemode.h"
-#include "../lib/type.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../lib/argv.h"
+#include "../lib/type.h"
 #include "../misc/misc.h"
 
 #include "client.h"
@@ -62,10 +62,10 @@ typedef enum {
 } net_servestate_t;
 
 static const char *not_dedicated_options[] = {
-    "-iwad",       "-cdrom",     "-gameversion", "-nomonsters", "-respawn", "-fast",
-    "-altdeath", "-deathmatch", "-turbo",     "-merge",       "-af",         "-as",      "-aa",
-    "-file",     "-wart",       "-skill",     "-episode",     "-timer",      "-avg",     "-warp",
-    "-loadgame", "-longtics",   "-extratics", "-dup",         "-shorttics",  NULL,
+    "-iwad",       "-cdrom",     "-gameversion", "-nomonsters", "-respawn", "-fast", "-altdeath",
+    "-deathmatch", "-turbo",     "-merge",       "-af",         "-as",      "-aa",   "-file",
+    "-wart",       "-skill",     "-episode",     "-timer",      "-avg",     "-warp", "-loadgame",
+    "-longtics",   "-extratics", "-dup",         "-shorttics",  NULL,
 };
 
 typedef struct {
@@ -530,7 +530,7 @@ static void net_server_ParseSYN(net_packet_t *packet, client_t *client, net_addr
     case NET_OLD_MAGIC_NUMBER:
         NET_Log("server: error: client using old magic number: %d", magic);
         net_server_SendReject(addr, "You are using an old client version that is not supported by "
-                                "this server. This server is running " PACKAGE_STRING ".");
+                                    "this server. This server is running " PACKAGE_STRING ".");
         return;
 
     default:
@@ -923,7 +923,8 @@ static void net_server_CheckResends(client_t *client) {
             NET_Log("server: resend request to %s timed out for %d-%d (%d)", NET_AddrToString(client->addr),
                     recvwindow_start + resend_start, recvwindow_start + resend_end,
                     &recvwindow[resend_start][player].resend_time);
-            net_server_SendResendRequest(client, recvwindow_start + resend_start, recvwindow_start + resend_end);
+            net_server_SendResendRequest(client, recvwindow_start + resend_start,
+                                         recvwindow_start + resend_end);
 
             resend_start = -1;
         }
@@ -1053,7 +1054,8 @@ static void net_server_ParseGameData(net_packet_t *packet, client_t *client) {
     if (resend_start < resend_end) {
         NET_Log("server: request resend for %d-%d before %d", recvwindow_start + resend_start,
                 recvwindow_start + resend_end - 1, seq);
-        net_server_SendResendRequest(client, recvwindow_start + resend_start, recvwindow_start + resend_end - 1);
+        net_server_SendResendRequest(client, recvwindow_start + resend_start,
+                                     recvwindow_start + resend_end - 1);
     }
 }
 
@@ -1527,8 +1529,8 @@ static void net_server_runClient(client_t *client) {
 
         if (servestate == SERVER_WAITING_START && !client->drone) {
             net_server_BroadcastMessage("Game startup aborted because "
-                                    "player '%s' disconnected.",
-                                    client->name);
+                                        "player '%s' disconnected.",
+                                        client->name);
             net_server_GameEnded();
         }
 
@@ -1575,7 +1577,6 @@ void net_server_AddModule(net_module_t *module) {
     module->InitServer();
     NET_AddModule(server_context, module);
 }
-
 
 static void UpdateMasterServer(void) {
     unsigned int now;
@@ -1739,10 +1740,10 @@ static void CheckForClientOptions(void) {
     for (i = 0; not_dedicated_options[i] != NULL; ++i) {
         if (M_CheckParm(not_dedicated_options[i]) > 0) {
             error("The command line parameter '%s' was specified to a "
-                    "dedicated server.\nGame parameters should be specified "
-                    "to the first player to join a server, \nnot to the "
-                    "server itself. ",
-                    not_dedicated_options[i]);
+                  "dedicated server.\nGame parameters should be specified "
+                  "to the first player to join a server, \nnot to the "
+                  "server itself. ",
+                  not_dedicated_options[i]);
         }
     }
 }
@@ -1780,4 +1781,3 @@ void net_server_init(void) {
         I_Sleep(1);
     }
 }
-

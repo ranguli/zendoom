@@ -19,8 +19,8 @@
 #ifndef __W_FILE__
 #define __W_FILE__
 
-#include <stdio.h>
 #include "../lib/type.h"
+#include <stdio.h>
 
 typedef struct _wad_file_s wad_file_t;
 

@@ -17,12 +17,12 @@
 //	Action functions for weapons.
 //
 
-#include "../game/event.h"
 #include "../game/def.h"
+#include "../game/event.h"
 
 #include "../lib/random.h"
-#include "local.h"
 #include "../sound/sound.h"
+#include "local.h"
 
 // State.
 #include "../game/stat.h"
@@ -246,9 +246,7 @@ void A_ReFire(player_t *player) {
     }
 }
 
-void A_CheckReload(player_t *player) {
-    P_CheckAmmo(player);
-}
+void A_CheckReload(player_t *player) { P_CheckAmmo(player); }
 
 //
 // A_Lower
@@ -541,17 +539,11 @@ void A_FireCGun(player_t *player, pspdef_t *psp) {
 //
 // ?
 //
-void A_Light0(player_t *player) {
-    player->extralight = 0;
-}
+void A_Light0(player_t *player) { player->extralight = 0; }
 
-void A_Light1(player_t *player) {
-    player->extralight = 1;
-}
+void A_Light1(player_t *player) { player->extralight = 1; }
 
-void A_Light2(player_t *player) {
-    player->extralight = 2;
-}
+void A_Light2(player_t *player) { player->extralight = 2; }
 
 //
 // A_BFGSpray
@@ -587,9 +579,7 @@ void A_BFGSpray(mobj_t *mo) {
 //
 // A_BFGsound
 //
-void A_BFGsound(player_t *player) {
-    S_StartSound(player->mo, sfx_bfg);
-}
+void A_BFGsound(player_t *player) { S_StartSound(player->mo, sfx_bfg); }
 
 //
 // P_SetupPsprites

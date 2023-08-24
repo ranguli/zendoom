@@ -20,8 +20,8 @@
 
 #include "../mem/zone.h"
 
-#include "../misc/misc.h"
 #include "../lib/random.h"
+#include "../misc/misc.h"
 
 #include "../impl/swap.h"
 #include "../impl/system.h"
@@ -356,9 +356,7 @@ static patch_t *background;
 void WI_slamBackground(void) { V_DrawPatch(0, 0, background); }
 
 // Draws "<Levelname> Finished!"
-void WI_drawLF(void) {
-    int y = WI_TITLEY;
-}
+void WI_drawLF(void) { int y = WI_TITLEY; }
 
 // Draws "Entering <LevelName>"
 void WI_drawEL(void) {
