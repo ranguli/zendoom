@@ -123,7 +123,7 @@ void W_CheckCorrectIWAD(GameMission_t mission) {
 
             if (lumpnum >= 0) {
                 error("\nYou are trying to use a %s IWAD file not compatible"
-                        "with zendoom.\nThis isn't going to work.\n");
+                      "with zendoom.\nThis isn't going to work.\n");
             }
         }
     }

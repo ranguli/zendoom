@@ -30,10 +30,8 @@
 #include "../wad/wad.h"
 #include "../mem/zone.h"
 
-static const iwad_t iwads[] = {
-    {"doom.wad", doom, registered, "Doom"},
-    {"doom1.wad", doom, shareware, "Doom Shareware"}
-};
+static const iwad_t iwads[] = {{"doom.wad", doom, registered, "Doom"},
+                               {"doom1.wad", doom, shareware, "Doom Shareware"}};
 
 // Array of locations to search for IWAD files
 //

@@ -24,8 +24,6 @@
 #ifndef __D_STATE__
 #define __D_STATE__
 
-
-
 // We need globally shared data structures,
 //  for defining the global state variables.
 #include "loop.h"

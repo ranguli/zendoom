@@ -517,9 +517,9 @@ void P_RespawnSpecials(void) {
 
     if (i >= NUMMOBJTYPES) {
         error("P_RespawnSpecials: Failed to find mobj type with doomednum "
-                "%d when respawning thing. This would cause a buffer overrun "
-                "in vanilla Doom",
-                mthing->type);
+              "%d when respawning thing. This would cause a buffer overrun "
+              "in vanilla Doom",
+              mthing->type);
     }
 
     // spawn it

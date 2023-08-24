@@ -21,10 +21,7 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-
 #include "SDL.h"
-
-
 
 #include "../misc/config.h"
 #include "../lib/type.h"

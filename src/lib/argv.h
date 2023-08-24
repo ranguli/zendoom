@@ -17,7 +17,6 @@
 #ifndef __M_ARGV__
 #define __M_ARGV__
 
-
 #include "type.h"
 
 extern int myargc;

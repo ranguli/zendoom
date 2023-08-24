@@ -20,7 +20,6 @@
 #ifndef __D_MODE__
 #define __D_MODE__
 
-
 #include "../lib/type.h"
 
 // The "mission" controls what game we are playing.
@@ -43,7 +42,7 @@ typedef enum {
 // What version are we emulating?
 
 typedef enum {
-    exe_doom_1_9,   // Doom 1.9: "
+    exe_doom_1_9, // Doom 1.9: "
 } GameVersion_t;
 
 // What IWAD variant are we using?

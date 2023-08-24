@@ -117,7 +117,7 @@ static default_t doom_defaults_list[] = {
      * The "normal" maximum value available for this through the
      * in-game options menu is 9. A value of 31 or greater will cause
      * the game to crash when entering the options menu.
-    */
+     */
 
     CONFIG_VARIABLE_INT(mouse_sensitivity),
 
@@ -1791,7 +1791,7 @@ char *M_GetSaveGameDir(const char *iwadname) {
 /**
  * Calculate the path to the directory for autoloaded WADs.
  * Creates the directory as necessary.
-**/
+ **/
 char *M_GetAutoloadDir(const char *iwadname) {
     char *result;
 

@@ -20,7 +20,6 @@
 
 #include <stdio.h>
 
-
 #include "../game/ticcmd.h"
 #include "../lib/type.h"
 #include "../lib/sha1.h"

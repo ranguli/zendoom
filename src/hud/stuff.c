@@ -213,8 +213,7 @@ void HU_Ticker(void) {
                     if (rc && c == KEY_ENTER) {
                         if (w_inputbuffer[i].l.len &&
                             (chat_dest[i] == consoleplayer + 1 || chat_dest[i] == HU_BROADCAST)) {
-                            HUlib_addMessageToSText(&w_message, player_names[i],
-                                                    w_inputbuffer[i].l.l);
+                            HUlib_addMessageToSText(&w_message, player_names[i], w_inputbuffer[i].l.l);
 
                             message_nottobefuckedwith = true;
                             message_on = true;

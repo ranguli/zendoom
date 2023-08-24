@@ -22,7 +22,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-
 #include "../lib/type.h"
 
 boolean M_WriteFile(const char *name, const void *source, int length);

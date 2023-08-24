@@ -24,8 +24,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 #include "game.h"
 #include "main.h"
 
@@ -63,7 +61,6 @@
 #include "../impl/video.h"
 #include "../impl/sound.h"
 
-
 #include "../automap/automap.h"
 #include "../hud/stuff.h"
 #include "../net/client.h"
@@ -74,7 +71,6 @@
 
 #include "../player/setup.h"
 #include "../renderer/local.h"
-
 
 //
 // D-DoomLoop()
@@ -265,8 +261,7 @@ boolean D_Display(void) {
             y = 4;
         else
             y = viewwindowy + 4;
-        V_DrawPatchDirect(viewwindowx + (scaledviewwidth - 68) / 2, y,
-                          W_CacheLumpName("M_PAUSE", PU_CACHE));
+        V_DrawPatchDirect(viewwindowx + (scaledviewwidth - 68) / 2, y, W_CacheLumpName("M_PAUSE", PU_CACHE));
     }
 
     // menus go directly to the screen
@@ -643,7 +638,6 @@ int main(int argc, char **argv) {
     SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
 #endif
 
-
     if (M_ParmExists("-version") || M_ParmExists("--version")) {
         puts(PACKAGE_STRING);
         exit(0);
@@ -652,17 +646,14 @@ int main(int argc, char **argv) {
     M_FindResponseFile();
 
 #ifdef SDL_HINT_NO_SIGNAL_HANDLERS
-        SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
+    SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
 #endif
-
-
-
 
     printf("Z_Init: Init zone memory allocation daemon.");
     Z_Init();
 
-     // Start a dedicated server, routing packets but not participating
-     // in the game itself.
+    // Start a dedicated server, routing packets but not participating
+    // in the game itself.
 
     if (M_CheckParm("-dedicated") > 0) {
         printf("Dedicated server mode.\n");
@@ -822,7 +813,7 @@ int main(int argc, char **argv) {
 
     if (iwadfile == NULL) {
         error("Game mode indeterminate.  No IWAD file was found.  Try\n"
-                "specifying one with the '-iwad' command line parameter.\n");
+              "specifying one with the '-iwad' command line parameter.\n");
     }
 
     modifiedgame = false;
@@ -851,7 +842,6 @@ int main(int argc, char **argv) {
         W_AutoLoadWADs(autoload_dir);
         free(autoload_dir);
     }
-
 
     // Load PWAD files.
     modifiedgame = W_ParseCommandLine();
@@ -923,7 +913,7 @@ int main(int argc, char **argv) {
 
         if (gamemode == shareware)
             error("\nYou cannot -file with the shareware "
-                               "version. Register!");
+                  "version. Register!");
 
         // Check for fake IWAD with right name,
         // but w/o all the lumps of the registered version.

@@ -1734,8 +1734,8 @@ void P_UnArchiveSpecials(void) {
 
         default:
             error("P_UnarchiveSpecials:Unknown tclass %i "
-                    "in savegame",
-                    tclass);
+                  "in savegame",
+                  tclass);
         }
     }
 }

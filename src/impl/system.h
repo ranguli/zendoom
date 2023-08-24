@@ -19,8 +19,6 @@
 #ifndef __I_SYSTEM__
 #define __I_SYSTEM__
 
-
-
 #include "../game/event.h"
 #include "../game/ticcmd.h"
 

@@ -176,8 +176,8 @@ void *Z_Malloc(int size, int tag, void *user) {
 
     if (tag < 0 || tag >= PU_NUM_TAGS || tag == PU_FREE) {
         error("Z_Malloc: attempted to allocate a block with an invalid "
-                "tag: %i",
-                tag);
+              "tag: %i",
+              tag);
     }
 
     if (user == NULL && tag >= PU_PURGELEVEL) {
@@ -294,8 +294,8 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line) {
 
     if (tag >= PU_PURGELEVEL && block->user == NULL)
         error("%s:%i: Z_ChangeTag: an owner is required "
-                "for purgable blocks",
-                file, line);
+              "for purgable blocks",
+              file, line);
 
     // Remove the block from its current list, and rehook it into
     // its new list.

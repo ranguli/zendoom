@@ -19,7 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #include "SDL_stdinc.h"
 
 #include "../wad/iwad.h"
@@ -54,13 +53,9 @@ int M_CheckParmWithArgs(const char *check, int num_args) {
  * line arguments, false if not.
  */
 
-boolean M_ParmExists(const char *check) {
-    return M_CheckParm(check) != 0;
-}
+boolean M_ParmExists(const char *check) { return M_CheckParm(check) != 0; }
 
-int M_CheckParm(const char *check) {
-    return M_CheckParmWithArgs(check, 0);
-}
+int M_CheckParm(const char *check) { return M_CheckParmWithArgs(check, 0); }
 
 #define MAXARGVS 100
 

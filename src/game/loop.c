@@ -292,8 +292,7 @@ static void BlockUntilStart(net_gamesettings_t *settings, netgame_startup_callba
             error("Lost connection to server");
         }
 
-        if (callback != NULL &&
-            !callback(client_wait_data.ready_players, client_wait_data.num_players)) {
+        if (callback != NULL && !callback(client_wait_data.ready_players, client_wait_data.num_players)) {
             error("Netgame startup aborted.");
         }
 
@@ -310,8 +309,8 @@ void D_StartNetGame(net_gamesettings_t *settings, netgame_startup_callback_t cal
     settings->consoleplayer = 0;
     settings->num_players = 1;
 
-    //Use original network client sync code rather than the improved
-    //sync code.
+    // Use original network client sync code rather than the improved
+    // sync code.
     settings->new_sync = !M_ParmExists("-oldsync");
 
     // Send n extra tics in every packet as insurance against dropped
@@ -392,8 +391,8 @@ boolean D_InitNetGame(net_connect_data_t *connect_data) {
         net_server_init();
         net_server_AddModule(&net_loop_server_module);
         net_server_AddModule(&net_sdl_module);
-        //net_server_register_with_master(); - Don't register with Chocolate Doom
-        //master server
+        // net_server_register_with_master(); - Don't register with Chocolate Doom
+        // master server
 
         net_loop_client_module.InitClient();
         addr = net_loop_client_module.ResolveAddress(NULL);
@@ -444,7 +443,7 @@ boolean D_InitNetGame(net_connect_data_t *connect_data) {
 
         if (!NET_CL_Connect(addr, connect_data)) {
             error("D_InitNetGame: Failed to connect to %s:\n%s\n", NET_AddrToString(addr),
-                    client_reject_reason);
+                  client_reject_reason);
         }
 
         printf("D_InitNetGame: Connected to %s\n", NET_AddrToString(addr));

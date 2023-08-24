@@ -19,7 +19,6 @@
 #ifndef __M_CONFIG__
 #define __M_CONFIG__
 
-
 #include "../lib/type.h"
 
 void M_LoadDefaults(void);
