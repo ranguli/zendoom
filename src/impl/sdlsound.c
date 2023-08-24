@@ -26,13 +26,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../lib/argv.h"
+#include "../mem/zone.h"
+#include "../misc/misc.h"
+#include "../wad/wad.h"
 #include "sound.h"
 #include "swap.h"
 #include "system.h"
-#include "../lib/argv.h"
-#include "../misc/misc.h"
-#include "../wad/wad.h"
-#include "../mem/zone.h"
 
 #include "../lib/type.h"
 

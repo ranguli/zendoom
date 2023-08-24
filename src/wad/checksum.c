@@ -21,8 +21,8 @@
 #include <string.h>
 
 #include "../impl/system.h"
-#include "../misc/misc.h"
 #include "../lib/sha1.h"
+#include "../misc/misc.h"
 #include "checksum.h"
 #include "wad.h"
 

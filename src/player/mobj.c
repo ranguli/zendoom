@@ -23,8 +23,8 @@
 #include "../mem/zone.h"
 
 #include "../game/def.h"
-#include "local.h"
 #include "../sound/sounds.h"
+#include "local.h"
 
 #include "../hud/stuff.h"
 #include "../status/stuff.h"
@@ -517,9 +517,9 @@ void P_RespawnSpecials(void) {
 
     if (i >= NUMMOBJTYPES) {
         error("P_RespawnSpecials: Failed to find mobj type with doomednum "
-                "%d when respawning thing. This would cause a buffer overrun "
-                "in vanilla Doom",
-                mthing->type);
+              "%d when respawning thing. This would cause a buffer overrun "
+              "in vanilla Doom",
+              mthing->type);
     }
 
     // spawn it

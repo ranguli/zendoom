@@ -18,11 +18,10 @@
 
 #include <string.h>
 
-
 #include "../impl/video.h"
 #include "../lib/random.h"
-#include "../video/video.h"
 #include "../mem/zone.h"
+#include "../video/video.h"
 
 #include "../lib/type.h"
 
@@ -149,7 +148,7 @@ int wipe_EndScreen(int x, int y, int width, int height) {
 
 int wipe_ScreenWipe(int wipeno, int width, int height, int ticks) {
     int rc;
-    static int (*wipes[])(int, int, int) = {wipe_initMelt,       wipe_doMelt,       wipe_exitMelt};
+    static int (*wipes[])(int, int, int) = {wipe_initMelt, wipe_doMelt, wipe_exitMelt};
 
     // initial stuff
     if (!go) {

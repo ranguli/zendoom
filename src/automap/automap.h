@@ -16,8 +16,8 @@
 #ifndef __AMMAP_H__
 #define __AMMAP_H__
 
-#include "../game/event.h"
 #include "../game/cheat.h"
+#include "../game/event.h"
 
 // Used by ST StatusBar stuff.
 #define AM_MSGHEADER (('a' << 24) + ('m' << 16))

@@ -23,20 +23,20 @@
 // Functions.
 #include "../impl/swap.h"
 #include "../impl/system.h"
+#include "../mem/zone.h"
 #include "../sound/sound.h"
 #include "../video/video.h"
 #include "../wad/wad.h"
-#include "../mem/zone.h"
 
 #include "../player/mobj.h"
 
 // Data.
+#include "../sound/sounds.h"
 #include "main.h"
 #include "strings.h"
-#include "../sound/sounds.h"
 
-#include "stat.h"
 #include "../renderer/state.h"
+#include "stat.h"
 
 typedef enum {
     F_STAGE_TEXT,

@@ -19,8 +19,8 @@
 #ifndef __M_BBOX__
 #define __M_BBOX__
 
-#include <limits.h>
 #include "../lib/fixed.h"
+#include <limits.h>
 
 // Bounding box coordinate storage.
 enum { BOXTOP, BOXBOTTOM, BOXLEFT, BOXRIGHT }; // bbox coordinates

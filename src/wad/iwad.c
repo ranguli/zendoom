@@ -21,19 +21,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../wad/iwad.h"
+#include "../../config.h"
 #include "../game/keys.h"
 #include "../impl/system.h"
 #include "../lib/argv.h"
-#include "../../config.h"
-#include "../misc/misc.h"
-#include "../wad/wad.h"
 #include "../mem/zone.h"
+#include "../misc/misc.h"
+#include "../wad/iwad.h"
+#include "../wad/wad.h"
 
-static const iwad_t iwads[] = {
-    {"doom.wad", doom, registered, "Doom"},
-    {"doom1.wad", doom, shareware, "Doom Shareware"}
-};
+static const iwad_t iwads[] = {{"doom.wad", doom, registered, "Doom"},
+                               {"doom1.wad", doom, shareware, "Doom Shareware"}};
 
 // Array of locations to search for IWAD files
 //

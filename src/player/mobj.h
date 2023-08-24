@@ -20,8 +20,8 @@
 #define __P_MOBJ__
 
 // Basics.
-#include "../lib/fixed.h"
 #include "../game/tables.h"
+#include "../lib/fixed.h"
 
 // We need the thinker_t stuff.
 #include "../game/think.h"

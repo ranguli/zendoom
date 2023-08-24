@@ -15,31 +15,28 @@
 // DESCRIPTION:
 //
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
 #include <unistd.h>
-
 
 #include "SDL.h"
 
-
-
-#include "../misc/config.h"
+#include "../../config.h"
+#include "../lib/argv.h"
 #include "../lib/type.h"
+#include "../misc/config.h"
+#include "../misc/misc.h"
 #include "joystick.h"
 #include "sound.h"
 #include "timer.h"
 #include "video.h"
-#include "../lib/argv.h"
-#include "../../config.h"
-#include "../misc/misc.h"
 
 #include "system.h"
 
-#include "../wad/wad.h"
 #include "../mem/zone.h"
+#include "../wad/wad.h"
 
 #define DEFAULT_RAM 16 /* MiB */
 #define MIN_RAM 4      /* MiB */

@@ -21,8 +21,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../misc/misc.h"
@@ -349,7 +347,7 @@ static void net_query_parse_master_response(net_addr_t *master_addr, net_packet_
 }
 
 static void net_query_parse_packet(net_addr_t *addr, net_packet_t *packet, net_query_callback_t callback,
-                                  void *usedata) {
+                                   void *usedata) {
     query_target_t *target;
 
     // This might be the master server responding.

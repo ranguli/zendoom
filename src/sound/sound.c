@@ -28,12 +28,12 @@
 #include "sounds.h"
 
 #include "../lib/argv.h"
-#include "../misc/misc.h"
 #include "../lib/random.h"
+#include "../misc/misc.h"
 
+#include "../mem/zone.h"
 #include "../player/local.h"
 #include "../wad/wad.h"
-#include "../mem/zone.h"
 
 // when to clip out sounds
 // Does not fit the large outdoor areas.

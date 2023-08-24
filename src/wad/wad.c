@@ -26,9 +26,9 @@
 #include "../impl/swap.h"
 #include "../impl/system.h"
 #include "../impl/video.h"
+#include "../mem/zone.h"
 #include "../misc/misc.h"
 #include "../video/diskicon.h"
-#include "../mem/zone.h"
 
 #include "wad.h"
 
@@ -105,11 +105,11 @@ wad_file_t *W_AddFile(const char *filename) {
     if (filename[0] == '~') {
         if (reloadname != NULL) {
             error("Prefixing a WAD filename with '~' indicates that the "
-                    "WAD should be reloaded\n"
-                    "on each level restart, for use by level authors for "
-                    "rapid development. You\n"
-                    "can only reload one WAD file, and it must be the last "
-                    "file in the -file list.");
+                  "WAD should be reloaded\n"
+                  "on each level restart, for use by level authors for "
+                  "rapid development. You\n"
+                  "can only reload one WAD file, and it must be the last "
+                  "file in the -file list.");
         }
 
         reloadname = strdup(filename);
@@ -155,8 +155,8 @@ wad_file_t *W_AddFile(const char *filename) {
             if (strncmp(header.identification, "PWAD", 4)) {
                 W_CloseFile(wad_file);
                 error("Wad file %s doesn't have IWAD "
-                        "or PWAD id\n",
-                        filename);
+                      "or PWAD id\n",
+                      filename);
             }
 
             // ???modifiedgame = true;
@@ -169,8 +169,8 @@ wad_file_t *W_AddFile(const char *filename) {
         if (!strncmp(header.identification, "PWAD", 4) && header.numlumps > 4046) {
             W_CloseFile(wad_file);
             error("Error: Vanilla limit for lumps in a WAD is 4046, "
-                    "PWAD %s has %d",
-                    filename, header.numlumps);
+                  "PWAD %s has %d",
+                  filename, header.numlumps);
         }
 
         header.infotableofs = LONG(header.infotableofs);

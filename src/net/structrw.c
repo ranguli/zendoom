@@ -18,8 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../lib/type.h"
 #include "../impl/system.h"
+#include "../lib/type.h"
 #include "../misc/misc.h"
 #include "packet.h"
 #include "structrw.h"
@@ -480,8 +480,8 @@ void NET_WriteProtocol(net_packet_t *packet, net_protocol_t protocol) {
     // If you add an entry to the net_protocol_t enum, a corresponding entry
     // must be added to the protocol_names list.
     error("NET_WriteProtocol: protocol %d missing from protocol_names "
-            "list; please add it.",
-            protocol);
+          "list; please add it.",
+          protocol);
 }
 
 // NET_ReadProtocolList reads a list of string-format protocol names from

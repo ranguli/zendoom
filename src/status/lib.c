@@ -21,8 +21,8 @@
 
 #include "../game/def.h"
 
-#include "../video/video.h"
 #include "../mem/zone.h"
+#include "../video/video.h"
 
 #include "../impl/swap.h"
 #include "../impl/system.h"

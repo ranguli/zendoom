@@ -19,15 +19,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../lib/type.h"
 #include "../impl/system.h"
 #include "../lib/argv.h"
+#include "../lib/type.h"
+#include "../mem/zone.h"
 #include "../misc/misc.h"
 #include "defs.h"
 #include "io.h"
 #include "packet.h"
 #include "sdl.h"
-#include "../mem/zone.h"
 
 //
 // NETWORKING

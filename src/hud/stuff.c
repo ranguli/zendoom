@@ -27,11 +27,11 @@
 #include "../impl/swap.h"
 #include "../impl/video.h"
 
-#include "lib.h"
-#include "stuff.h"
 #include "../game/controls.h"
 #include "../misc/misc.h"
 #include "../wad/wad.h"
+#include "lib.h"
+#include "stuff.h"
 
 #include "../sound/sound.h"
 
@@ -213,8 +213,7 @@ void HU_Ticker(void) {
                     if (rc && c == KEY_ENTER) {
                         if (w_inputbuffer[i].l.len &&
                             (chat_dest[i] == consoleplayer + 1 || chat_dest[i] == HU_BROADCAST)) {
-                            HUlib_addMessageToSText(&w_message, player_names[i],
-                                                    w_inputbuffer[i].l.l);
+                            HUlib_addMessageToSText(&w_message, player_names[i], w_inputbuffer[i].l.l);
 
                             message_nottobefuckedwith = true;
                             message_on = true;

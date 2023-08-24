@@ -23,10 +23,10 @@
 #include "../../config.h"
 #include "../lib/type.h"
 
-#include "sound.h"
-#include "video.h"
 #include "../lib/argv.h"
 #include "../misc/config.h"
+#include "sound.h"
+#include "video.h"
 
 // Sound sample rate to use for digital output (Hz)
 

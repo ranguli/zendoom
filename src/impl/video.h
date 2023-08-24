@@ -19,7 +19,6 @@
 #ifndef __I_VIDEO__
 #define __I_VIDEO__
 
-
 #include "../lib/type.h"
 
 // Screen width and height.

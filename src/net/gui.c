@@ -23,8 +23,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../misc/config.h"
 #include "../game/keys.h"
+#include "../misc/config.h"
 
 #include "../impl/system.h"
 #include "../impl/timer.h"
@@ -131,7 +131,8 @@ static void CheckSHA1Sums(void) {
         return;
     }
 
-    boolean correct_wad = memcmp(net_local_wad_sha1sum, client_wait_data.wad_sha1sum, sizeof(sha1_digest_t)) == 0;
+    boolean correct_wad =
+        memcmp(net_local_wad_sha1sum, client_wait_data.wad_sha1sum, sizeof(sha1_digest_t)) == 0;
 
     if (correct_wad)
         return;

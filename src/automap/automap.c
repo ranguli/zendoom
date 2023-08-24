@@ -23,16 +23,16 @@
 
 #include "../game/def.h"
 #include "../game/keys.h"
+#include "../mem/zone.h"
 #include "../player/local.h"
 #include "../status/stuff.h"
 #include "../wad/wad.h"
-#include "../mem/zone.h"
 
+#include "../game/cheat.h"
+#include "../game/controls.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../impl/video.h"
-#include "../game/cheat.h"
-#include "../game/controls.h"
 #include "../misc/misc.h"
 
 // Needs access to LFB.
@@ -844,7 +844,6 @@ void AM_drawFline(fline_t *fl, int color) {
     register int ax;
     register int ay;
     register int d;
-
 
     // For debugging only
     if (fl->a.x < 0 || fl->a.x >= f_w || fl->a.y < 0 || fl->a.y >= f_h || fl->b.x < 0 || fl->b.x >= f_w ||

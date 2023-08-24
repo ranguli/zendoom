@@ -19,10 +19,10 @@
 
 #include <stdlib.h>
 
-#include "../game/main.h"
 #include "../game/def.h"
-#include "../game/stat.h"
 #include "../game/game.h"
+#include "../game/main.h"
+#include "../game/stat.h"
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../impl/video.h"
@@ -188,7 +188,6 @@ static void InitConnectData(net_connect_data_t *connect_data) {
     // Read checksums of our WAD directory and dehacked information
 
     W_Checksum(connect_data->wad_sha1sum);
-
 }
 
 void D_ConnectNetGame(void) {
@@ -228,7 +227,7 @@ void D_CheckNetGame(void) {
     LoadGameSettings(&settings);
 
     printf("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n", startskill, deathmatch,
-               startmap, startepisode);
+           startmap, startepisode);
 
     printf("player %i of %i (%i nodes)\n", consoleplayer + 1, settings.num_players, settings.num_players);
 
@@ -239,7 +238,7 @@ void D_CheckNetGame(void) {
 
         if (timelimit == 20 && M_CheckParm("-avg")) {
             printf("Austin Virtual Gaming: Levels will end "
-                       "after 20 minutes\n");
+                   "after 20 minutes\n");
         } else {
             printf("Levels will end after %d minute", timelimit);
             if (timelimit > 1)

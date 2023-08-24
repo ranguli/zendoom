@@ -23,10 +23,10 @@
 
 #include "../impl/system.h"
 #include "../impl/video.h"
-#include "../misc/misc.h"
 #include "../lib/random.h"
-#include "../wad/wad.h"
 #include "../mem/zone.h"
+#include "../misc/misc.h"
+#include "../wad/wad.h"
 
 #include "../game/def.h"
 #include "../game/keys.h"

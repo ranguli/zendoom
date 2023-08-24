@@ -20,8 +20,8 @@
 
 #include "../misc/config.h"
 
-#include "../lib/type.h"
 #include "../lib/argv.h"
+#include "../lib/type.h"
 
 #include "file.h"
 

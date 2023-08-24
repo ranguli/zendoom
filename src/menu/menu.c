@@ -31,10 +31,10 @@
 #include "../impl/system.h"
 #include "../impl/timer.h"
 #include "../impl/video.h"
+#include "../mem/zone.h"
 #include "../misc/misc.h"
 #include "../video/video.h"
 #include "../wad/wad.h"
-#include "../mem/zone.h"
 
 #include "../renderer/local.h"
 
@@ -42,8 +42,8 @@
 
 #include "../game/game.h"
 
-#include "../lib/argv.h"
 #include "../game/controls.h"
+#include "../lib/argv.h"
 #include "../player/savegame.h"
 #include "../player/setup.h"
 
@@ -588,9 +588,7 @@ void M_DrawSound(void) {
     M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (music_vol + 1), 16, musicVolume);
 }
 
-void M_Sound() {
-    M_SetupNextMenu(&SoundDef);
-}
+void M_Sound() { M_SetupNextMenu(&SoundDef); }
 
 void M_SfxVol(int choice) {
     switch (choice) {
@@ -700,9 +698,7 @@ void M_DrawOptions(void) {
     M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (scrnsize + 1), 9, screenSize);
 }
 
-void M_Options() {
-    M_SetupNextMenu(&OptionsDef);
-}
+void M_Options() { M_SetupNextMenu(&OptionsDef); }
 
 //
 //      Toggle messages on/off
@@ -747,17 +743,11 @@ void M_EndGame() {
 //
 // M_ReadThis
 //
-void M_ReadThis() {
-    M_SetupNextMenu(&ReadDef1);
-}
+void M_ReadThis() { M_SetupNextMenu(&ReadDef1); }
 
-void M_ReadThis2() {
-    M_SetupNextMenu(&ReadDef2);
-}
+void M_ReadThis2() { M_SetupNextMenu(&ReadDef2); }
 
-void M_FinishReadThis() {
-    M_SetupNextMenu(&MainDef);
-}
+void M_FinishReadThis() { M_SetupNextMenu(&MainDef); }
 
 //
 // M_QuitDOOM

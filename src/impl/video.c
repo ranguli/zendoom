@@ -18,26 +18,25 @@
 
 #include <stdlib.h>
 
-
 #include "SDL.h"
 #include "SDL_opengl.h"
 
 #include "../../config.h"
 #include "../game/loop.h"
+#include "../game/tables.h"
+#include "../lib/argv.h"
 #include "../lib/type.h"
+#include "../mem/zone.h"
+#include "../misc/config.h"
+#include "../misc/misc.h"
+#include "../video/diskicon.h"
+#include "../video/video.h"
+#include "../wad/wad.h"
 #include "input.h"
 #include "joystick.h"
 #include "system.h"
 #include "timer.h"
 #include "video.h"
-#include "../lib/argv.h"
-#include "../misc/config.h"
-#include "../misc/misc.h"
-#include "../game/tables.h"
-#include "../video/diskicon.h"
-#include "../video/video.h"
-#include "../wad/wad.h"
-#include "../mem/zone.h"
 
 // These are (1) the window (or the full screen) that our game is rendered to
 // and (2) the renderer that scales the texture (see below) into this window.
@@ -484,8 +483,8 @@ static void LimitTextureSize(int *w_upscale, int *h_upscale) {
 
     if ((*w_upscale < 1 && rinfo.max_texture_width > 0) || (*h_upscale < 1 && rinfo.max_texture_height > 0)) {
         error("CreateUpscaledTexture: Can't create a texture big enough for "
-                "the whole screen! Maximum texture size %dx%d",
-                rinfo.max_texture_width, rinfo.max_texture_height);
+              "the whole screen! Maximum texture size %dx%d",
+              rinfo.max_texture_width, rinfo.max_texture_height);
     }
 
     // We limit the amount of texture memory used for the intermediate buffer,
@@ -496,8 +495,8 @@ static void LimitTextureSize(int *w_upscale, int *h_upscale) {
 
     if (max_scaling_buffer_pixels < SCREENWIDTH * SCREENHEIGHT) {
         error("CreateUpscaledTexture: max_scaling_buffer_pixels too small "
-                "to create a texture buffer: %d < %d",
-                max_scaling_buffer_pixels, SCREENWIDTH * SCREENHEIGHT);
+              "to create a texture buffer: %d < %d",
+              max_scaling_buffer_pixels, SCREENWIDTH * SCREENHEIGHT);
     }
 
     while (*w_upscale * *h_upscale * SCREENWIDTH * SCREENHEIGHT > max_scaling_buffer_pixels) {
@@ -727,7 +726,7 @@ int I_GetPaletteIndex(int r, int g, int b) {
 
     for (i = 0; i < 256; ++i) {
         int diff = (r - palette[i].r) * (r - palette[i].r) + (g - palette[i].g) * (g - palette[i].g) +
-               (b - palette[i].b) * (b - palette[i].b);
+                   (b - palette[i].b) * (b - palette[i].b);
 
         if (diff < best_diff) {
             best = i;

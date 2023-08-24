@@ -21,11 +21,11 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "../game/loop.h"
 #include "../game/def.h"
+#include "../game/loop.h"
 
-#include "../misc/bbox.h"
 #include "../menu/menu.h"
+#include "../misc/bbox.h"
 
 #include "local.h"
 #include "sky.h"

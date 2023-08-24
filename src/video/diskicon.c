@@ -16,13 +16,13 @@
 //	Disk load indicator.
 //
 
-#include "../lib/type.h"
 #include "../impl/swap.h"
 #include "../impl/video.h"
 #include "../lib/argv.h"
-#include "video.h"
-#include "../wad/wad.h"
+#include "../lib/type.h"
 #include "../mem/zone.h"
+#include "../wad/wad.h"
+#include "video.h"
 
 #include "diskicon.h"
 

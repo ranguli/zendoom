@@ -15,9 +15,9 @@
 #ifndef NET_STRUCTRW_H
 #define NET_STRUCTRW_H
 
+#include "../lib/sha1.h"
 #include "defs.h"
 #include "packet.h"
-#include "../lib/sha1.h"
 
 void NET_WriteConnectData(net_packet_t *packet, net_connect_data_t *data);
 boolean NET_ReadConnectData(net_packet_t *packet, net_connect_data_t *data);
