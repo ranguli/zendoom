@@ -1,7 +1,5 @@
-Makefile
-TAGS
-tags
-docs
+# Editor files
+.vscode/
 
 # Binaries and objects
 smol-doom

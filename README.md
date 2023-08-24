@@ -1,6 +1,19 @@
 # zendoom
 
-An _aggresively_ minimalistic fork of Chocolate Doom that strives to have the smallest, simplest codebase possible to make exploring the core principles of the Doom engine as zen-like as possible. The only thing I might add (just for fun) is some kind of scripting support, perhaps embedding Lua or Guile so that code experiments can be made in a higher-level language.  
+An _aggresively_ minimalistic, eductional fork of Chocolate Doom that strives to have the smallest, simplest codebase possible to make exploring the core principles of the Doom engine as zen-like as possible. The only thing I might add (just for fun) is some kind of scripting support, perhaps embedding Lua or Guile so that code experiments can be made in a higher-level language.  
+
+## Motivation
+
+Chocolate Doom is considered among the most conserative ports of Doom, but for someone looking to study and explore the Doom engine, it still has a lot of extra stuff going on:
+
+- DeHackEd support
+- Merging of sprites and flats (DeuTex)
+- OPL emulation
+- MIDI support using timidity/fluidsynth
+- PC speaker support 
+- GUS emulation
+
+These things are _amazing_ for recreating the original feel of Doom, but they don't serve our purpose of creating an ultra minimal educational source-port for exploring the engine itself.
 
 ### Zen in the build system
 - Complete dependency management and virtualized development environment with `Nix`. Install `nix`, and run `nix-shell shell.nix` in the project root. **Now you have all of the projects dependencies in an isolated space.** There's no need for your systems package manager to know about us.
@@ -34,7 +47,146 @@ ninja build
 The only dependency _you_ need is `git`, and Nix. All the dependencies that _Doom_ needs are taken care of. 
 
 
+## Compability
+
+Over the years a lot of configuration options have been added to various source ports of Doom as they add support for different things. Here is an (incomplete) table that overviews what options remain in zendoom:
+
+| Configuration Value        | Removed?    |
+|----------------------------|-------------|
+| video_driver               |             |
+| window_position            |             |
+| fullscreen                 |             |
+| video_display              |             |
+| aspect_ratio_correct       |             |
+| integer_scaling            |             |
+| vga_porch_flash            |To be removed|
+| window_width               |             |
+| window_height              |             |
+| fullscreen_width           |             |
+| fullscreen_height          |             |
+| force_software_renderer    |             |
+| max_scaling_buffer_pixels  |             |
+| startup_delay              |             |
+| show_endoom                |             |
+| show_diskicon              |             |
+| png_screenshots            |To be removed|
+| snd_samplerate             |             |
+| snd_cachesize              |             |
+| snd_maxslicetime_ms        |             |
+| snd_pitchshift             |             |
+| snd_musiccmd               |             |
+| snd_dmxoption              |             |
+| opl_io_port                |Yes          |
+| use_libsamplerate          |             |
+| libsamplerate_scale        |             |
+| music_pack_path            |             |
+| timidity_cfg_path          |Yes          |
+| gus_patch_path             |Yes          |
+| gus_ram_kb                 |Yes          |
+| vanilla_savegame_limit     |             |
+| vanilla_demo_limit         |             |
+| vanilla_keyboard_mapping   |             |
+| player_name                |             |
+| grabmouse                  |             |
+| novert                     |             |
+| mouse_acceleration         |             |
+| mouse_threshold            |             |
+| mouseb_strafeleft          |             |
+| mouseb_straferight         |             |
+| mouseb_use                 |             |
+| mouseb_backward            |             |
+| mouseb_prevweapon          |             |
+| mouseb_nextweapon          |             |
+| dclick_use                 |             |
+| joystick_guid              |             |
+| joystick_index             |             |
+| joystick_x_axis            |             |
+| joystick_x_invert          |             |
+| joystick_y_axis            |             |
+| joystick_y_invert          |             |
+| joystick_strafe_axis       |             |
+| joystick_strafe_invert     |             |
+| joystick_look_axis         |             |
+| joystick_look_invert       |             |
+| joystick_physical_button0  |             |
+| joystick_physical_button1  |             |
+| joystick_physical_button2  |             |
+| joystick_physical_button3  |             |
+| joystick_physical_button4  |             |
+| joystick_physical_button5  |             |
+| joystick_physical_button6  |             |
+| joystick_physical_button7  |             |
+| joystick_physical_button8  |             |
+| joystick_physical_button9  |             |
+| joystick_physical_button10 |             |
+| joyb_strafeleft            |             |
+| joyb_straferight           |             |
+| joyb_menu_activate         |             |
+| joyb_toggle_automap        |             |
+| joyb_prevweapon            |             |
+| joyb_nextweapon            |             |
+| key_pause                  |             |
+| key_menu_activate          |             |
+| key_menu_up                |             |
+| key_menu_down              |             |
+| key_menu_left              |             |
+| key_menu_right             |             |
+| key_menu_back              |             |
+| key_menu_forward           |             |
+| key_menu_confirm           |             |
+| key_menu_abort             |             |
+| key_menu_help              |             |
+| key_menu_save              |             |
+| key_menu_load              |             |
+| key_menu_volume            |             |
+| key_menu_detail            |             |
+| key_menu_qsave             |             |
+| key_menu_endgame           |             |
+| key_menu_messages          |             |
+| key_menu_qload             |             |
+| key_menu_quit              |             |
+| key_menu_gamma             |             |
+| key_spy                    |             |
+| key_menu_incscreen         |             |
+| key_menu_decscreen         |             |
+| key_menu_screenshot        |             |
+| key_map_toggle             |             |
+| key_map_north              |             |
+| key_map_south              |             |
+| key_map_east               |             |
+| key_map_west               |             |
+| key_map_zoomin             |             |
+| key_map_zoomout            |             |
+| key_map_maxzoom            |             |
+| key_map_follow             |             |
+| key_map_grid               |             |
+| key_map_mark               |             |
+| key_map_clearmark          |             |
+| key_weapon1                |             |
+| key_weapon2                |             |
+| key_weapon3                |             |
+| key_weapon4                |             |
+| key_weapon5                |             |
+| key_weapon6                |             |
+| key_weapon7                |             |
+| key_weapon8                |             |
+| key_prevweapon             |             |
+| key_nextweapon             |             |
+| key_message_refresh        |             |
+| key_demo_quit              |             |
+| key_multi_msg              |             |
+| key_multi_msgplayer1       |             |
+| key_multi_msgplayer2       |             |
+| key_multi_msgplayer3       |             |
+| key_multi_msgplayer4       |             |
+
+
 ## TODO:
 
 - Github actions
 - Embedded scripting of some kind with a well-documented API
+- A simpler configuration system? Text files are fine, but surely we can clean it up someway.
+- Only support PNG screenshots (no PCX)
+- Remove DOS emulation of null Read Access Violation (system.c:300)
+- (Gradually) replace bespoke file I/O with posix ones
+- Remove gamma correction feature
