@@ -32,3 +32,9 @@ ninja build
 ### Dependencies
 
 The only dependency _you_ need is `git`, and Nix. All the dependencies that _Doom_ needs are taken care of. 
+
+
+## TODO:
+
+- Github actions
+- Embedded scripting of some kind with a well-documented API
